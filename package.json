@@ -1,0 +1,24 @@
+{
+  "name": "trig-calculator",
+  "version": "1.0.0",
+  "description": "A web app to calculate triangle angles and sides",
+  "scripts": {
+    "build": "webpack",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://epeterson320@bitbucket.org/epeterson320/trig-calculator.git"
+  },
+  "keywords": [
+    "Trigonometry",
+    "Calculator",
+    "Triangle"
+  ],
+  "author": "Eric Peterson",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/epeterson320/trig-calculator#readme",
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  }
+}
