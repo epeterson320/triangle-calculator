@@ -8,5 +8,9 @@ const App = () => (
     <TriangleViewport />
   </div>
 );
-
+/*
+Views (2 screens on mobile, 1 screen on tablet).
+Edit (Drag point, input boxes for measurements)
+Results (Scrolling text view showing work)
+*/
 export default App;
