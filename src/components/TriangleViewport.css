@@ -1,4 +1,31 @@
 .triangleViewport {
   width: 100%;
-  margin: auto;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      0deg,
+      transparent 24%,
+      #9CCC65 25%,
+      #9CCC65 26%,
+      transparent 27%,
+      transparent 74%,
+      #9CCC65 75%,
+      #9CCC65 76%,
+      transparent 77%,
+      transparent) top left / 50px 50px,
+    linear-gradient(
+      90deg,
+      transparent 24%,
+      #9CCC65 25%,
+      #9CCC65 26%,
+      transparent 27%,
+      transparent 74%,
+      #9CCC65 75%,
+      #9CCC65 76%,
+      transparent 77%,
+      transparent) top left / 50px 50px,
+    radial-gradient(circle at top left, #FFFDE7, #FFF9C4),
+    #FFFDE7;
+  border: 1px solid #9CCC65;
 }

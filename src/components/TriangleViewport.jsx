@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from './App.css';
+import styles from './TriangleViewport.css';
 
 const TriangleViewport = () => (
   <div className={styles.triangleViewport}>
     <svg
-      width="120" height="120" viewPort="0 0 120 120"
+      width="120" height="120" viewBox="0 0 120 120"
       xmlns="http://www.w3.org/2000/svg"
     >
       <text x="10" y="108">a</text>
