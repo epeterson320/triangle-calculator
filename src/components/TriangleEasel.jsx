@@ -22,6 +22,16 @@ const TriangleEasel = ({ a, b, c, labels, onClickTriangle }) => (
   </div>
 );
 
+/*
+TODO
+
+Turn <text> into an "EditPoint" or "EditSide" view when clicked:
++----------------+
+| Point  _A_     |
+| Angle [60.5] X |
+|            OK  |
++----------------+
+*/
 
 TriangleEasel.defaultProps = {
   onClickTriangle: () => {},
@@ -46,6 +56,5 @@ TriangleEasel.propTypes = {
   }).isRequired,
   onClickTriangle: PropTypes.func,
 };
-
 
 export default TriangleEasel;
