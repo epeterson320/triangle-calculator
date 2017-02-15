@@ -4,7 +4,7 @@ import TriangleViewport from './TriangleViewport';
 
 const App = () => (
   <div className={styles.app}>
-    <h2>Hello, this is a trigonometry calculator.</h2>
+    <h2 className={styles.welcome}>Hello, this is a trigonometry calculator.</h2>
     <TriangleViewport />
   </div>
 );
