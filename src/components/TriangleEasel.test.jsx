@@ -2,8 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import TriangleEasel from './TriangleEasel';
 
-function setup() {
-  const props = {
+function setup(customProps) {
+  const defaultProps = {
     a: { x: 20, y: 100 },
     b: { x: 60, y: 30 },
     c: { x: 100, y: 100 },
@@ -15,13 +15,18 @@ function setup() {
       ac: { x: 16, y: 68 },
       bc: { x: 84, y: 68 },
     },
+    selected: false,
     onClickTriangle: jest.fn(),
+    onClickBackground: jest.fn(),
   };
 
+  const props = Object.assign({}, defaultProps, customProps);
   const wrapper = shallow(<TriangleEasel {...props} />);
 
   return { wrapper, props };
 }
+
+const mockEvent = () => ({ stopPropagation: jest.fn() });
 
 describe('<TriangleEasel>', () => {
   it('Should render an svg in a wrapper div', () => {
@@ -56,7 +61,20 @@ describe('<TriangleEasel>', () => {
     const { wrapper, props } = setup();
     const triangle = wrapper.find('.triangle');
     expect(props.onClickTriangle.mock.calls.length).toBe(0);
-    triangle.simulate('click');
+    triangle.simulate('click', mockEvent());
     expect(props.onClickTriangle.mock.calls.length).toBe(1);
+  });
+
+  it('Should call onClickBackground when the SVG is clicked', () => {
+    const { wrapper, props } = setup();
+    const background = wrapper.find('svg');
+    expect(props.onClickBackground.mock.calls.length).toBe(0);
+    background.simulate('click');
+    expect(props.onClickBackground.mock.calls.length).toBe(1);
+  });
+
+  it('Should give the triangle a class when selected', () => {
+    const { wrapper } = setup({ selected: true });
+    expect(wrapper.find('.triangle').hasClass('selected')).toBe(true);
   });
 });

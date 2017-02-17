@@ -1,10 +1,14 @@
 import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 import styles from './TriangleEasel.css';
 
-const TriangleEasel = ({ a, b, c, labels, onClickTriangle }) => (
+const TriangleEasel = ({
+  a, b, c, labels, onClickTriangle, onClickBackground, selected,
+}) => (
   <div className={styles.viewport}>
     <svg
       width="120" height="120" viewBox="0 0 120 120"
+      onClick={onClickBackground}
       xmlns="http://www.w3.org/2000/svg"
     >
       <text className={styles.pointLabel} x={labels.a.x} y={labels.a.y}>A</text>
@@ -14,8 +18,10 @@ const TriangleEasel = ({ a, b, c, labels, onClickTriangle }) => (
       <text className={styles.sideLabel} x={labels.ac.x} y={labels.ac.y}>AC</text>
       <text className={styles.sideLabel} x={labels.bc.x} y={labels.bc.y}>BC</text>
       <path
-        className={styles.triangle}
-        onClick={onClickTriangle}
+        className={classnames({
+          [styles.triangle]: true, [styles.selected]: selected,
+        })}
+        onClick={(e) => { e.stopPropagation(); onClickTriangle(); }}
         d={`M ${a.x},${a.y} L ${b.x},${b.y} L ${c.x},${c.y} Z`}
       />
     </svg>
@@ -35,6 +41,8 @@ Turn <text> into an "EditPoint" or "EditSide" view when clicked:
 
 TriangleEasel.defaultProps = {
   onClickTriangle: () => {},
+  onClickBackground: () => {},
+  selected: false,
 };
 
 const Coords = PropTypes.shape({
@@ -54,7 +62,9 @@ TriangleEasel.propTypes = {
     ac: Coords.isRequired,
     bc: Coords.isRequired,
   }).isRequired,
+  selected: PropTypes.bool,
   onClickTriangle: PropTypes.func,
+  onClickBackground: PropTypes.func,
 };
 
 export default TriangleEasel;

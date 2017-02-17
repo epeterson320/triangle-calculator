@@ -1,28 +1,29 @@
+// Enums
+export const Side = { AB: 'ab', AC: 'ac', BC: 'bc' };
+export const Point = { A: 'a', B: 'b', C: 'c' };
+
 // Actions & Action Creators
 
 export const SET_SIDE = 'trig/calc/SET_SIDE';
-export function setSide(side, length) {
-  return { type: SET_SIDE, side, length };
-}
+export const setSide = (side, length) => ({ type: SET_SIDE, side, length });
 
 export const SET_ANGLE = 'trig/calc/SET_ANGLE';
-export function setAngle(point, angle) {
-  return { type: SET_ANGLE, point, angle };
-}
+export const setAngle = (point, angle) => ({ type: SET_ANGLE, point, angle });
 
 export const UNSET_SIDE = 'trig/calc/UNSET_SIDE';
-export function unsetSide(side) {
-  return { type: UNSET_SIDE, side };
-}
+export const unsetSide = side => ({ type: UNSET_SIDE, side });
 
 export const UNSET_ANGLE = 'trig/calc/UNSET_ANGLE';
-export function unsetAngle(point) {
-  return { type: UNSET_ANGLE, point };
-}
+export const unsetAngle = point => ({ type: UNSET_ANGLE, point });
+
+export const SELECT_TRIANGLE = 'trig/calc/SELECT_TRIANGLE';
+export const selectTriangle = () => ({ type: SELECT_TRIANGLE });
+
+export const UNSELECT_TRIANGLE = 'trig/calc/UNSELECT_TRIANGLE';
+export const unselectTriangle = () => ({ type: UNSELECT_TRIANGLE });
 
 /* const RENAME_POINT = 'trig/calculator/RENAME_POINT';
 const DRAG_POINT = 'trig/calculator/DRAG_POINT';
-const CLICK_TRIANGLE = 'trig/calculator/CLICK_TRIANGLE';
 const DRAG_ROTATE = 'trig/calculator/DRAG_ROTATE';
 const DRAG_PAN = 'trig/calculator/DRAG_PAN';
 const SELECT_VIEW = 'trig/calculator/SELECT_VIEW';
@@ -30,17 +31,13 @@ const SHOW_WORK = 'trig/calculator/SHOW_WORK'; */
 
 // Reducer
 
-export const Side = { AB: 'ab', AC: 'ac', BC: 'bc' };
-export const Point = { A: 'a', B: 'b', C: 'c' };
-const ONE_EIGHTY = Math.PI;
-
 const init = {
   // Default no set measurements
   // Up to 3 sides, 2 sides + 1 angle, or 1 side + 2 angles
   // Lengths can be any positive number
   // Angles can be between 0 and 180 non-inclusive
   // Unset lengths or angles are 0
-  ab: 0, ac: 0, bc: 0, a: 0, b: 0, c: 0,
+  ab: 0, ac: 0, bc: 0, a: 0, b: 0, c: 0, selected: false,
 
   /*
   Addl fields to add as app grows:
@@ -65,7 +62,7 @@ export default function reducer(state = init, action = {}) {
       if (numSidesSet === 3) return state;
       if (numSidesSet === 2 && numAnglesSet === 2) return state;
       if (numAnglesSet === 3) return state;
-      if (newState.a + newState.b + newState.c >= ONE_EIGHTY) return state;
+      if (newState.a + newState.b + newState.c >= Math.PI) return state;
       return newState;
     }
     case SET_SIDE: {
@@ -80,6 +77,10 @@ export default function reducer(state = init, action = {}) {
       return Object.assign({}, state, { [action.side]: 0 });
     case UNSET_ANGLE:
       return Object.assign({}, state, { [action.point]: 0 });
+    case SELECT_TRIANGLE:
+      return Object.assign({}, state, { selected: true });
+    case UNSELECT_TRIANGLE:
+      return Object.assign({}, state, { selected: false });
     default:
       return state;
   }

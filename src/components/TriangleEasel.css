@@ -35,6 +35,10 @@
   fill: transparent;
 }
 
+.selected {
+  fill: rgba(0, 0, 0, 0.12);
+}
+
 .pointLabel {
   fill: rgba(0, 0, 0, 0.87);
 }
