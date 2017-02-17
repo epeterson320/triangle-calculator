@@ -2,24 +2,22 @@ import { mapStateToProps, mapDispatchToProps } from './TriangleEditor';
 import { selectTriangle, unselectTriangle } from '../modules/uiState';
 import reduce from '../modules/app';
 
+function dist(p, q) {
+  const dx = q.x - p.x;
+  const dy = q.y - p.y;
+  return Math.sqrt((dx * dx) + (dy * dy));
+}
+
 describe('Triangle Editor', () => {
   describe('mapStateToProps', () => {
-    it('Prints some hard-coded stuff for now', () => {
+    it('Gives back data in the right shape', () => {
       const state = reduce();
-      expect(mapStateToProps(state)).toEqual({
-        a: { x: 20, y: 100 },
-        b: { x: 60, y: 30 },
-        c: { x: 100, y: 100 },
-        labels: {
-          a: { x: 10, y: 108 },
-          b: { x: 102, y: 108 },
-          c: { x: 54, y: 26 },
-          ab: { x: 54, y: 116 },
-          ac: { x: 16, y: 68 },
-          bc: { x: 84, y: 68 },
-        },
-        selected: false,
-      });
+      const props = mapStateToProps(state);
+      expect(props.a).toBeDefined();
+      expect(props.b).toBeDefined();
+      expect(props.c).toBeDefined();
+      expect(props.labels).toBeDefined();
+      expect(props.selected).toBeDefined();
     });
 
     it('Passes the right "selected" prop', () => {
@@ -28,6 +26,18 @@ describe('Triangle Editor', () => {
       const state2 = reduce(state1, selectTriangle());
       expect(mapStateToProps(state2).selected).toEqual(true);
     });
+
+    it('Shows an equilateral triangle when no measurements are set', () => {
+      const { a, b, c } = mapStateToProps(reduce());
+      const lAB = dist(a, b);
+      const lAC = dist(a, c);
+      const lBC = dist(b, c);
+      expect(lAB).toBeCloseTo(lAC);
+      expect(lAB).toBeCloseTo(lBC);
+      expect(lAC).toBeCloseTo(lBC);
+    });
+
+    it('Should scale down huge measurements');
   });
 
   describe('mapDispatchToProps', () => {
