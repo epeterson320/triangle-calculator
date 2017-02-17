@@ -3,17 +3,13 @@ import reduce, {
   setAngle,
   unsetSide,
   unsetAngle,
-  selectTriangle,
-  unselectTriangle,
   Point,
   Side,
   SET_SIDE,
   SET_ANGLE,
   UNSET_SIDE,
   UNSET_ANGLE,
-  SELECT_TRIANGLE,
-  UNSELECT_TRIANGLE,
-} from './calculator';
+} from './measurements';
 
 // Angles for use with tests.
 const A30 = Math.PI / 6;
@@ -117,13 +113,6 @@ describe('Calculator', () => {
       // Ignore the invalid input
       expect(state.b).toBe(0);
     });
-
-    it('should select and unselect the triangle', () => {
-      const state1 = reduce(undefined, selectTriangle());
-      expect(state1.selected).toBe(true);
-      const state2 = reduce(state1, unselectTriangle());
-      expect(state2.selected).toBe(false);
-    });
   });
 
   describe('action creators', () => {
@@ -147,14 +136,6 @@ describe('Calculator', () => {
     it('should create an action to unset an angle', () => {
       const point = Point.C;
       expect(unsetAngle(point)).toEqual({ type: UNSET_ANGLE, point });
-    });
-
-    it('should create an action to select the triangle', () => {
-      expect(selectTriangle()).toEqual({ type: SELECT_TRIANGLE });
-    });
-
-    it('should create an action to unselect the triangle', () => {
-      expect(unselectTriangle()).toEqual({ type: UNSELECT_TRIANGLE });
     });
   });
 });

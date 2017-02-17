@@ -31,7 +31,7 @@ const mockEvent = () => ({ stopPropagation: jest.fn() });
 describe('<TriangleEasel>', () => {
   it('Should render an svg in a wrapper div', () => {
     const { wrapper } = setup();
-    expect(wrapper.find('div.viewport svg').length).toBe(1);
+    expect(wrapper.find('div.container svg.viewport').length).toBe(1);
   });
 
   it('Should display three labels for points', () => {

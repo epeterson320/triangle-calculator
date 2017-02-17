@@ -5,9 +5,10 @@ import styles from './TriangleEasel.css';
 const TriangleEasel = ({
   a, b, c, labels, onClickTriangle, onClickBackground, selected,
 }) => (
-  <div className={styles.viewport}>
+  <div className={styles.container}>
     <svg
-      width="120" height="120" viewBox="0 0 120 120"
+      className={styles.viewport}
+      
       onClick={onClickBackground}
       xmlns="http://www.w3.org/2000/svg"
     >

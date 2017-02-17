@@ -1,5 +1,6 @@
 import { mapStateToProps, mapDispatchToProps } from './TriangleEditor';
-import reduce, { selectTriangle, unselectTriangle } from '../modules/calculator';
+import { selectTriangle, unselectTriangle } from '../modules/uiState';
+import reduce from '../modules/app';
 
 describe('Triangle Editor', () => {
   describe('mapStateToProps', () => {
@@ -19,6 +20,13 @@ describe('Triangle Editor', () => {
         },
         selected: false,
       });
+    });
+
+    it('Passes the right "selected" prop', () => {
+      const state1 = reduce();
+      expect(mapStateToProps(state1).selected).toEqual(false);
+      const state2 = reduce(state1, selectTriangle());
+      expect(mapStateToProps(state2).selected).toEqual(true);
     });
   });
 

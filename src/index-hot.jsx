@@ -4,14 +4,14 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
 
-import calculator from './modules/calculator';
+import app from './modules/app';
 import './index.css';
 import App from './components/App';
 
 // eslint-disable-next-line no-underscore-dangle
 const devExt = window.__REDUX_DEVTOOLS_EXTENSION__;
 const devtools = devExt && devExt();
-const store = createStore(calculator, devtools);
+const store = createStore(app, devtools);
 const rootEl = document.getElementById('root');
 
 const render = (Component) => {

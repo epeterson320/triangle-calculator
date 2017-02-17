@@ -1,11 +1,7 @@
 .app {
-  height: 100%;
-  text-size-adjust: none;
-  font-family: helvetica, arial, sans-serif;
-  line-height: 200%;
-  padding: 6px 20px 30px;
-}
-
-.welcome {
   position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 32px;
 }

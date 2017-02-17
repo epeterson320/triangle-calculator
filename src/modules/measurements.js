@@ -16,12 +16,6 @@ export const unsetSide = side => ({ type: UNSET_SIDE, side });
 export const UNSET_ANGLE = 'trig/calc/UNSET_ANGLE';
 export const unsetAngle = point => ({ type: UNSET_ANGLE, point });
 
-export const SELECT_TRIANGLE = 'trig/calc/SELECT_TRIANGLE';
-export const selectTriangle = () => ({ type: SELECT_TRIANGLE });
-
-export const UNSELECT_TRIANGLE = 'trig/calc/UNSELECT_TRIANGLE';
-export const unselectTriangle = () => ({ type: UNSELECT_TRIANGLE });
-
 /* const RENAME_POINT = 'trig/calculator/RENAME_POINT';
 const DRAG_POINT = 'trig/calculator/DRAG_POINT';
 const DRAG_ROTATE = 'trig/calculator/DRAG_ROTATE';
@@ -77,10 +71,6 @@ export default function reducer(state = init, action = {}) {
       return Object.assign({}, state, { [action.side]: 0 });
     case UNSET_ANGLE:
       return Object.assign({}, state, { [action.point]: 0 });
-    case SELECT_TRIANGLE:
-      return Object.assign({}, state, { selected: true });
-    case UNSELECT_TRIANGLE:
-      return Object.assign({}, state, { selected: false });
     default:
       return state;
   }
