@@ -7,20 +7,20 @@ const TriangleEasel = ({
 }) => (
   <div className={styles.container}>
     <svg
-      className={styles.viewport}
-      
-      onClick={onClickBackground}
       xmlns="http://www.w3.org/2000/svg"
+      className={styles.viewport}
+      onClick={onClickBackground}
     >
-      <text className={styles.pointLabel} x={labels.a.x} y={labels.a.y}>A</text>
-      <text className={styles.pointLabel} x={labels.b.x} y={labels.b.y}>B</text>
-      <text className={styles.pointLabel} x={labels.c.x} y={labels.c.y}>C</text>
-      <text className={styles.sideLabel} x={labels.ab.x} y={labels.ab.y}>AB</text>
-      <text className={styles.sideLabel} x={labels.ac.x} y={labels.ac.y}>AC</text>
-      <text className={styles.sideLabel} x={labels.bc.x} y={labels.bc.y}>BC</text>
+      <PointLabel {...labels.a} />
+      <PointLabel {...labels.b} />
+      <PointLabel {...labels.c} />
+      <SideLabel {...labels.ab} />
+      <SideLabel {...labels.ac} />
+      <SideLabel {...labels.bc} />
       <path
         className={classnames({
-          [styles.triangle]: true, [styles.selected]: selected,
+          [styles.triangle]: true,
+          [styles.selected]: selected,
         })}
         onClick={(e) => { e.stopPropagation(); onClickTriangle(); }}
         d={`M ${a.x},${a.y} L ${b.x},${b.y} L ${c.x},${c.y} Z`}
@@ -29,16 +29,7 @@ const TriangleEasel = ({
   </div>
 );
 
-/*
-TODO
-
-Turn <text> into an "EditPoint" or "EditSide" view when clicked:
-+----------------+
-| Point  _A_     |
-| Angle [60.5] X |
-|            OK  |
-+----------------+
-*/
+export default TriangleEasel;
 
 TriangleEasel.defaultProps = {
   onClickTriangle: () => {},
@@ -68,4 +59,30 @@ TriangleEasel.propTypes = {
   onClickBackground: PropTypes.func,
 };
 
-export default TriangleEasel;
+/*
+TODO: Turn <PointLabel> into an "EditPoint" or "EditSide" view when clicked:
+
++----------------+
+| Point  _A_     |
+| Angle [60.5] X |
+|            OK  |
++----------------+
+*/
+
+export const PointLabel = ({ x, y, text }) =>
+  <text className={styles.pointLabel} x={x} y={y}>{text}</text>;
+
+PointLabel.propTypes = {
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
+};
+
+export const SideLabel = ({ x, y, text }) =>
+  <text className={styles.sideLabel} x={x} y={y}>{text}</text>;
+
+SideLabel.propTypes = {
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
+};
