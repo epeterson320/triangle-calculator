@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import TriangleEasel from './TriangleEasel';
+import TriangleEasel, { PointLabel, SideLabel } from './TriangleEasel';
 
 function setup(customProps) {
   const defaultProps = {
@@ -8,12 +8,12 @@ function setup(customProps) {
     b: { x: 60, y: 30 },
     c: { x: 100, y: 100 },
     labels: {
-      a: { x: 10, y: 108 },
-      b: { x: 102, y: 108 },
-      c: { x: 54, y: 26 },
-      ab: { x: 54, y: 116 },
-      ac: { x: 16, y: 68 },
-      bc: { x: 84, y: 68 },
+      a: { text: 'A', x: 10, y: 108 },
+      b: { text: 'B', x: 102, y: 108 },
+      c: { text: 'C', x: 54, y: 26 },
+      ab: { text: 'AB', x: 54, y: 116 },
+      ac: { text: 'AC', x: 16, y: 68 },
+      bc: { text: 'BC', x: 84, y: 68 },
     },
     selected: false,
     onClickTriangle: jest.fn(),
@@ -36,12 +36,12 @@ describe('<TriangleEasel>', () => {
 
   it('Should display three labels for points', () => {
     const { wrapper } = setup();
-    expect(wrapper.find('text.pointLabel').length).toBe(3);
+    expect(wrapper.find(PointLabel).length).toBe(3);
   });
 
   it('Should display three labels for sides', () => {
     const { wrapper } = setup();
-    expect(wrapper.find('text.sideLabel').length).toBe(3);
+    expect(wrapper.find(SideLabel).length).toBe(3);
   });
 
   it('Should display a triangle', () => {
@@ -77,4 +77,14 @@ describe('<TriangleEasel>', () => {
     const { wrapper } = setup({ selected: true });
     expect(wrapper.find('.triangle').hasClass('selected')).toBe(true);
   });
+});
+
+describe('<PointLabel>', () => {
+  it('should read its x and y from props');
+  it('should read its text from a prop');
+});
+
+describe('<SideLabel>', () => {
+  it('should read its coords from props');
+  it('should read its text from a prop');
 });

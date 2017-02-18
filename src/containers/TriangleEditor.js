@@ -61,11 +61,10 @@ function mFrom2Angles(m) {
   const a = m.a || (PI - m.b - m.c);
   const b = m.b || (PI - m.a - m.c);
   const c = m.c || (PI - m.a - m.b);
-
   // law of sines ratio
-  const ratio = (m.ab && (sin(m.c) / m.ab))
-    || (m.ac && (sin(m.b) / m.ac))
-    || (m.bc && (sin(m.a) / m.bc));
+  const ratio = (m.ab && (sin(c) / m.ab))
+    || (m.ac && (sin(b) / m.ac))
+    || (m.bc && (sin(a) / m.bc));
 
   const ab = sin(c) / ratio;
   const ac = sin(b) / ratio;
