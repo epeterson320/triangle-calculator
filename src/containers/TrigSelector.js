@@ -25,7 +25,7 @@ export default function svgCoordsFromAnyMeasurements(anyMeasurements) {
 export function assumeMissingMeasurements(m) {
   const nSidesDef = !!m.ab + !!m.ac + !!m.bc;
   const nAngDef = !!m.a + !!m.b + !!m.c;
-  if (nSidesDef + nAngDef === 3 && nSidesDef > 1) return m;
+  if (nSidesDef + nAngDef > 2 && nSidesDef > 0) return m;
   if (nSidesDef === 0 && nAngDef === 2) return assumeSide(m);
   return assumeMissingMeasurements(assumeAngle(m));
 }
@@ -59,7 +59,9 @@ function from3Sides({ ab, ac, bc }) {
   const numr = (ab * ab) + (ac * ac) - (bc * bc);
   const denom = 2 * ab * ac;
   const a = acos(numr / denom);
-  return { a, ab, ac };
+  const b = asin(ac * sin(a) / bc);
+  const c = PI - a - b;
+  return { a, b, c, ab, ac, bc };
 }
 
 function from2Angles(m) {
@@ -79,7 +81,8 @@ function from2Angles(m) {
 
 function from2Sides1Ang(m) {
   if (!!m.a && !!m.ab && !!m.ac) {
-    return m;
+    const bc = getThirdSide(m.ab, m.ac, m.a);
+    return from3Sides(Object.assign({}, m, { bc }));
   } else if (!!m.c && !!m.ac && !!m.bc) {
     const ab = getThirdSide(m.ac, m.bc, m.c);
     return from3Sides(Object.assign({}, m, { ab }));
@@ -117,17 +120,21 @@ export function cartesianCoordsFromMeasurements(m) {
   };
 }
 
-export function svgCoordsFromCartesian(m, bounds) {
-  const rawWidth = max(m.a.x, m.b.x, m.c.x) - min(m.a.x, m.b.x, m.c.x);
-  const rawHeight = max(m.a.y, m.b.y, m.c.y) - min(m.a.y, m.b.y, m.c.y);
+export function svgCoordsFromCartesian({ a, b, c }, bounds) {
+  const rawWidth = max(a.x, b.x, c.x) - min(a.x, b.x, c.x);
+  const rawHeight = max(a.y, b.y, c.y) - min(a.y, b.y, c.y);
+
+  const dx = -min(0, a.x, b.x, c.x);
+  const dy = -min(0, a.y, b.y, c.y);
 
   const { w, h, pad } = bounds;
   const wScale = (w - (2 * pad)) / rawWidth;
   const hScale = (h - (2 * pad)) / rawHeight;
+  const scale = min(wScale, hScale);
 
   return ({
-    a: { x: (m.a.x * wScale) + pad, y: -((m.a.y * wScale) + pad) },
-    b: { x: (m.b.x * wScale) + pad, y: -((m.b.y * hScale) + pad) },
-    c: { x: (m.c.x * wScale) + pad, y: -((m.c.y * hScale) + pad) },
+    a: { x: ((a.x + dx) * scale) + pad, y: h - (((a.y + dy) * scale) + pad) },
+    b: { x: ((b.x + dx) * scale) + pad, y: h - (((b.y + dy) * scale) + pad) },
+    c: { x: ((c.x + dx) * scale) + pad, y: h - (((c.y + dy) * scale) + pad) },
   });
 }

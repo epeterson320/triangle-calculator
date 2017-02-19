@@ -23,12 +23,17 @@ describe('Trig Selector', () => {
   });
 
   it('Makes assumptions when not enough data is provided', () => {
-    const m = makeMeasurements({ ab: 40 });
-    const coords = getSVGCoords(m);
-    const dx = coords.a.x - coords.b.x;
-    const dy = coords.a.y - coords.b.y;
-    const ab = sqrt((dx * dx) + (dy * dy));
-    expect(ab).toBe(40);
+    const m = makeMeasurements({ ab: 40, ac: 60 });
+    const { a, b, c } = getSVGCoords(m);
+
+    const dx1 = a.x - b.x;
+    const dy1 = a.y - b.y;
+    const ab = sqrt((dx1 * dx1) + (dy1 * dy1));
+
+    const dx2 = a.x - c.x;
+    const dy2 = a.y - c.y;
+    const ac = sqrt((dx2 * dx2) + (dy2 * dy2));
+    expect(ab / ac).toBeCloseTo(40 / 60);
   });
 
   it('Throws errors when provided with bad data', () => {
@@ -59,7 +64,15 @@ describe('Trig Selector', () => {
       const m8 = makeMeasurements({ ac: 3, bc: 3, b: EQ_ANG });
       const m9 = makeMeasurements({ ac: 3, bc: 3, c: EQ_ANG });
       [m1, m2, m3, m4, m5, m6, m7, m8, m9]
-        .forEach(m => expect(computeAll(m)).toEqual(mExp));
+        .forEach((partialM) => {
+          const m = computeAll(partialM);
+          expect(m.a).toBeCloseTo(mExp.a);
+          expect(m.b).toBeCloseTo(mExp.b);
+          expect(m.c).toBeCloseTo(mExp.c);
+          expect(m.ab).toBeCloseTo(mExp.ab);
+          expect(m.ac).toBeCloseTo(mExp.ac);
+          expect(m.bc).toBeCloseTo(mExp.bc);
+        });
     });
 
     it('when given 2 angles and 1 side', () => {
@@ -75,7 +88,15 @@ describe('Trig Selector', () => {
       const m8 = makeMeasurements({ bc: 20, a: EQ_ANG, c: EQ_ANG });
       const m9 = makeMeasurements({ bc: 20, b: EQ_ANG, c: EQ_ANG });
       [m1, m2, m3, m4, m5, m6, m7, m8, m9]
-        .forEach(m => expect(computeAll(m)).toEqual(mExp));
+        .forEach((partialM) => {
+          const m = computeAll(partialM);
+          expect(m.a).toBeCloseTo(mExp.a);
+          expect(m.b).toBeCloseTo(mExp.b);
+          expect(m.c).toBeCloseTo(mExp.c);
+          expect(m.ab).toBeCloseTo(mExp.ab);
+          expect(m.ac).toBeCloseTo(mExp.ac);
+          expect(m.bc).toBeCloseTo(mExp.bc);
+        });
     });
   });
 
