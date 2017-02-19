@@ -27,6 +27,8 @@ describe('Triangle Editor', () => {
       expect(mapStateToProps(state2).selected).toEqual(true);
     });
 
+    it('Gets its coords from the trigSelector');
+
     it('Shows an equilateral triangle when no measurements are set', () => {
       const { a, b, c } = mapStateToProps(reduce());
       const lAB = dist(a, b);
@@ -36,8 +38,6 @@ describe('Triangle Editor', () => {
       expect(lAB).toBeCloseTo(lBC);
       expect(lAC).toBeCloseTo(lBC);
     });
-
-    it('Should scale down huge measurements');
   });
 
   describe('mapDispatchToProps', () => {
