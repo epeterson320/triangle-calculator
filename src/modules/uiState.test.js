@@ -9,9 +9,9 @@ describe('Calculator UI', () => {
   describe('reducer', () => {
     it('should select and unselect the triangle', () => {
       const state1 = reduce(undefined, selectTriangle());
-      expect(state1.selected).toBe(true);
+      expect(state1.selected).toBe('triangle');
       const state2 = reduce(state1, unselectTriangle());
-      expect(state2.selected).toBe(false);
+      expect(state2.selected).toBeFalsy();
     });
   });
 

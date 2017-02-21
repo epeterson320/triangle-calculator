@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import TriangleEasel from '../components/TriangleEasel';
-import { selectTriangle, unselectTriangle } from '../modules/uiState';
+import { selectTriangle, unselectTriangle, selectPoint, selectSide } from '../modules/uiState';
 import getCoords from './trigSelector';
 
 export const mapStateToProps = state => ({
@@ -19,6 +19,8 @@ export const mapStateToProps = state => ({
 export const mapDispatchToProps = dispatch => ({
   onClickTriangle: () => dispatch(selectTriangle()),
   onClickBackground: () => dispatch(unselectTriangle()),
+  onClickPoint: p => dispatch(selectPoint(p)),
+  onClickSide: s => dispatch(selectSide(s)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TriangleEasel);

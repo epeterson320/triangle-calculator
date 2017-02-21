@@ -1,26 +1,29 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './TriangleEasel.css';
+import EditForm from '../containers/EditForm';
+import { Point, Side } from '../modules/measurements';
 
 const TriangleEasel = ({
-  a, b, c, labels, onClickTriangle, onClickBackground, selected,
+  a, b, c, labels, onClickTriangle, onClickBackground, onClickPoint, onClickSide, selected,
 }) => (
   <div className={styles.container}>
+    <EditForm />
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={styles.viewport}
       onClick={onClickBackground}
     >
-      <PointLabel {...labels.a} />
-      <PointLabel {...labels.b} />
-      <PointLabel {...labels.c} />
-      <SideLabel {...labels.ab} />
-      <SideLabel {...labels.ac} />
-      <SideLabel {...labels.bc} />
+      <PointLabel {...labels.a} onClick={() => { onClickPoint(Point.A); }} />
+      <PointLabel {...labels.b} onClick={() => { onClickPoint(Point.B); }} />
+      <PointLabel {...labels.c} onClick={() => { onClickPoint(Point.C); }} />
+      <SideLabel {...labels.ab} onClick={() => { onClickSide(Side.AB); }} />
+      <SideLabel {...labels.ac} onClick={() => { onClickSide(Side.AC); }} />
+      <SideLabel {...labels.bc} onClick={() => { onClickSide(Side.BC); }} />
       <path
         className={classnames({
           [styles.triangle]: true,
-          [styles.selected]: selected,
+          [styles.selected]: selected === 'triangle',
         })}
         onClick={(e) => { e.stopPropagation(); onClickTriangle(); }}
         d={`M ${a.x},${a.y} L ${b.x},${b.y} L ${c.x},${c.y} Z`}
@@ -34,7 +37,9 @@ export default TriangleEasel;
 TriangleEasel.defaultProps = {
   onClickTriangle: () => {},
   onClickBackground: () => {},
-  selected: false,
+  onClickPoint: () => {},
+  onClickSide: () => {},
+  selected: '',
 };
 
 const Coords = PropTypes.shape({
@@ -54,35 +59,44 @@ TriangleEasel.propTypes = {
     ac: Coords.isRequired,
     bc: Coords.isRequired,
   }).isRequired,
-  selected: PropTypes.bool,
+  selected: PropTypes.string,
   onClickTriangle: PropTypes.func,
   onClickBackground: PropTypes.func,
+  onClickPoint: PropTypes.func,
+  onClickSide: PropTypes.func,
 };
 
-/*
-TODO: Turn <PointLabel> into an "EditPoint" or "EditSide" view when clicked:
+export const PointLabel = ({ x, y, text, onClick }) =>
+  <text
+    className={styles.pointLabel}
+    x={x}
+    y={y}
+    onClick={(e) => { e.stopPropagation(); onClick(); }}
+  >
+    {text}
+  </text>;
 
-+----------------+
-| Point  _A_     |
-| Angle [60.5] X |
-|            OK  |
-+----------------+
-*/
+export const SideLabel = ({ x, y, text, onClick }) =>
+  <text
+    className={styles.sideLabel}
+    x={x}
+    y={y}
+    onClick={(e) => { e.stopPropagation(); onClick(); }}
+  >{text}</text>;
 
-export const PointLabel = ({ x, y, text }) =>
-  <text className={styles.pointLabel} x={x} y={y}>{text}</text>;
+const labelDefaultProps = {
+  onClick: () => {},
+};
 
-PointLabel.propTypes = {
+PointLabel.defaultProps = labelDefaultProps;
+SideLabel.defaultProps = labelDefaultProps;
+
+const labelPropTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   text: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
 
-export const SideLabel = ({ x, y, text }) =>
-  <text className={styles.sideLabel} x={x} y={y}>{text}</text>;
-
-SideLabel.propTypes = {
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired,
-};
+PointLabel.propTypes = labelPropTypes;
+SideLabel.propTypes = labelPropTypes;

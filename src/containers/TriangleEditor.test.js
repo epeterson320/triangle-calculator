@@ -22,9 +22,9 @@ describe('Triangle Editor', () => {
 
     it('Passes the right "selected" prop', () => {
       const state1 = reduce();
-      expect(mapStateToProps(state1).selected).toEqual(false);
+      expect(mapStateToProps(state1).selected).toBeFalsy();
       const state2 = reduce(state1, selectTriangle());
-      expect(mapStateToProps(state2).selected).toEqual(true);
+      expect(mapStateToProps(state2).selected).toEqual('triangle');
     });
 
     it('Gets its coords from the trigSelector');
