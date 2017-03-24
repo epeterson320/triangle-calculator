@@ -1,6 +1,5 @@
 import { mapStateToProps, mapDispatchToProps } from './TriangleEditor';
-import { selectTriangle, unselectTriangle } from '../modules/uiState';
-import reduce from '../modules/app';
+import reduce, { selectTriangle, unselectTriangle } from '../modules/app';
 
 function dist(p, q) {
   const dx = q.x - p.x;

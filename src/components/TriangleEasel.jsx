@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './TriangleEasel.css';
 import EditForm from '../containers/EditForm';
-import { Point, Side } from '../modules/measurements';
+import { Point, Side } from '../modules/app';
 
 const TriangleEasel = ({
   a, b, c, labels, onClickTriangle, onClickBackground, onClickPoint, onClickSide, selected,
