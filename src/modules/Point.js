@@ -1,11 +1,20 @@
-export function PointXY(x, y) {
-  const point = Object.create(PointXY.prototype);
-  point.x = x;
-  point.y = y;
-  return point;
-}
+/* Functionality common to all points */
+const BaseProto = {};
 
-Object.defineProperty(PointXY.prototype, 'angle', {
+BaseProto.moveXY = function moveXY(dx, dy) {
+  return XY(this.x + dx, this.y + dy);
+};
+
+BaseProto.movePolar = function movePolar(angle, d) {
+  const dx = Math.cos(angle) * d;
+  const dy = Math.sin(angle) * d;
+  return this.moveXY(dx, dy);
+};
+
+/* Rectangular Points */
+const XYProto = Object.create(BaseProto);
+
+Object.defineProperty(XYProto, 'angle', {
   get: function get() {
     if (this.y === 0) return 0;
     if (this.x === 0) return (Math.PI / 2);
@@ -13,43 +22,40 @@ Object.defineProperty(PointXY.prototype, 'angle', {
   },
 });
 
-Object.defineProperty(PointXY.prototype, 'r', {
+Object.defineProperty(XYProto, 'r', {
   get: function get() {
     return Math.sqrt((this.x * this.x) + (this.y * this.y));
   },
 });
 
-export function PointPolar(angle, r) {
-  const point = Object.create(PointPolar.prototype);
-  point.angle = angle;
-  point.r = r;
+function XY(x, y) {
+  const point = Object.create(XYProto);
+  point.x = x;
+  point.y = y;
   return point;
 }
 
-Object.defineProperty(PointPolar.prototype, 'x', {
+/* Polar Points */
+const PolarProto = Object.create(BaseProto);
+
+Object.defineProperty(PolarProto, 'x', {
   get: function get() {
     return Math.cos(this.angle) * this.r;
   },
 });
 
-Object.defineProperty(PointPolar.prototype, 'y', {
+Object.defineProperty(PolarProto, 'y', {
   get: function get() {
     return Math.sin(this.angle) * this.r;
   },
 });
 
-function moveXY(dx, dy) {
-  return PointXY(this.x + dx, this.y + dy);
+function Polar(angle, r) {
+  const point = Object.create(PolarProto);
+  point.angle = angle;
+  point.r = r;
+  return point;
 }
 
-function movePolar(angle, d) {
-  const dx = Math.cos(angle) * d;
-  const dy = Math.sin(angle) * d;
-  return this.moveXY(dx, dy);
-}
-
-PointXY.prototype.moveXY = moveXY;
-PointXY.prototype.movePolar = movePolar;
-
-PointPolar.prototype.moveXY = moveXY;
-PointPolar.prototype.movePolar = movePolar;
+/* Public API */
+export default { XY, Polar };
