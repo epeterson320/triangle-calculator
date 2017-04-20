@@ -16,9 +16,7 @@ const XYProto = Object.create(BaseProto);
 
 Object.defineProperty(XYProto, 'angle', {
   get: function get() {
-    if (this.y === 0) return 0;
-    if (this.x === 0) return (Math.PI / 2);
-    return Math.atan(this.y / this.x);
+    return (this.y === 0) ? 0 : Math.atan(this.y / this.x);
   },
 });
 
