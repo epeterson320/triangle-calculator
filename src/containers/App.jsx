@@ -1,11 +1,8 @@
 import React from 'react';
 import styles from './App.css';
-import TriangleEditor from '../containers/TriangleEditor';
 
 const App = () => (
-  <div className={styles.app}>
-    <TriangleEditor />
-  </div>
+  <div className={styles.app} />
 );
 
 /*
