@@ -5,14 +5,10 @@ import reduce, {
   unsetAngle,
   Point,
   Side,
-  selectTriangle,
-  unselectTriangle,
   SET_SIDE,
   SET_ANGLE,
   UNSET_SIDE,
   UNSET_ANGLE,
-  SELECT_TRIANGLE,
-  UNSELECT_TRIANGLE,
 } from './app';
 
 // Angles for use with tests.
@@ -23,10 +19,9 @@ const A90 = Math.PI / 2;
 
 describe('Calculator', () => {
   describe('reducer', () => {
-    it('should return the initial state', () => {
-      const state = reduce(undefined, {});
-      expect(state)
-        .toEqual({ ab: 0, ac: 0, bc: 0, a: 0, b: 0, c: 0, selected: false });
+    it('should return an initial state', () => {
+      const state = reduce();
+      expect(state).toBeDefined();
     });
 
     it('should set sides', () => {
@@ -140,27 +135,6 @@ describe('Calculator', () => {
     it('should create an action to unset an angle', () => {
       const point = Point.C;
       expect(unsetAngle(point)).toEqual({ type: UNSET_ANGLE, point });
-    });
-  });
-});
-
-describe('Calculator UI', () => {
-  describe('reducer', () => {
-    it('should select and unselect the triangle', () => {
-      const state1 = reduce(undefined, selectTriangle());
-      expect(state1.selected).toBe('triangle');
-      const state2 = reduce(state1, unselectTriangle());
-      expect(state2.selected).toBeFalsy();
-    });
-  });
-
-  describe('action creators', () => {
-    it('should create an action to select the triangle', () => {
-      expect(selectTriangle()).toEqual({ type: SELECT_TRIANGLE });
-    });
-
-    it('should create an action to unselect the triangle', () => {
-      expect(unselectTriangle()).toEqual({ type: UNSELECT_TRIANGLE });
     });
   });
 });
