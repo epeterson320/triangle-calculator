@@ -6,7 +6,8 @@
     "build": "webpack --env=prod --progress --profile --colors",
     "start": "webpack-dev-server --env=dev",
     "test": "jest",
-    "test:watch": "npm test -- --watch"
+    "test:watch": "npm test -- --watch",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",

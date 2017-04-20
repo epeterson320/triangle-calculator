@@ -1,3 +1,4 @@
 node_modules/
 npm-debug.log
 
+# Don't ignore dist/ since this is hosted on Github pages
