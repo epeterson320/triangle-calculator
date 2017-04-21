@@ -6,7 +6,7 @@ import { AppContainer } from 'react-hot-loader';
 
 import app from './modules/app';
 import './index.css';
-import App from './components/App';
+import App from './containers/App';
 
 // eslint-disable-next-line no-underscore-dangle
 const devExt = window.__REDUX_DEVTOOLS_EXTENSION__;
@@ -28,4 +28,4 @@ const render = (Component) => {
 render(App);
 
 // Hot Module Replacement API
-if (module.hot) module.hot.accept('./components/App', () => { render(App); });
+if (module.hot) module.hot.accept('./containers/App', () => { render(App); });

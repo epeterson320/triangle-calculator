@@ -1,2 +1,9 @@
 .input {
 }
+
+.button {
+}
+
+.hidden {
+  visibility: hidden;
+}

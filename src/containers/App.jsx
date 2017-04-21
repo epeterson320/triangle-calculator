@@ -1,8 +1,11 @@
 import React from 'react';
 import styles from './App.css';
+import MeasurementsForm from './MeasurementsForm';
 
 const App = () => (
-  <div className={styles.app} />
+  <div className={styles.app}>
+    <MeasurementsForm />
+  </div>
 );
 
 /*

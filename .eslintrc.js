@@ -13,14 +13,14 @@ module.exports = {
       // file and helper functions underneath. This is not a problem due to JS
       // hoisting.
       "no-use-before-define": ["error", { "functions": false }],
-      
+
       // Allow importing dev dependencies in build & dev files
       "import/no-extraneous-dependencies": ["error", {
         "devDependencies": [
-          "**/*.test.+(js|jsx)",
-          "index-hot.jsx",
           "webpack.config.js",
-          "**/webpack/*.js",
+          "src/index-hot.jsx",
+          "webpack/*",
+          "**/*.test.+(js|jsx)",
         ],
       }],
     },
