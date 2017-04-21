@@ -47,6 +47,7 @@ class MeasurementInput extends Component {
           className={classNames(styles.button, { [styles.hidden]: isEmpty })}
           onClick={this.handleClear}
           type="button"
+          tabIndex={-1}
         >
           Clear
         </button>

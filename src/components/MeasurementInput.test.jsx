@@ -25,7 +25,7 @@ describe('<MeasurementInput>', () => {
 
   describe('onChange', () => {
     it('Should accept an "onChange" property', () => {
-      const el = shallow(<MeasurementInput onChange={jest.fn()} />);
+      const el = shallow(<MeasurementInput label="ABC" onChange={jest.fn()} />);
       expect(el.find('input').prop('onChange')).toBeDefined();
     });
     it('Should not call onChange immediately when content is changed');

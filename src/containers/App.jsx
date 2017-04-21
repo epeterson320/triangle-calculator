@@ -1,10 +1,12 @@
 import React from 'react';
 import styles from './App.css';
 import MeasurementsForm from './MeasurementsForm';
+import TriangleDrawing from './TriangleDrawing';
 
 const App = () => (
   <div className={styles.app}>
     <MeasurementsForm />
+    <TriangleDrawing />
   </div>
 );
 

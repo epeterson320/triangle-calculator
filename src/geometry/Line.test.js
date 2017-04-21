@@ -1,17 +1,11 @@
-import Point from './Point';
+import { RectPoint } from './Point';
 import Line from './Line';
 
-const origin = Point.XY(0, 0);
-const unitX = Point.XY(1, 0);
+const origin = RectPoint(0, 0);
+const unitX = RectPoint(1, 0);
 
 const xEqY = Line.SlopeIntercept(1, 0);
 const yEq4 = Line.SlopeIntercept(0, 4);
-
-function expectLine(obj) {
-  ['m', 'angle', 'intersect', 'angleBisector', 'pointAtX', 'pointAtY'].forEach((prop) => {
-    expect(obj[prop]).toBeDefined();
-  });
-}
 
 function expectSamePoint(p, q) {
   expect(p.x).toBeCloseTo(q.x);
@@ -20,19 +14,19 @@ function expectSamePoint(p, q) {
 
 describe('Line', () => {
   it('Has a PointPoint constructor', () => {
-    expectLine(Line.PointPoint(origin, unitX));
+    expect(Line.PointPoint(origin, unitX)).toBeInstanceOf(Line);
   });
 
   it('Has a PointAngle constructor', () => {
-    expectLine(Line.PointAngle(origin, Math.PI));
+    expect(Line.PointAngle(origin, Math.PI)).toBeInstanceOf(Line);
   });
 
   it('Has a PointSlope constructor', () => {
-    expectLine(Line.PointAngle(origin, 4));
+    expect(Line.PointAngle(origin, 4)).toBeInstanceOf(Line);
   });
 
   it('Has a SlopeIntercept constructor', () => {
-    expectLine(Line.SlopeIntercept(4, -4));
+    expect(Line.SlopeIntercept(4, -4)).toBeInstanceOf(Line);
   });
 
   describe('Intersect', () => {
