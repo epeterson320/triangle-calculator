@@ -68,19 +68,19 @@ describe('PolarPoint', () => {
   });
 
   it('Has correct x and y', () => {
-    expect(PolarPoint(ANG_30, 2).y).toBeCloseTo(1);
-    expect(PolarPoint(ANG_60, 2).x).toBeCloseTo(1);
+    expect(PolarPoint(2, ANG_30).y).toBeCloseTo(1);
+    expect(PolarPoint(2, ANG_60).x).toBeCloseTo(1);
   });
 
   it('Can be translated with x and y', () => {
-    const p = PolarPoint(0, 4);
+    const p = PolarPoint(4, 0);
     const q = p.moveXY(4, -1);
     expect(q.x).toBeCloseTo(8);
     expect(q.y).toBeCloseTo(-1);
   });
 
   it('Can be translated with polar coords', () => {
-    const p = PolarPoint(ANG_30, 2);
+    const p = PolarPoint(2, ANG_30);
     const q = p.movePolar(-ANG_30, 2);
     expect(q.x).toBeCloseTo(sqrt(3) * 2);
     expect(q.y).toBeCloseTo(0);

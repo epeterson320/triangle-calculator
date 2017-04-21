@@ -33,7 +33,7 @@ Object.defineProperty(RectPoint.prototype, 'r', {
 });
 
 /* Polar Points */
-function PolarPoint(angle, r) {
+function PolarPoint(r, angle) {
   const point = Object.create(PolarPoint.prototype);
   point.angle = angle;
   point.r = r;

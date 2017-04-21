@@ -1,8 +1,8 @@
-import Point from './Point';
+import { RectPoint, PolarPoint } from './Point';
 import Line from './Line';
+import { fromSSS } from './trigLaws';
 
 function Triangle() { /* Base Prototype */ }
-
 
 Triangle.prototype.intersect = function intersect(that) {
   const b1 = this.pointAtX(0).y;
@@ -20,9 +20,33 @@ Object.defineProperty(Triangle.prototype, 'm', {
   },
 });
 
-Triangle.FromPoints = function FromPoints(point1, point2) {
-  const dx = point1.x - point2.x;
-  const dy = point1.y - point2.y;
-  const angle = Math.atan(dy / dx) || 0;
-  return Line.PointAngle(point1, angle);
+Triangle.FromPoints = function FromPoints(a, b, c) {
+  const t = Object.create(Triangle.prototype);
+  t.a = a;
+  t.b = b;
+  t.c = c;
+  return t;
 };
+
+Triangle.FromMetrics = function FromMetrics(metrics) {
+  const numSides = !!metrics.ab + !!metrics.ac + !!metrics.bc;
+  if (numSides === 3) {
+    const [a, b, c] = fromSSS(metrics.bc, metrics.ac, metrics.ab);
+    return fromAllMetrics(Object.assign({}, metrics, { a, b, c }));
+  }
+};
+
+function fromAllMetrics(metrics) {
+  const a = RectPoint(0, 0);
+  const b = RectPoint(0, metrics.ab);
+  const c = PolarPoint(metrics.ac, metrics.A);
+  return Triangle.FromPoints(a, b, c);
+}
+
+export default Triangle;
+
+export function canInferTriangle(known) {
+  const numSides = !!known.ab + !!known.bc + !!known.ac;
+  const numAngles = !!known.a + !!known.b + !!known.c;
+  return (numSides + numAngles >= 3) && (numSides >= 1);
+}
