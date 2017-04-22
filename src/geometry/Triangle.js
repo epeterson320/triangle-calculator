@@ -1,6 +1,6 @@
 import { RectPoint, PolarPoint } from './Point';
-import Line from './Line';
-import { ABCfromabc } from './trigLaws';
+// import Line from './Line';
+import * as trig from './trigLaws';
 
 function Triangle() { /* Base Prototype */ }
 
@@ -29,24 +29,34 @@ Triangle.FromPoints = function FromPoints(a, b, c) {
 };
 
 Triangle.FromMetrics = function FromMetrics(metrics) {
-  const numSides = !!metrics.ab + !!metrics.ac + !!metrics.bc;
-  if (numSides === 3) {
-    const [a, b, c] = ABCfromabc(metrics.bc, metrics.ac, metrics.ab);
-    return fromAllMetrics(Object.assign({}, metrics, { a, b, c }));
+  let { a, b, c, A, B, C } = metrics;
+
+  // 3 Sides
+  if (a && b && c) {
+    [A, B, C] = trig.ABCfromabc(a, b, c);
+  // 2 sides & 1 common angle
+  } else if (a && b && C) {
+    [A, B, c] = trig.ABcfromabC(a, b, C);
+  } else if (a && c && B) {
+    [A, C, b] = trig.ABcfromabC(a, c, B);
+  } else if (b && c && A) {
+    [B, C, a] = trig.ABcfromabC(b, c, A);
   }
+
+  return fromAllMetrics({ a, b, c, A, B, C });
 };
 
 function fromAllMetrics(metrics) {
   const a = RectPoint(0, 0);
-  const b = RectPoint(0, metrics.ab);
-  const c = PolarPoint(metrics.ac, metrics.A);
+  const b = RectPoint(0, metrics.C);
+  const c = PolarPoint(metrics.b, metrics.A);
   return Triangle.FromPoints(a, b, c);
 }
 
 export default Triangle;
 
 export function canInferTriangle(known) {
-  const numSides = !!known.ab + !!known.bc + !!known.ac;
-  const numAngles = !!known.a + !!known.b + !!known.c;
+  const numSides = !!known.c + !!known.a + !!known.b;
+  const numAngles = !!known.A + !!known.B + !!known.C;
   return (numSides + numAngles >= 3) && (numSides >= 1);
 }

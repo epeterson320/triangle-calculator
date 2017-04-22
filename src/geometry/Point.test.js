@@ -22,6 +22,11 @@ describe('RectPoint', () => {
     expect(p).toBeInstanceOf(RectPoint);
   });
 
+  it('Throws an error if constructed with non-number parameters', () => {
+    expect(() => { RectPoint(0, undefined); }).toThrow();
+    expect(() => { RectPoint('0', 4); }).toThrow();
+  });
+
   it('Has correct angle', () => {
     expect(RectPoint(1, 1).angle).toBeCloseTo(ANG_45);
   });
@@ -65,6 +70,11 @@ describe('PolarPoint', () => {
     const p = PolarPoint(0, 0);
     expect(p).toBeInstanceOf(Point);
     expect(p).toBeInstanceOf(PolarPoint);
+  });
+
+  it('Throws an error if created with non-number parameters', () => {
+    expect(() => { PolarPoint(0); }).toThrow();
+    expect(() => { PolarPoint('0', ANG_30); }).toThrow();
   });
 
   it('Has correct x and y', () => {

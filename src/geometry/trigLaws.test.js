@@ -29,7 +29,7 @@ describe('Law of cosines', () => {
 describe('Law of sines', () => {
   it('Finds the measurements from 2 sides with an uncommon angle', () => {
     const actual = BcCfromabA(a, b, A);
-    const expected = { a, b, c, A, B, C };
+    const expected = [B, c, C];
     Object.keys(expected).forEach((key) => {
       expect(actual[key]).toBeCloseTo(expected[key]);
     });
@@ -37,7 +37,7 @@ describe('Law of sines', () => {
 
   it('Finds the measurements from 2 angles and any side', () => {
     const actual = bcCfromaAB(a, A, B);
-    const expected = { a, b, c, A, B, C };
+    const expected = [b, c, C];
     Object.keys(expected).forEach((key) => {
       expect(actual[key]).toBeCloseTo(expected[key]);
     });

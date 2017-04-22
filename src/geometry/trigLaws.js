@@ -16,9 +16,17 @@ export function ABcfromabC(a, b, C) {
 }
 
 export function BcCfromabA(a, b, A) {
+  const B = a2froma1s1s2(A, a, b);
+  const C = PI - A - B;
+  const c = s2froms1a1a2(a, A, C);
+  return [B, c, C];
 }
 
 export function bcCfromaAB(a, A, B) {
+  const C = PI - A - B;
+  const b = s2froms1a1a2(a, A, B);
+  const c = s2froms1a1a2(a, A, C);
+  return [b, c, C];
 }
 
 function a2froma1s1s2(a1, s1, s2) {

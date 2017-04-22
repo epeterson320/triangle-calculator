@@ -10,8 +10,16 @@ Point.prototype.movePolar = function movePolar(angle, d) {
   return this.moveXY(dx, dy);
 };
 
+function assertNumber(...args) {
+  args.forEach((arg) => {
+    if (typeof arg !== 'number') {
+      throw new Error(`Expected a number, ${typeof arg} provided.`);
+    }
+  });
+}
 /* Rectangular Points */
 function RectPoint(x, y) {
+  assertNumber(x, y);
   const point = Object.create(RectPoint.prototype);
   point.x = x;
   point.y = y;
@@ -34,6 +42,7 @@ Object.defineProperty(RectPoint.prototype, 'r', {
 
 /* Polar Points */
 function PolarPoint(r, angle) {
+  assertNumber(r, angle);
   const point = Object.create(PolarPoint.prototype);
   point.angle = angle;
   point.r = r;
