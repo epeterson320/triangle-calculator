@@ -112,6 +112,13 @@ describe('Calculator', () => {
       // Ignore the invalid input
       expect(state.b).toBe(0);
     });
+
+    it('should not set impossible sides', () => {
+      const state1 = reduce(undefined, setSide(Side.AB, 2));
+      const state2 = reduce(state1, setSide(Side.AC, 1));
+      const state = reduce(state2, setSide(Side.BC, 1));
+      expect(state.bc).toBe(0);
+    });
   });
 
   describe('action creators', () => {

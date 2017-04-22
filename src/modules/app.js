@@ -55,6 +55,11 @@ export default function app(state = init, action = {}) {
       const numSidesSet = (!!newState.ab) + (!!newState.ac) + (!!newState.bc);
       const numAnglesSet = (!!state.a) + (!!state.b) + (!!state.c);
       if (numSidesSet + numAnglesSet > 3) return state;
+      if (numSidesSet === 3) {
+        if (newState.ab + newState.ac <= newState.bc) return state;
+        if (newState.ab + newState.bc <= newState.ac) return state;
+        if (newState.ac + newState.bc <= newState.ab) return state;
+      }
       // It is possible, return the new state
       return newState;
     }

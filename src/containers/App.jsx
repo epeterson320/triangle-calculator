@@ -6,7 +6,8 @@ import TriangleDrawing from './TriangleDrawing';
 import Triangle from '../geometry/Triangle';
 import * as triangleInfo from '../geometry/triangleInfo';
 
-const App = (props /* , dispatch */) => {
+export const App = (props /* , dispatch */) => {
+  console.log(props);
   const a = props.bc;
   const b = props.ac;
   const c = props.ab;
@@ -57,4 +58,6 @@ Note: Per RFC3986 it is ok to skip the slash after the host.
 Therefore, trig.ericp.co?a=60&b=60&C=3.24 is a valid URL.
 */
 
-export default connect()(App);
+const mapStateToProps = state => state;
+
+export default connect(mapStateToProps)(App);

@@ -15,9 +15,12 @@ class MeasurementInput extends Component {
   handleChange(e) {
     window.clearTimeout(this.timeoutID);
     const text = e.target.value;
+    const num = parseFloat(text);
+    if (isNaN(num)) return;
+
     this.timeoutID = window.setTimeout(() => {
       if (text) {
-        this.props.onChange(text);
+        this.props.onChange(num);
       } else {
         this.props.onClear();
       }

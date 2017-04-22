@@ -1,5 +1,5 @@
 import React from 'react';
 
-const TriangleDrawing = props => <p>Triangle: {JSON.stringify(props)}</p>;
+const TriangleDrawing = props => <code>Triangle\n{JSON.stringify(props, null, 2)}</code>;
 
 export default TriangleDrawing;
