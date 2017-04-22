@@ -1,14 +1,31 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styles from './App.css';
 import MeasurementsForm from './MeasurementsForm';
 import TriangleDrawing from './TriangleDrawing';
+import Triangle from '../geometry/Triangle';
+import * as triangleInfo from '../geometry/triangleInfo';
 
-const App = () => (
-  <div className={styles.app}>
+const App = (props /* , dispatch */) => {
+  const a = props.bc;
+  const b = props.ac;
+  const c = props.ab;
+  const A = props.a;
+  const B = props.b;
+  const C = props.c;
+  const metrics = { a, b, c, A, B, C };
+  if (triangleInfo.canInferTriangle(metrics)) {
+    const triangle = Triangle.FromMetrics(metrics);
+    return (<div className={styles.app}>
+      <MeasurementsForm />
+      <TriangleDrawing triangle={triangle} />
+    </div>);
+  }
+  return (<div className={styles.app}>
     <MeasurementsForm />
-    <TriangleDrawing />
-  </div>
-);
+    <p>Not enough measurements to complete triangle.</p>
+  </div>);
+};
 
 /*
 On Mobile & portrait tablet
@@ -40,4 +57,4 @@ Note: Per RFC3986 it is ok to skip the slash after the host.
 Therefore, trig.ericp.co?a=60&b=60&C=3.24 is a valid URL.
 */
 
-export default App;
+export default connect()(App);
