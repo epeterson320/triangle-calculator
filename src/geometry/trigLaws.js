@@ -1,5 +1,6 @@
 const { sin, cos, asin, acos, sqrt, PI } = Math;
 
+// 3 Sides
 export function ABCfromabc(a, b, c) {
   const C = acos(((a * a) + (b * b) - (c * c)) / (2 * a * b));
   const A = a2froma1s1s2(C, c, a);
@@ -7,6 +8,7 @@ export function ABCfromabc(a, b, c) {
   return [A, B, C];
 }
 
+// 2 Sides 1 common angle
 export function ABcfromabC(a, b, C) {
   const c2 = (a * a) + (b * b) - (2 * a * b * cos(C));
   const c = sqrt(c2);
@@ -15,6 +17,7 @@ export function ABcfromabC(a, b, C) {
   return [A, B, c];
 }
 
+// 2 Sides 1 uncommon angle
 export function BcCfromabA(a, b, A) {
   const B = a2froma1s1s2(A, a, b);
   const C = PI - A - B;
@@ -22,11 +25,11 @@ export function BcCfromabA(a, b, A) {
   return [B, c, C];
 }
 
-export function bcCfromaAB(a, A, B) {
-  const C = PI - A - B;
+// 1 Side & 3 angles
+export function bcfromaABC(a, A, B, C) {
   const b = s2froms1a1a2(a, A, B);
   const c = s2froms1a1a2(a, A, C);
-  return [b, c, C];
+  return [b, c];
 }
 
 function a2froma1s1s2(a1, s1, s2) {

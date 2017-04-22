@@ -2,7 +2,7 @@ import {
   ABCfromabc,
   ABcfromabC,
   BcCfromabA,
-  bcCfromaAB,
+  bcfromaABC,
 } from './trigLaws';
 
 const C = Math.PI / 6;
@@ -30,16 +30,14 @@ describe('Law of sines', () => {
   it('Finds the measurements from 2 sides with an uncommon angle', () => {
     const actual = BcCfromabA(a, b, A);
     const expected = [B, c, C];
-    Object.keys(expected).forEach((key) => {
-      expect(actual[key]).toBeCloseTo(expected[key]);
-    });
+    Object.keys(expected)
+      .forEach((key) => { expect(actual[key]).toBeCloseTo(expected[key]); });
   });
 
-  it('Finds the measurements from 2 angles and any side', () => {
-    const actual = bcCfromaAB(a, A, B);
-    const expected = [b, c, C];
-    Object.keys(expected).forEach((key) => {
-      expect(actual[key]).toBeCloseTo(expected[key]);
-    });
+  it('Finds the measurements from 3 angles and any side', () => {
+    const actual = bcfromaABC(a, A, B, C);
+    const expected = [b, c];
+    Object.keys(expected)
+      .forEach((key) => { expect(actual[key]).toBeCloseTo(expected[key]); });
   });
 });

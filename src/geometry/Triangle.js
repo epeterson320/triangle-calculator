@@ -2,21 +2,17 @@ import { RectPoint, PolarPoint } from './Point';
 // import Line from './Line';
 import * as trig from './trigLaws';
 
-function Triangle() { /* Base Prototype */ }
+const { PI } = Math;
 
-Triangle.prototype.intersect = function intersect(that) {
-  const b1 = this.pointAtX(0).y;
-  const b2 = that.pointAtX(0).y;
-  const m1 = this.m;
-  const m2 = that.m;
+export default function Triangle() { /* Base Prototype */ }
 
-  const x = (b2 - b1) / (m1 - m2);
-  return this.pointAtX(x);
+Triangle.prototype.someMethod = function someMethod() {
+  return 'foobar';
 };
 
-Object.defineProperty(Triangle.prototype, 'm', {
+Object.defineProperty(Triangle.prototype, 'someprop', {
   get: function get() {
-    return Math.tan(this.angle);
+    return 'hey';
   },
 });
 
@@ -30,6 +26,7 @@ Triangle.FromPoints = function FromPoints(a, b, c) {
 
 Triangle.FromMetrics = function FromMetrics(metrics) {
   let { a, b, c, A, B, C } = metrics;
+  const numAngles = !!A + !!B + !!C;
 
   // 3 Sides
   if (a && b && c) {
@@ -44,9 +41,30 @@ Triangle.FromMetrics = function FromMetrics(metrics) {
   // 2 sides & 1 uncommon angle
   } else if (a && b && A) {
     [B, c, C] = trig.BcCfromabA(a, b, A);
+  } else if (a && b && B) {
+    [A, c, C] = trig.BcCfromabA(b, a, B);
+  } else if (a && c && A) {
+    [C, b, B] = trig.BcCfromabA(a, c, A);
+  } else if (a && c && C) {
+    [A, b, B] = trig.BcCfromabA(c, a, C);
+  } else if (b && c && B) {
+    [C, a, A] = trig.BcCfromabA(b, c, B);
+  } else if (b && c && C) {
+    [B, a, A] = trig.BcCfromabA(c, b, C);
+  // 1 side & 2 angles
+  } else if (numAngles === 2) {
+    A = A || (PI - B - C);
+    B = B || (PI - A - C);
+    C = C || (PI - A - B);
+    if (a) { [b, c] = trig.bcfromaABC(a, A, B, C); }
+    if (b) { [a, c] = trig.bcfromaABC(b, B, A, C); }
+    if (c) { [b, a] = trig.bcfromaABC(c, C, B, A); }
   }
 
-  return fromAllMetrics({ a, b, c, A, B, C });
+  if (a && b && c && A && B && C) {
+    return fromAllMetrics({ a, b, c, A, B, C });
+  }
+  throw new Error('Not enough metrics specified');
 };
 
 function fromAllMetrics(metrics) {
@@ -54,12 +72,4 @@ function fromAllMetrics(metrics) {
   const b = RectPoint(0, metrics.C);
   const c = PolarPoint(metrics.b, metrics.A);
   return Triangle.FromPoints(a, b, c);
-}
-
-export default Triangle;
-
-export function canInferTriangle(known) {
-  const numSides = !!known.c + !!known.a + !!known.b;
-  const numAngles = !!known.A + !!known.B + !!known.C;
-  return (numSides + numAngles >= 3) && (numSides >= 1);
 }

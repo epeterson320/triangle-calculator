@@ -1,4 +1,4 @@
-import Triangle, { canInferTriangle } from './Triangle';
+import Triangle from './Triangle';
 import { RectPoint, PolarPoint } from './Point';
 
 const c = 1;
@@ -33,21 +33,27 @@ describe('Triangle', () => {
       expect(Triangle.FromMetrics({ a, c, C })).toBeInstanceOf(Triangle);
       expect(Triangle.FromMetrics({ b, c, C })).toBeInstanceOf(Triangle);
     });
-  });
-});
 
-describe('Triangle Functions', () => {
-  describe('canInferTriangle', () => {
-    it('Can infer from 3 sides', () => {
-      expect(canInferTriangle({ a, b, c })).toBeTruthy();
+    it('Works with 2 angles and 1 side', () => {
+      expect(Triangle.FromMetrics({ A, B, a })).toBeInstanceOf(Triangle);
+      expect(Triangle.FromMetrics({ A, B, b })).toBeInstanceOf(Triangle);
+      expect(Triangle.FromMetrics({ A, C, a })).toBeInstanceOf(Triangle);
+      expect(Triangle.FromMetrics({ A, C, b })).toBeInstanceOf(Triangle);
+      expect(Triangle.FromMetrics({ B, C, a })).toBeInstanceOf(Triangle);
+      expect(Triangle.FromMetrics({ B, C, c })).toBeInstanceOf(Triangle);
     });
 
-    it('Can infer from 2 sides and 1 angle', () => {
-      expect(canInferTriangle({ a, b, A })).toBeTruthy();
+    it('Throws an error if not provided with enough metrics', () => {
+      expect(() => Triangle.FromMetrics({ A, B, C })).toThrow();
+      expect(() => Triangle.FromMetrics({ A, a, B: 0 })).toThrow();
+      expect(() => Triangle.FromMetrics({ A, b, B: 0 })).toThrow();
+      expect(() => Triangle.FromMetrics({ b, c })).toThrow();
     });
 
-    it('Can\'t infer from 3 angles and no sides', () => {
-      expect(canInferTriangle({ A, B, C })).toBeFalsy();
+    it('Treats metrics with value 0 as if they were not specified', () => {
+      expect(() => Triangle.FromMetrics({
+        A: 0, B: 0, C: 0, a: 0, b: 0, c: 0,
+      })).toThrow();
     });
   });
 });
