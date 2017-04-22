@@ -30,6 +30,8 @@ describe('Triangle', () => {
 
     it('Works with 2 sides and 1 uncommon angle', () => {
       expect(Triangle.FromMetrics({ a, b, A })).toBeInstanceOf(Triangle);
+      expect(Triangle.FromMetrics({ a, c, C })).toBeInstanceOf(Triangle);
+      expect(Triangle.FromMetrics({ b, c, C })).toBeInstanceOf(Triangle);
     });
   });
 });

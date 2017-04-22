@@ -41,6 +41,9 @@ Triangle.FromMetrics = function FromMetrics(metrics) {
     [A, C, b] = trig.ABcfromabC(a, c, B);
   } else if (b && c && A) {
     [B, C, a] = trig.ABcfromabC(b, c, A);
+  // 2 sides & 1 uncommon angle
+  } else if (a && b && A) {
+    [B, c, C] = trig.BcCfromabA(a, b, A);
   }
 
   return fromAllMetrics({ a, b, c, A, B, C });
