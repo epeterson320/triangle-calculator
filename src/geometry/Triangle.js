@@ -1,6 +1,6 @@
 import { RectPoint, PolarPoint } from './Point';
 import Line from './Line';
-import { fromSSS } from './trigLaws';
+import { ABCfromabc } from './trigLaws';
 
 function Triangle() { /* Base Prototype */ }
 
@@ -31,7 +31,7 @@ Triangle.FromPoints = function FromPoints(a, b, c) {
 Triangle.FromMetrics = function FromMetrics(metrics) {
   const numSides = !!metrics.ab + !!metrics.ac + !!metrics.bc;
   if (numSides === 3) {
-    const [a, b, c] = fromSSS(metrics.bc, metrics.ac, metrics.ab);
+    const [a, b, c] = ABCfromabc(metrics.bc, metrics.ac, metrics.ab);
     return fromAllMetrics(Object.assign({}, metrics, { a, b, c }));
   }
 };
