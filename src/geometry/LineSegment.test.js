@@ -1,5 +1,5 @@
 import { RectPoint } from './Point';
-import Line from './Line';
+import Line from './LineSegment';
 
 const origin = RectPoint(0, 0);
 const unitX = RectPoint(1, 0);

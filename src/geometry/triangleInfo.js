@@ -4,6 +4,13 @@ export function canInferTriangle(known) {
   return (numSides + numAngles >= 3) && (numSides >= 1);
 }
 
+// input known, preferences & priorities, always returns metrics
 export function assumeMetrics() {
+  throw new Error('TODO');
+}
+
+// input known, returns partial metrics
+// for use with measurement form to show calculated stuff
+export function interPartial() {
   throw new Error('TODO');
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './App.css';
 import MeasurementsForm from './MeasurementsForm';
@@ -13,7 +14,7 @@ export const App = (props /* , dispatch */) => {
     c: props.ab,
     A: props.a,
     B: props.b,
-    C: props.c
+    C: props.c,
   };
   if (triangleInfo.canInferTriangle(metrics)) {
     const triangle = Triangle.FromMetrics(metrics);
@@ -27,6 +28,17 @@ export const App = (props /* , dispatch */) => {
     <p>Not enough measurements to complete triangle.</p>
   </div>);
 };
+
+App.propTypes = {
+  a: PropTypes.number,
+  b: PropTypes.number,
+  c: PropTypes.number,
+  ab: PropTypes.number,
+  ac: PropTypes.number,
+  bc: PropTypes.number,
+};
+
+App.defaultProps = { a: 0, b: 0, c: 0, ab: 0, ac: 0, bc: 0 };
 
 /*
 On Mobile & portrait tablet

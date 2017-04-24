@@ -5,10 +5,7 @@ import Triangle from '../geometry/Triangle';
 const TriangleDrawing = ({ triangle }) => {
   const { a, b, c } = triangle;
   const { xl, xr, yt, yb } = triangle.viewbox;
-
-  console.log(triangle);
   const svgViewbox = `0 0 ${xr - xl} ${yt - yb}`;
-
   const ax = a.x - xl;
   const ay = yt - a.y;
   const bx = b.x - xl;

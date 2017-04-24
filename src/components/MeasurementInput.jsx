@@ -16,10 +16,10 @@ class MeasurementInput extends Component {
     window.clearTimeout(this.timeoutID);
     const text = e.target.value;
     const num = parseFloat(text);
-    if (isNaN(num)) return;
+    if (text && isNaN(num)) return; // Ignore invalid input
 
     this.timeoutID = window.setTimeout(() => {
-      if (text) {
+      if (this.input.value) {
         this.props.onChange(num);
       } else {
         this.props.onClear();
