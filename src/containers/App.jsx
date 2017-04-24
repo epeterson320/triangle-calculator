@@ -7,14 +7,14 @@ import Triangle from '../geometry/Triangle';
 import * as triangleInfo from '../geometry/triangleInfo';
 
 export const App = (props /* , dispatch */) => {
-  console.log(props);
-  const a = props.bc;
-  const b = props.ac;
-  const c = props.ab;
-  const A = props.a;
-  const B = props.b;
-  const C = props.c;
-  const metrics = { a, b, c, A, B, C };
+  const metrics = {
+    a: props.bc,
+    b: props.ac,
+    c: props.ab,
+    A: props.a,
+    B: props.b,
+    C: props.c
+  };
   if (triangleInfo.canInferTriangle(metrics)) {
     const triangle = Triangle.FromMetrics(metrics);
     return (<div className={styles.app}>

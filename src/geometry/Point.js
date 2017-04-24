@@ -1,3 +1,5 @@
+const { abs } = Math;
+
 function Point() { /* abstract base prototype */ }
 
 Point.prototype.moveXY = function moveXY(dx, dy) {
@@ -8,6 +10,12 @@ Point.prototype.movePolar = function movePolar(angle, d) {
   const dx = Math.cos(angle) * d;
   const dy = Math.sin(angle) * d;
   return this.moveXY(dx, dy);
+};
+
+Point.prototype.equals = function equals(that, precision = 0.01) {
+  const xEq = abs(this.x - that.x) < precision;
+  const yEq = abs(this.y - that.y) < precision;
+  return xEq && yEq;
 };
 
 function assertNumber(...args) {

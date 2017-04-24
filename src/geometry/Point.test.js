@@ -8,6 +8,7 @@ const ANG_45 = PI / 4;
 const ANG_60 = PI / 3;
 const ANG_90 = PI / 2;
 const ANG_180 = PI;
+const ANG_360 = 2 * PI;
 
 describe('RectPoint', () => {
   it('Can be created with the `new` keyword', () => {
@@ -57,6 +58,12 @@ describe('RectPoint', () => {
     expect(q.x).toBeCloseTo(1);
     expect(q.y).toBeCloseTo(2);
   });
+
+  it('Tests equality correctly', () => {
+    expect(RectPoint(2, 1).equals(RectPoint(2, 1))).toBeTruthy();
+    expect(RectPoint(1, 1).equals(PolarPoint(sqrt(2), ANG_45)))
+      .toBeTruthy();
+  });
 });
 
 describe('PolarPoint', () => {
@@ -94,5 +101,17 @@ describe('PolarPoint', () => {
     const q = p.movePolar(-ANG_30, 2);
     expect(q.x).toBeCloseTo(sqrt(3) * 2);
     expect(q.y).toBeCloseTo(0);
+  });
+
+  it('Tests equality correctly', () => {
+    expect(PolarPoint(2, 1).equals(PolarPoint(2, 1))).toBeTruthy();
+    expect(PolarPoint(sqrt(2), ANG_45).equals(RectPoint(1, 1)))
+      .toBeTruthy();
+  });
+
+  it('Tests equality with multiple rotations correctly', () => {
+    expect(PolarPoint(2, 0).equals(PolarPoint(2, ANG_360))).toBeTruthy();
+    expect(PolarPoint(2, ANG_45).equals(PolarPoint(2, ANG_45 + ANG_360)))
+      .toBeTruthy();
   });
 });
