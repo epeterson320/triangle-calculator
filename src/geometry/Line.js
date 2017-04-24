@@ -1,6 +1,6 @@
 import { RectPoint } from './Point';
 
-const { abs, PI } = Math;
+const { abs, atan, PI } = Math;
 const ANG_360 = PI * 2;
 
 function Line() { /* Abstract base prototype */ }
@@ -8,34 +8,14 @@ function Line() { /* Abstract base prototype */ }
 Line.prototype.intersect = function intersect(that) {
   // Method used from
   // en.wikipedia.org/wiki/Line–line_intersection#Given_two_points_on_each_line
-  let x1 = 0;
-  let x2 = 1;
-  let x3 = 0;
-  let x4 = 1;
-  let y1;
-  let y2;
-  let y3;
-  let y4;
-
-  try {
-    y1 = this.pointAtX(x1).y;
-    y2 = this.pointAtX(x2).y;
-  } catch (e) { // Vertical line
-    x1 = this.point.x;
-    x2 = this.point.x;
-    y1 = 0;
-    y2 = 1;
-  }
-
-  try {
-    y3 = that.pointAtX(x3).y;
-    y4 = that.pointAtX(x4).y;
-  } catch (e) {
-    x3 = that.point.x;
-    x4 = that.point.x;
-    y3 = 0;
-    y4 = 1;
-  }
+  const x1 = this.point1.x;
+  const y1 = this.point1.y;
+  const x2 = this.point2.x;
+  const y2 = this.point2.y;
+  const x3 = that.point1.x;
+  const y3 = that.point1.y;
+  const x4 = that.point2.x;
+  const y4 = that.point2.y;
 
   const x1mx2 = x1 - x2;
   const y3my4 = y3 - y4;
@@ -44,27 +24,22 @@ Line.prototype.intersect = function intersect(that) {
   const x1y2my1x2 = x1 * y2 - y1 * x2;
   const x3y4my3x4 = x3 * y4 - y3 * x4;
   const denom = x1mx2 * y3my4 - y1my2 * x3mx4;
+
   const x = (x1y2my1x2 * x3mx4 - x1mx2 * x3y4my3x4) / denom;
   const y = (x1y2my1x2 * y3my4 - y1my2 * x3y4my3x4) / denom;
   return RectPoint(x, y);
 };
 
-Line.prototype.angleBisector = function angleBisector(that) {
-  const angle = (this.angle + that.angle) / 2;
-  const point = this.intersect(that);
-  return Line.PointAngle(point, angle);
-};
-
 Line.prototype.pointAtX = function pointAtX(x) {
-  const dx = x - this.point.x;
+  const dx = x - this.point1.x;
   const dy = this.m * dx;
-  return RectPoint(x, this.point.y + dy);
+  return RectPoint(x, this.point1.y + dy);
 };
 
 Line.prototype.pointAtY = function pointAtY(y) {
-  const dy = y - this.point.y;
+  const dy = y - this.point1.y;
   const dx = dy / this.m;
-  return RectPoint(this.point.x + dx, y);
+  return RectPoint(this.point1.x + dx, y);
 };
 
 Line.prototype.equals = function equals(that, precision = 0.01) {
@@ -81,35 +56,33 @@ Line.prototype.equals = function equals(that, precision = 0.01) {
   return angEq && intrEq;
 };
 
-Object.defineProperty(Line.prototype, 'm', {
-  get: function get() {
-    return Math.tan(this.angle);
-  },
-});
-
 Line.PointPoint = function PointPoint(point1, point2) {
-  const dx = point1.x - point2.x;
-  const dy = point1.y - point2.y;
-  const angle = Math.atan(dy / dx) || 0;
-  return Line.PointAngle(point1, angle);
-};
-
-Line.PointAngle = function PointAngle(point, angle) {
+  if (point1.equals(point2)) throw new Error('Points are identical');
   const line = Object.create(Line.prototype);
-  line.point = point;
-  line.angle = angle;
+  line.point1 = point1;
+  line.point2 = point2;
+  const dx = point2.x - point1.x;
+  const dy = point2.y - point1.y;
+  line.m = dy / dx;
+  line.angle = atan(line.m || 0);
   return line;
 };
 
+Line.PointAngle = function PointAngle(point, angle) {
+  return Line.PointPoint(point, point.movePolar(angle, 1.0));
+};
+
 Line.PointSlope = function PointSlope(point, slope) {
-  const angle = Math.atan(slope);
-  return Line.PointAngle(point, angle);
+  return Line.PointAngle(point, atan(slope));
 };
 
 Line.SlopeIntercept = function SlopeIntercept(slope, intercept) {
-  const point = RectPoint(0, intercept);
-  const angle = Math.atan(slope);
-  return Line.PointAngle(point, angle);
+  if (slope === Infinity || slope === -Infinity) {
+    return Line.PointPoint(RectPoint(0, 0), RectPoint(0, 1));
+  }
+  return Line.PointPoint(
+    RectPoint(0, intercept),
+    RectPoint(1, intercept + slope));
 };
 
 export default Line;
