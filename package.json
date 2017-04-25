@@ -18,6 +18,7 @@
     "Calculator",
     "Triangle"
   ],
+  "browserslist": ["> 5%", "last 2 versions"],
   "author": "Eric Peterson",
   "license": "MIT",
   "homepage": "https://bitbucket.org/epeterson320/trig-calculator#readme",
@@ -30,6 +31,7 @@
     "redux": "^3.6.0"
   },
   "devDependencies": {
+    "autoprefixer": "^6.7.7",
     "babel-core": "^6.22.1",
     "babel-jest": "^18.0.0",
     "babel-loader": "^6.2.10",
