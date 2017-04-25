@@ -70,6 +70,6 @@ Note: Per RFC3986 it is ok to skip the slash after the host.
 Therefore, trig.ericp.co?a=60&b=60&C=3.24 is a valid URL.
 */
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => state.measurements;
 
 export default connect(mapStateToProps)(App);

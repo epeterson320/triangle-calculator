@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import MeasurementInput from '../components/MeasurementInput';
 import {
   setSide, setAngle, unsetSide, unsetAngle, Side, Point,
-} from '../modules/app';
+} from '../modules/measurements';
 
 const MeasurementsForm = ({ set, unset }) => (
   <form>

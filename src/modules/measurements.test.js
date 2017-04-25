@@ -9,7 +9,7 @@ import reduce, {
   SET_ANGLE,
   UNSET_SIDE,
   UNSET_ANGLE,
-} from './app';
+} from './measurements';
 
 // Angles for use with tests.
 const A30 = Math.PI / 6;
@@ -118,6 +118,13 @@ describe('Calculator', () => {
       const state2 = reduce(state1, setSide(Side.AC, 1));
       const state = reduce(state2, setSide(Side.BC, 1));
       expect(state.bc).toBe(0);
+    });
+
+    it('should throw away non-number input', () => {
+      const state1 = reduce();
+      const action = setSide(Side.AB, 'pickles');
+      const state2 = reduce(state1, action);
+      expect(state2).toEqual(state1);
     });
   });
 
