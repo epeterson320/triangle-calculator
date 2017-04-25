@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import styles from './MeasurementInput.css';
+import styles from './MeasurementInput.scss';
 
 const DELAY = 300; // ms
 

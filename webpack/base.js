@@ -15,11 +15,12 @@ module.exports = {
       use: ['babel-loader'],
       exclude: /node_modules/,
     }, {
-      test: /\.css$/,
+      test: /\.s?css$/,
       use: [
         'style-loader',
         'css-loader?modules',
         'postcss-loader',
+        'sass-loader',
       ],
     }],
   },

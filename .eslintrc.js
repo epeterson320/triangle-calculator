@@ -23,5 +23,9 @@ module.exports = {
           "**/*.test.+(js|jsx)",
         ],
       }],
+
+      // For testing react-redux connected components with Enzyme, this is
+      // exactly what you want to do.
+      "import/no-named-as-default": "off",
     },
 };

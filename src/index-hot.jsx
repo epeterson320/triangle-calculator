@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
 
 import app from './modules/app';
-import './index.css';
+import './index.scss';
 import App from './containers/App';
 
 // eslint-disable-next-line no-underscore-dangle
