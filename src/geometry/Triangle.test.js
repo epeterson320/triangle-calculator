@@ -1,3 +1,4 @@
+import test from 'tape';
 import Triangle from './Triangle';
 import { RectPoint, PolarPoint } from './Point';
 
@@ -17,85 +18,90 @@ const ptC = PolarPoint(b, A);
 // A 30-60-90 triangle for various tests.
 const t306090 = Triangle.FromPoints(ptA, ptB, ptC);
 
-describe('Triangle', () => {
-  it('Has a FromPoints constructor', () => {
-    expect(Triangle.FromPoints(ptA, ptB, ptC)).toBeInstanceOf(Triangle);
+test('Has a FromPoints constructor', (t) => {
+  t.ok(Triangle.FromPoints(ptA, ptB, ptC) instanceof Triangle);
+  t.end();
+});
+
+test('Works with three sides', (t) => {
+  t.ok(Triangle.FromMetrics({ a, b, c }) instanceof Triangle);
+  t.end();
+});
+
+test('Works with 2 sides and 1 common angle', (t) => {
+  t.ok(Triangle.FromMetrics({ a, b, C }) instanceof Triangle);
+  t.ok(Triangle.FromMetrics({ a, c, B }) instanceof Triangle);
+  t.ok(Triangle.FromMetrics({ b, c, A }) instanceof Triangle);
+  t.end();
+});
+
+test('Works with 2 sides and 1 uncommon angle', (t) => {
+  t.ok(Triangle.FromMetrics({ a, b, A }) instanceof Triangle);
+  t.ok(Triangle.FromMetrics({ a, c, C }) instanceof Triangle);
+  t.ok(Triangle.FromMetrics({ b, c, C }) instanceof Triangle);
+  t.end();
+});
+
+test('Works with 2 angles and 1 side', (t) => {
+  t.ok(Triangle.FromMetrics({ A, B, a }) instanceof Triangle);
+  t.ok(Triangle.FromMetrics({ A, B, b }) instanceof Triangle);
+  t.ok(Triangle.FromMetrics({ A, C, a }) instanceof Triangle);
+  t.ok(Triangle.FromMetrics({ A, C, b }) instanceof Triangle);
+  t.ok(Triangle.FromMetrics({ B, C, a }) instanceof Triangle);
+  t.ok(Triangle.FromMetrics({ B, C, c }) instanceof Triangle);
+  t.end();
+});
+
+test('Treats metrics with value 0 as if they were not specified', (t) => {
+  t.throws(() => Triangle.FromMetrics({
+    A: 0, B: 0, C: 0, a: 0, b: 0, c: 0,
+  }));
+  t.end();
+});
+
+test('Throws an error if not provided with enough metrics', (t) => {
+  t.throws(() => Triangle.FromMetrics({ A, B, C }));
+  t.throws(() => Triangle.FromMetrics({ A, a, B: 0 }));
+  t.throws(() => Triangle.FromMetrics({ A, b, B: 0 }));
+  t.throws(() => Triangle.FromMetrics({ b, c }));
+  t.end();
+});
+
+test('Should have a correct circumcenter', (t) => {
+  const exp = RectPoint(0.5, sqrt(3) / 2);
+  t.ok(t306090.circumcenter.equals(exp));
+  t.end();
+});
+
+test('Should have a viewbox', (t) => {
+  t.ok(t306090.viewbox);
+  t.end();
+});
+
+test('Should be square', (t) => {
+  const { xl, xr, yt, yb } = t306090.viewbox;
+  t.inDelta(xr - xl, yt - yb);
+  t.end();
+});
+
+test('Should contain the triangle', (t) => {
+  const { xl, xr, yt, yb } = t306090.viewbox;
+  [t306090.a, t306090.b, t306090.c].forEach((pt) => {
+    t.ok(pt.x > xl);
+    t.ok(pt.x < xr);
+    t.ok(pt.y > yb);
+    t.ok(pt.y < yt);
   });
+  t.end();
+});
 
-  describe('FromMetrics constructor', () => {
-    it('Works with three sides', () => {
-      expect(Triangle.FromMetrics({ a, b, c })).toBeInstanceOf(Triangle);
-    });
-
-    it('Works with 2 sides and 1 common angle', () => {
-      expect(Triangle.FromMetrics({ a, b, C })).toBeInstanceOf(Triangle);
-      expect(Triangle.FromMetrics({ a, c, B })).toBeInstanceOf(Triangle);
-      expect(Triangle.FromMetrics({ b, c, A })).toBeInstanceOf(Triangle);
-    });
-
-    it('Works with 2 sides and 1 uncommon angle', () => {
-      expect(Triangle.FromMetrics({ a, b, A })).toBeInstanceOf(Triangle);
-      expect(Triangle.FromMetrics({ a, c, C })).toBeInstanceOf(Triangle);
-      expect(Triangle.FromMetrics({ b, c, C })).toBeInstanceOf(Triangle);
-    });
-
-    it('Works with 2 angles and 1 side', () => {
-      expect(Triangle.FromMetrics({ A, B, a })).toBeInstanceOf(Triangle);
-      expect(Triangle.FromMetrics({ A, B, b })).toBeInstanceOf(Triangle);
-      expect(Triangle.FromMetrics({ A, C, a })).toBeInstanceOf(Triangle);
-      expect(Triangle.FromMetrics({ A, C, b })).toBeInstanceOf(Triangle);
-      expect(Triangle.FromMetrics({ B, C, a })).toBeInstanceOf(Triangle);
-      expect(Triangle.FromMetrics({ B, C, c })).toBeInstanceOf(Triangle);
-    });
-
-    it('Treats metrics with value 0 as if they were not specified', () => {
-      expect(() => Triangle.FromMetrics({
-        A: 0, B: 0, C: 0, a: 0, b: 0, c: 0,
-      })).toThrow();
-    });
-
-    it('Throws an error if not provided with enough metrics', () => {
-      expect(() => Triangle.FromMetrics({ A, B, C })).toThrow();
-      expect(() => Triangle.FromMetrics({ A, a, B: 0 })).toThrow();
-      expect(() => Triangle.FromMetrics({ A, b, B: 0 })).toThrow();
-      expect(() => Triangle.FromMetrics({ b, c })).toThrow();
-    });
-
-    it('Should have a correct circumcenter', () => {
-      const exp = RectPoint(0.5, sqrt(3) / 2);
-      expect(t306090.circumcenter.equals(exp)).toBeTruthy();
-    });
-
-    describe('Viewbox', () => {
-      it('Should have a viewbox', () => {
-        expect(t306090.viewbox).toBeDefined();
-      });
-
-      it('Should be square', () => {
-        const { xl, xr, yt, yb } = t306090.viewbox;
-        expect(xr - xl).toBeCloseTo(yt - yb);
-      });
-
-      it('Should contain the triangle', () => {
-        const { xl, xr, yt, yb } = t306090.viewbox;
-        [t306090.a, t306090.b, t306090.c].forEach((pt) => {
-          expect(pt.x).toBeGreaterThan(xl);
-          expect(pt.x).toBeLessThan(xr);
-          expect(pt.y).toBeGreaterThan(yb);
-          expect(pt.y).toBeLessThan(yt);
-        });
-      });
-
-      it('Should not be too big', () => {
-        const { a, b, c } = t306090; // eslint-disable-line no-shadow
-        const { xl, xr, yt, yb } = t306090.viewbox;
-        const tWidth = max(a.x, b.x, c.x) - min(a.x, b.x, c.x);
-        const tHeight = max(a.y, b.y, c.y) - min(a.y, b.y, c.y);
-        const vbWidth = xr - xl;
-        const vbHeight = yt - yb;
-        expect(max(tWidth / vbWidth, tHeight / vbHeight))
-          .toBeGreaterThan(0.5);
-      });
-    });
-  });
+test('Should not be too big', (t) => {
+  const { a, b, c } = t306090; // eslint-disable-line no-shadow
+  const { xl, xr, yt, yb } = t306090.viewbox;
+  const tWidth = max(a.x, b.x, c.x) - min(a.x, b.x, c.x);
+  const tHeight = max(a.y, b.y, c.y) - min(a.y, b.y, c.y);
+  const vbWidth = xr - xl;
+  const vbHeight = yt - yb;
+  t.ok(max(tWidth / vbWidth, tHeight / vbHeight) > 0.5);
+  t.end();
 });

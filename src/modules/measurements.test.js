@@ -1,3 +1,4 @@
+import test from 'tape';
 import reduce, {
   setSide,
   setAngle,
@@ -17,138 +18,156 @@ const A45 = Math.PI / 4;
 const A60 = Math.PI / 3;
 const A90 = Math.PI / 2;
 
-describe('Calculator', () => {
-  describe('reducer', () => {
-    it('should return an initial state', () => {
-      const state = reduce();
-      expect(state).toBeDefined();
-    });
 
-    it('should set sides', () => {
-      const state1 = reduce(undefined, setSide(Side.AB, 2.0));
-      const state2 = reduce(state1, setSide(Side.AC, 3.4));
-      expect(state2.ab).toBe(2.0);
-      expect(state2.ac).toBe(3.4);
-    });
+// REDUCER
 
-    it('should set angles', () => {
-      const state1 = reduce(undefined, setAngle(Point.A, A45));
-      const state2 = reduce(state1, setAngle(Point.B, A30));
-      expect(state2.a).toBe(A45);
-      expect(state2.b).toBe(A30);
-    });
+test('returns an initial state', (t) => {
+  const state = reduce();
+  t.ok(state);
+  t.end();
+});
 
-    it('should unset sides', () => {
-      const state0 = reduce(undefined, setSide(Side.AB, 5));
-      const state = reduce(state0, unsetSide(Side.AB));
-      expect(state.ab).toBe(0);
-    });
+test('sets sides', (t) => {
+  const state1 = reduce(undefined, setSide(Side.AB, 2.0));
+  const state2 = reduce(state1, setSide(Side.AC, 3.4));
+  t.equal(state2.ab, 2.0);
+  t.equal(state2.ac, 3.4);
+  t.end();
+});
 
-    it('should unset angles', () => {
-      const state0 = reduce(undefined, setAngle(Point.B, A45));
-      const state = reduce(state0, unsetAngle(Point.B));
-      expect(state.b).toBe(0);
-    });
+test('sets angles', (t) => {
+  const state1 = reduce(undefined, setAngle(Point.A, A45));
+  const state2 = reduce(state1, setAngle(Point.B, A30));
+  t.equal(state2.a, A45);
+  t.equal(state2.b, A30);
+  t.end();
+});
 
-    it('should not set a third side when one angle is set', () => {
-      const state0 = reduce(undefined, setSide(Side.AB, 3));
-      const state1 = reduce(state0, setSide(Side.AC, 3));
-      const state2 = reduce(state1, setAngle(Point.C, A60));
-      const state = reduce(state2, setSide(Side.BC, 3));
-      expect(state.bc).toBe(0);
-    });
+test('unsets sides', (t) => {
+  const state0 = reduce(undefined, setSide(Side.AB, 5));
+  const state = reduce(state0, unsetSide(Side.AB));
+  t.equal(state.ab, 0);
+  t.end();
+});
 
-    it('should not set a second side when two angles are set', () => {
-      const state0 = reduce(undefined, setSide(Side.AB, 3));
-      const state1 = reduce(state0, setAngle(Point.B, A60));
-      const state2 = reduce(state1, setAngle(Point.C, A60));
-      const state = reduce(state2, setSide(Side.BC, 3));
-      expect(state.bc).toBe(0);
-    });
+test('unsets angles', (t) => {
+  const state0 = reduce(undefined, setAngle(Point.B, A45));
+  const state = reduce(state0, unsetAngle(Point.B));
+  t.equal(state.b, 0);
+  t.end();
+});
 
-    it('should not set an angle when three sides are set', () => {
-      const state0 = reduce(undefined, setSide(Side.AB, 3));
-      const state1 = reduce(state0, setSide(Side.AC, 3));
-      const state2 = reduce(state1, setSide(Side.BC, 3));
-      const state = reduce(state2, setAngle(Point.A, A60));
-      expect(state.a).toBe(0);
-    });
+test('doesn\'t set a third side when one angle is set', (t) => {
+  const state0 = reduce(undefined, setSide(Side.AB, 3));
+  const state1 = reduce(state0, setSide(Side.AC, 3));
+  const state2 = reduce(state1, setAngle(Point.C, A60));
+  const state = reduce(state2, setSide(Side.BC, 3));
+  t.equal(state.bc, 0);
+  t.end();
+});
 
-    it('should not set a second angle when two sides are set', () => {
-      const state0 = reduce(undefined, setSide(Side.AB, 3));
-      const state1 = reduce(state0, setSide(Side.AC, 3));
-      const state2 = reduce(state1, setAngle(Point.A, A45));
-      const state = reduce(state2, setAngle(Point.B, A45));
-      expect(state.b).toBe(0);
-    });
+test('doesn\'t set a second side when two angles are set', (t) => {
+  const state0 = reduce(undefined, setSide(Side.AB, 3));
+  const state1 = reduce(state0, setAngle(Point.B, A60));
+  const state2 = reduce(state1, setAngle(Point.C, A60));
+  const state = reduce(state2, setSide(Side.BC, 3));
+  t.equal(state.bc, 0);
+  t.end();
+});
 
-    it('should not set a third angle, ever', () => {
-      const state0 = reduce(undefined, setAngle(Point.A, A60));
-      const state1 = reduce(state0, setAngle(Point.B, A60));
-      const state = reduce(state1, setAngle(Point.C, A60));
-      expect(state.c).toBe(0);
-    });
+test('doesn\'t set an angle when three sides are set', (t) => {
+  const state0 = reduce(undefined, setSide(Side.AB, 3));
+  const state1 = reduce(state0, setSide(Side.AC, 3));
+  const state2 = reduce(state1, setSide(Side.BC, 3));
+  const state = reduce(state2, setAngle(Point.A, A60));
+  t.equal(state.a, 0);
+  t.end();
+});
 
-    it('should overwrite sides when data is set', () => {
-      const state0 = reduce(undefined, setSide(Side.AB, 3));
-      const state1 = reduce(state0, setSide(Side.AC, 3));
-      const state2 = reduce(state1, setAngle(Point.A, A60));
-      const state = reduce(state2, setSide(Side.AB, 2.5));
-      expect(state.ab).toBe(2.5);
-    });
+test('doesn\'t set a second angle when two sides are set', (t) => {
+  const state0 = reduce(undefined, setSide(Side.AB, 3));
+  const state1 = reduce(state0, setSide(Side.AC, 3));
+  const state2 = reduce(state1, setAngle(Point.A, A45));
+  const state = reduce(state2, setAngle(Point.B, A45));
+  t.equal(state.b, 0);
+  t.end();
+});
 
-    it('should overwrite angles when data is set', () => {
-      const state0 = reduce(undefined, setAngle(Point.A, A60));
-      const state1 = reduce(state0, setAngle(Point.B, A60));
-      const state2 = reduce(state1, setSide(Side.AB, 4.0));
-      const state = reduce(state2, setAngle(Point.A, A45));
-      expect(state.a).toBe(A45);
-    });
+test('never sets a third angle', (t) => {
+  const state0 = reduce(undefined, setAngle(Point.A, A60));
+  const state1 = reduce(state0, setAngle(Point.B, A60));
+  const state = reduce(state1, setAngle(Point.C, A60));
+  t.equal(state.c, 0);
+  t.end();
+});
 
-    it('should not set impossible angles', () => {
-      // Try to make a triangle with two right angles
-      const state0 = reduce(undefined, setAngle(Point.A, A90));
-      const state = reduce(state0, setAngle(Point.B, A90));
-      // Ignore the invalid input
-      expect(state.b).toBe(0);
-    });
+test('overwrites sides', (t) => {
+  const state0 = reduce(undefined, setSide(Side.AB, 3));
+  const state1 = reduce(state0, setSide(Side.AC, 3));
+  const state2 = reduce(state1, setAngle(Point.A, A60));
+  const state = reduce(state2, setSide(Side.AB, 2.5));
+  t.equal(state.ab, 2.5);
+  t.end();
+});
 
-    it('should not set impossible sides', () => {
-      const state1 = reduce(undefined, setSide(Side.AB, 2));
-      const state2 = reduce(state1, setSide(Side.AC, 1));
-      const state = reduce(state2, setSide(Side.BC, 1));
-      expect(state.bc).toBe(0);
-    });
+test('overwrites angles', (t) => {
+  const state0 = reduce(undefined, setAngle(Point.A, A60));
+  const state1 = reduce(state0, setAngle(Point.B, A60));
+  const state2 = reduce(state1, setSide(Side.AB, 4.0));
+  const state = reduce(state2, setAngle(Point.A, A45));
+  t.equal(state.a, A45);
+  t.end();
+});
 
-    it('should throw away non-number input', () => {
-      const state1 = reduce();
-      const action = setSide(Side.AB, 'pickles');
-      const state2 = reduce(state1, action);
-      expect(state2).toEqual(state1);
-    });
-  });
+test('doesn\'t set impossible angles', (t) => {
+  // Try to make a triangle with two right angles
+  const state0 = reduce(undefined, setAngle(Point.A, A90));
+  const state = reduce(state0, setAngle(Point.B, A90));
+  // Ignore the invalid input
+  t.equal(state.b, 0);
+  t.end();
+});
 
-  describe('action creators', () => {
-    it('should create an action to set a side length', () => {
-      const side = Side.AB;
-      const length = 50.0;
-      expect(setSide(side, length)).toEqual({ type: SET_SIDE, side, length });
-    });
+test('doesn\'t set impossible sides', (t) => {
+  const state1 = reduce(undefined, setSide(Side.AB, 2));
+  const state2 = reduce(state1, setSide(Side.AC, 1));
+  const state = reduce(state2, setSide(Side.BC, 1));
+  t.equal(state.bc, 0);
+  t.end();
+});
 
-    it('should create an action to set an angle', () => {
-      const point = Point.A;
-      const angle = Math.PI / 4;
-      expect(setAngle(point, angle)).toEqual({ type: SET_ANGLE, point, angle });
-    });
+test('throws away invalid input', (t) => {
+  const state = reduce();
+  t.deepEqual(reduce(state, setSide(Side.AB, 'pickles')), state);
+  t.deepEqual(reduce(state, setSide(Side.AB, NaN)), state);
+  t.deepEqual(reduce(state, setSide(Side.AB, Infinity)), state);
+  t.end();
+});
 
-    it('should create an action to unset a side', () => {
-      const side = Side.AC;
-      expect(unsetSide(side)).toEqual({ type: UNSET_SIDE, side });
-    });
+// ACTION CREATORS
 
-    it('should create an action to unset an angle', () => {
-      const point = Point.C;
-      expect(unsetAngle(point)).toEqual({ type: UNSET_ANGLE, point });
-    });
-  });
+test('should create an action to set a side length', (t) => {
+  const side = Side.AB;
+  const length = 50.0;
+  t.deepEqual(setSide(side, length), { type: SET_SIDE, side, length });
+  t.end();
+});
+
+test('should create an action to set an angle', (t) => {
+  const point = Point.A;
+  const angle = Math.PI / 4;
+  t.deepEqual(setAngle(point, angle), { type: SET_ANGLE, point, angle });
+  t.end();
+});
+
+test('should create an action to unset a side', (t) => {
+  const side = Side.AC;
+  t.deepEqual(unsetSide(side), { type: UNSET_SIDE, side });
+  t.end();
+});
+
+test('should create an action to unset an angle', (t) => {
+  const point = Point.C;
+  t.deepEqual(unsetAngle(point), { type: UNSET_ANGLE, point });
+  t.end();
 });

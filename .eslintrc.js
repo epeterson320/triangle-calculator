@@ -17,6 +17,7 @@ module.exports = {
       // Allow importing dev dependencies in build & dev files
       "import/no-extraneous-dependencies": ["error", {
         "devDependencies": [
+          "testsetup.js",
           "*.config.js",
           "src/index-hot.jsx",
           "webpack/*",

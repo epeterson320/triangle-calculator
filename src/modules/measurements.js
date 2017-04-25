@@ -33,11 +33,13 @@ const init = { a: 0, b: 0, c: 0, ab: 0, ac: 0, bc: 0 };
 export default function app(state = init, action = {}) {
   switch (action.type) {
     case SET_ANGLE: {
-      if (typeof action.angle !== 'number') return state;
+      const { point, angle } = action;
+      if (typeof angle !== 'number') return state;
+      if (isNaN(angle)) return state;
+      if (angle === Infinity || angle === -Infinity) return state;
+
       // Update measurement
-      const newState = Object.assign({}, state, {
-        [action.point]: action.angle,
-      });
+      const newState = Object.assign({}, state, { [point]: angle });
       // Make sure it's possible. If not, return unchanged.
       const numSidesSet = (!!newState.ab) + (!!newState.ac) + (!!newState.bc);
       const numAnglesSet = (!!newState.a) + (!!newState.b) + (!!newState.c);
@@ -49,10 +51,13 @@ export default function app(state = init, action = {}) {
       return newState;
     }
     case SET_SIDE: {
-      if (typeof action.length !== 'number') return state;
+      const { side, length } = action;
+      if (typeof length !== 'number') return state;
+      if (isNaN(length)) return state;
+      if (length === Infinity || length === -Infinity) return state;
+
       // Update measurement
-      const newState =
-        Object.assign({}, state, { [action.side]: action.length });
+      const newState = Object.assign({}, state, { [side]: length });
       // Make sure it's possible. If not, return unchanged.
       const numSidesSet = (!!newState.ab) + (!!newState.ac) + (!!newState.bc);
       const numAnglesSet = (!!state.a) + (!!state.b) + (!!state.c);

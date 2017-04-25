@@ -1,3 +1,4 @@
+import test from 'tape';
 import { canInferTriangle } from './triangleInfo';
 
 const c = 1;
@@ -7,18 +8,17 @@ const A = Math.PI / 3;
 const B = Math.PI / 2;
 const C = Math.PI / 6;
 
-describe('Triangle helper functions', () => {
-  describe('canInferTriangle', () => {
-    it('Can infer from 3 sides', () => {
-      expect(canInferTriangle({ a, b, c })).toBeTruthy();
-    });
+test('Can infer from 3 sides', (t) => {
+  t.true(canInferTriangle({ a, b, c }));
+  t.end();
+});
 
-    it('Can infer from 2 sides and 1 angle', () => {
-      expect(canInferTriangle({ a, b, A })).toBeTruthy();
-    });
+test('Can infer from 2 sides and 1 angle', (t) => {
+  t.true(canInferTriangle({ a, b, A }));
+  t.end();
+});
 
-    it('Can\'t infer from 3 angles and no sides', () => {
-      expect(canInferTriangle({ A, B, C })).toBeFalsy();
-    });
-  });
+test('Can\'t infer from 3 angles and no sides', (t) => {
+  t.false(canInferTriangle({ A, B, C }));
+  t.end();
 });

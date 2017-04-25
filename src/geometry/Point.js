@@ -23,6 +23,9 @@ function assertNumber(...args) {
     if (typeof arg !== 'number') {
       throw new Error(`Expected a number, ${typeof arg} provided.`);
     }
+    if (arg === Infinity || arg === -Infinity) {
+      throw new Error('Infinite coordinates are not allowed');
+    }
   });
 }
 /* Rectangular Points */

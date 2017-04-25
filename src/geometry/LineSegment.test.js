@@ -1,3 +1,4 @@
+import test from 'tape';
 import { RectPoint } from './Point';
 import Line from './LineSegment';
 
@@ -13,93 +14,91 @@ const xEqY = Line.SlopeIntercept(1, 0);
 const xEq0 = Line.PointAngle(origin, ANG_90);
 const yEq4 = Line.SlopeIntercept(0, 4);
 
-describe('Line', () => {
-  it('Has a PointPoint constructor', () => {
-    expect(Line.PointPoint(origin, unitX)).toBeInstanceOf(Line);
-    expect(new Line.PointPoint(origin, unitX)).toBeInstanceOf(Line);
+test('Line', (tg) => {
+  tg.test('Has a PointPoint constructor', (t) => {
+    t.ok(Line.PointPoint(origin, unitX) instanceof Line);
+    t.ok(new Line.PointPoint(origin, unitX) instanceof Line);
+    t.end();
   });
 
-  it('Has a PointAngle constructor', () => {
-    expect(Line.PointAngle(origin, ANG_180)).toBeInstanceOf(Line);
-    expect(new Line.PointAngle(origin, ANG_180)).toBeInstanceOf(Line);
+  tg.test('Has a PointAngle constructor', (t) => {
+    t.ok(Line.PointAngle(origin, ANG_180) instanceof Line);
+    t.ok(new Line.PointAngle(origin, ANG_180) instanceof Line);
+    t.end();
   });
 
-  it('Has a PointSlope constructor', () => {
-    expect(Line.PointAngle(origin, 4)).toBeInstanceOf(Line);
-    expect(new Line.PointAngle(origin, 4)).toBeInstanceOf(Line);
+  tg.test('Has a PointSlope constructor', (t) => {
+    t.ok(Line.PointAngle(origin, 4) instanceof Line);
+    t.ok(new Line.PointAngle(origin, 4) instanceof Line);
+    t.end();
   });
 
-  it('Has a SlopeIntercept constructor', () => {
-    expect(Line.SlopeIntercept(4, -4)).toBeInstanceOf(Line);
-    expect(new Line.SlopeIntercept(4, -4)).toBeInstanceOf(Line);
+  tg.test('Has a SlopeIntercept constructor', (t) => {
+    t.ok(Line.SlopeIntercept(4, -4) instanceof Line);
+    t.ok(new Line.SlopeIntercept(4, -4) instanceof Line);
+    t.end();
   });
 
-  describe('Intersect', () => {
-    it('Gets the right coords', () => {
+  tg.test('Intersect', (intersectTG) => {
+    intersectTG.test('Gets the right coords', (t) => {
       const p = xEqY.intersect(yEq4);
-      expect(p.x).toBeCloseTo(4);
-      expect(p.y).toBeCloseTo(4);
+      t.inDelta(p.x, 4);
+      t.inDelta(p.y, 4);
+      t.end();
     });
 
-    it('Intersects vertical lines', () => {
+    intersectTG.test('Intersects vertical lines', (t) => {
       const p = xEqY.intersect(xEq0);
-      expect(p.x).toBeCloseTo(0);
-      expect(p.y).toBeCloseTo(0);
+      t.inDelta(p.x, 0);
+      t.inDelta(p.y, 0);
+      t.end();
     });
 
-    it('Intersects vertical and horizontal lines', () => {
+    intersectTG.test('Intersects vertical and horizontal lines', (t) => {
       const p1 = xEq0.intersect(yEq4);
       const p2 = yEq4.intersect(xEq0);
-      expect(p1.x).toBeCloseTo(0);
-      expect(p1.y).toBeCloseTo(4);
-      expect(p2.x).toBeCloseTo(0);
-      expect(p2.y).toBeCloseTo(4);
+      t.inDelta(p1.x, 0);
+      t.inDelta(p1.y, 4);
+      t.inDelta(p2.x, 0);
+      t.inDelta(p2.y, 4);
+      t.end();
     });
   });
 
-  describe('Point At X', () => {
-    it('Gets the right coords', () => {
-      expect(xEqY.pointAtX(4).y).toBeCloseTo(4);
-    });
-
-    it('Throws an error for vertical lines', () => {
-      expect(xEq0.pointAtX(3)).toThrow();
-      expect(xEq0.pointAtX(4)).toThrow();
-    });
+  tg.test('Point At X gets the right coords', (t) => {
+    t.inDelta(xEqY.pointAtX(4).y, 4);
+    t.end();
   });
 
-  describe('Point At Y', () => {
-    it('Gets the right coords', () => {
-      expect(xEqY.pointAtY(4).x).toBeCloseTo(4);
-    });
-
-    it('Throws an error for horizontal lines', () => {
-      expect(yEq4.pointAtY(3)).toThrow();
-      expect(yEq4.pointAtY(4)).toThrow();
-    });
+  tg.test('Point At Y Gets the right coords', (t) => {
+    t.inDelta(xEqY.pointAtY(4).x, 4);
+    t.end();
   });
 
-  describe('Equality', () => {
-    it('Compares mathematically identical lines with separate constructors correctly', () => {
-      expect(Line.SlopeIntercept(1, 0)
-        .equals(new Line.PointAngle(origin, ANG_45)))
-        .toBeTruthy();
+  tg.test('Equality', (eqTG) => {
+    eqTG.test('Compares identical lines with separate constructors', (t) => {
+      const l1 = Line.SlopeIntercept(1, 0);
+      const l2 = Line.PointAngle(origin, ANG_45);
+      t.ok(l1.equals(l2));
+      t.end();
     });
 
-    it('Compares vertical lines correctly', () => {
-      expect(Line.SlopeIntercept(Infinity, 4)
-        .equals(new Line.PointAngle(origin, ANG_90)))
-        .toBeTruthy();
+    eqTG.test('Compares vertical lines correctly', (t) => {
+      const l1 = Line.SlopeIntercept(Infinity, 4);
+      const l2 = new Line.PointAngle(origin, ANG_90);
+      t.ok(l1.equals(l2));
+      t.end();
     });
 
-    it('Compares lines with different # rotations correctly', () => {
-      expect(Line.PointAngle(origin, ANG_45)
-        .equals(Line.PointAngle(origin, ANG_45 + ANG_360)))
-        .toBeTruthy();
+    eqTG.test('Compares lines with different # rotations correctly', (t) => {
+      const l1 = Line.PointAngle(origin, ANG_45);
+      const l2 = Line.PointAngle(origin, ANG_45 + ANG_360);
+      t.ok(l1.equals(l2));
 
-      expect(Line.PointAngle(origin, ANG_90)
-        .equals(Line.PointAngle(origin, ANG_90 + ANG_360)))
-        .toBeTruthy();
+      const l3 = Line.PointAngle(origin, ANG_90);
+      const l4 = Line.PointAngle(origin, ANG_90 + ANG_360);
+      t.ok(l3.equals(l4));
+      t.end();
     });
   });
 });
