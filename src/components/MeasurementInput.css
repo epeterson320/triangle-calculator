@@ -1,7 +1,28 @@
+fieldset {
+  width: 300px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  height: 48px;
+}
+
 .input {
+  display: inline-block;
+  width: 200px;
+  font-size: 16px;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+label {
+  font-weight: 400;
 }
 
 .button {
+  height: 48px;
+  width: 48px;
+  margin: 0;
+  padding: 0;
 }
 
 .hidden {

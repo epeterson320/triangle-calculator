@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Triangle from '../geometry/Triangle';
+import styles from './TriangleDrawing.css';
 
 const TriangleDrawing = ({ triangle }) => {
   const { a, b, c } = triangle;
@@ -17,8 +18,12 @@ const TriangleDrawing = ({ triangle }) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={150} height={150} viewBox={svgViewbox}
+      className={styles.svg}
     >
-      <path d={`M ${ax},${ay} L ${bx},${by} L ${cx},${cy} Z`} />
+      <path
+        d={`M ${ax},${ay} L ${bx},${by} L ${cx},${cy} Z`}
+        className={styles.trianglePath}
+      />
     </svg>
   );
 };
