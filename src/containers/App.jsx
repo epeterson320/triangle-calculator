@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import styles from './App.css';
+import styles from './App.scss';
 import MeasurementsForm from './MeasurementsForm';
 import TriangleDrawing from './TriangleDrawing';
 import Triangle from '../geometry/Triangle';

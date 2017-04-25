@@ -4,15 +4,24 @@ const webpackMerge = require('webpack-merge');
 const baseConfig = require('./base');
 
 const config = {
-  resolve: {
-    extensions: ['.webpack.js', '.web.js', '.js', '.jsx'],
-  },
   entry: [
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
     './index-hot.jsx',
   ],
+
+  module: {
+    rules: [{
+      test: /\.scss$/,
+      use: [
+        'style-loader',
+        'css-loader?modules',
+        'postcss-loader',
+        'sass-loader',
+      ],
+    }],
+  },
 
   devtool: 'inline-source-map',
 

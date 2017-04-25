@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Triangle from '../geometry/Triangle';
-import styles from './TriangleDrawing.css';
+import styles from './TriangleDrawing.scss';
 
 const TriangleDrawing = ({ triangle }) => {
   const { a, b, c } = triangle;
