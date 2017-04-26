@@ -6,7 +6,7 @@
     "build": "webpack --env=prod --progress --profile --colors",
     "start": "webpack-dev-server --env=dev",
     "test": "tape src/**/*.test.{js,jsx} --require ./testsetup.js | faucet",
-    "test:e2e": "nightwatch",
+    "test:e2e": "nightwatch -c test/e2e/nightwatch.conf.js",
     "test:watch": "tape-watch -r babel-register src/**/*.test.{js,jsx} -p faucet",
     "lint": "eslint ."
   },

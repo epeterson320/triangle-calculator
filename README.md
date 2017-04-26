@@ -1,12 +1,17 @@
-# README #
+# Trig Calculator #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+A fun little web app to calculate triangles.
 
-### What is this repository for? ###
+## Getting Set up ##
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+The project is a static React & Webpack SPA.
+
+* Run `npm install`.
+* Set up e2e testing:
+  * Download selenium-server-standalone.jar and put it in test/e2e.
+  * Make `chromedriver` available on your path i.e. with `brew install chromedriver`.
+  * Make `geckodriver` available on your path i.e. with `brew install geckodriver`.
+
 
 ### How do I get set up? ###
 

@@ -1,21 +1,14 @@
+const path = require('path');
+
 module.exports = {
-  src_folders: ['functional-tests'],
-  output_folder: 'reports',
-  custom_commands_path: '',
-  custom_assertions_path: '',
-  page_objects_path: '',
-  globals_path: '',
+  src_folders: ['test/e2e'],
+  output_folder: 'test/output',
 
   selenium: {
     start_process: true,
-    server_path: '',
-    log_path: '',
+    server_path: path.resolve(__dirname, 'selenium-server-standalone.jar'),
+    log_path: path.resolve(__dirname, '../output'),
     port: 4444,
-    cli_args: {
-      'webdriver.chrome.driver': '',
-      'webdriver.gecko.driver': '',
-      'webdriver.edge.driver': '',
-    },
   },
 
   test_settings: {
@@ -37,12 +30,6 @@ module.exports = {
     chrome: {
       desiredCapabilities: {
         browserName: 'chrome',
-      },
-    },
-
-    edge: {
-      desiredCapabilities: {
-        browserName: 'MicrosoftEdge',
       },
     },
   },
