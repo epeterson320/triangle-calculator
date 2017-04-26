@@ -9,12 +9,12 @@ import * as triangleInfo from '../geometry/triangleInfo';
 
 export const App = (props /* , dispatch */) => {
   const metrics = {
-    a: props.bc,
-    b: props.ac,
-    c: props.ab,
-    A: props.a,
-    B: props.b,
-    C: props.c,
+    a: props.a,
+    b: props.b,
+    c: props.c,
+    A: props.A,
+    B: props.B,
+    C: props.C,
   };
   if (triangleInfo.canInferTriangle(metrics)) {
     const triangle = Triangle.FromMetrics(metrics);
@@ -37,12 +37,12 @@ App.propTypes = {
   a: PropTypes.number,
   b: PropTypes.number,
   c: PropTypes.number,
-  ab: PropTypes.number,
-  ac: PropTypes.number,
-  bc: PropTypes.number,
+  A: PropTypes.number,
+  B: PropTypes.number,
+  C: PropTypes.number,
 };
 
-App.defaultProps = { a: 0, b: 0, c: 0, ab: 0, ac: 0, bc: 0 };
+App.defaultProps = { a: 0, b: 0, c: 0, A: 0, B: 0, C: 0 };
 
 /*
 On Mobile & portrait tablet

@@ -6,8 +6,8 @@
  */
 
 // Enums
-export const Side = { AB: 'ab', AC: 'ac', BC: 'bc' };
-export const Point = { A: 'a', B: 'b', C: 'c' };
+export const Side = { a: 'a', b: 'b', c: 'c' };
+export const Point = { A: 'A', B: 'B', C: 'C' };
 
 // Actions & Action Creators
 export const SET_SIDE = 'SET_SIDE';
@@ -28,7 +28,7 @@ export const unsetAngle = point => ({ type: UNSET_ANGLE, point });
 // Lengths can be any positive number, but the sum of the two smaller lengths
 //   must be greater than the larger length.
 // Angles can be between 0 and PI non-inclusive
-const init = { a: 0, b: 0, c: 0, ab: 0, ac: 0, bc: 0 };
+const init = { a: 0, b: 0, c: 0, C: 0, B: 0, A: 0 };
 
 export default function app(state = init, action = {}) {
   switch (action.type) {
@@ -41,12 +41,12 @@ export default function app(state = init, action = {}) {
       // Update measurement
       const newState = Object.assign({}, state, { [point]: angle });
       // Make sure it's possible. If not, return unchanged.
-      const numSidesSet = (!!newState.ab) + (!!newState.ac) + (!!newState.bc);
-      const numAnglesSet = (!!newState.a) + (!!newState.b) + (!!newState.c);
+      const numSidesSet = (!!newState.a) + (!!newState.b) + (!!newState.c);
+      const numAnglesSet = (!!newState.A) + (!!newState.B) + (!!newState.C);
       if (numSidesSet === 3) return state;
       if (numSidesSet === 2 && numAnglesSet === 2) return state;
       if (numAnglesSet === 3) return state;
-      if (newState.a + newState.b + newState.c >= Math.PI) return state;
+      if (newState.A + newState.B + newState.C >= Math.PI) return state;
       // It is possible, return the new state
       return newState;
     }
@@ -59,13 +59,13 @@ export default function app(state = init, action = {}) {
       // Update measurement
       const newState = Object.assign({}, state, { [side]: length });
       // Make sure it's possible. If not, return unchanged.
-      const numSidesSet = (!!newState.ab) + (!!newState.ac) + (!!newState.bc);
-      const numAnglesSet = (!!state.a) + (!!state.b) + (!!state.c);
+      const numSidesSet = (!!newState.a) + (!!newState.b) + (!!newState.c);
+      const numAnglesSet = (!!state.A) + (!!state.B) + (!!state.C);
       if (numSidesSet + numAnglesSet > 3) return state;
       if (numSidesSet === 3) {
-        if (newState.ab + newState.ac <= newState.bc) return state;
-        if (newState.ab + newState.bc <= newState.ac) return state;
-        if (newState.ac + newState.bc <= newState.ab) return state;
+        if (newState.a + newState.b <= newState.c) return state;
+        if (newState.a + newState.c <= newState.b) return state;
+        if (newState.b + newState.c <= newState.a) return state;
       }
       // It is possible, return the new state
       return newState;

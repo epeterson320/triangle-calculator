@@ -5,35 +5,60 @@ import MeasurementInput from '../components/MeasurementInput';
 import {
   setSide, setAngle, unsetSide, unsetAngle, Side, Point,
 } from '../modules/measurements';
+import { inferMeasurements } from '../geometry/triangleInfo';
 
-const MeasurementsForm = ({ set, unset }) => (
+const MeasurementsForm = ({ computed, set, unset }) => (
   <form>
-    <MeasurementInput label="A" onChange={set.a} onClear={unset.a} />
-    <MeasurementInput label="B" onChange={set.b} onClear={unset.b} />
-    <MeasurementInput label="C" onChange={set.c} onClear={unset.c} />
-    <MeasurementInput label="AB" onChange={set.ab} onClear={unset.ab} />
-    <MeasurementInput label="AC" onChange={set.ac} onClear={unset.ac} />
-    <MeasurementInput label="BC" onChange={set.bc} onClear={unset.bc} />
+    <MeasurementInput label="A" onChange={set.A} onClear={unset.A} computedVal={computed.A} />
+    <MeasurementInput label="B" onChange={set.B} onClear={unset.B} computedVal={computed.B} />
+    <MeasurementInput label="C" onChange={set.C} onClear={unset.C} computedVal={computed.C} />
+    <MeasurementInput label="a" onChange={set.a} onClear={unset.a} computedVal={computed.a} />
+    <MeasurementInput label="b" onChange={set.b} onClear={unset.b} computedVal={computed.b} />
+    <MeasurementInput label="c" onChange={set.c} onClear={unset.c} computedVal={computed.c} />
   </form>
 );
 
 MeasurementsForm.propTypes = {
   set: PropTypes.shape({
+    A: PropTypes.func.isRequired,
+    B: PropTypes.func.isRequired,
+    C: PropTypes.func.isRequired,
     a: PropTypes.func.isRequired,
     b: PropTypes.func.isRequired,
     c: PropTypes.func.isRequired,
-    ab: PropTypes.func.isRequired,
-    ac: PropTypes.func.isRequired,
-    bc: PropTypes.func.isRequired,
   }).isRequired,
   unset: PropTypes.shape({
+    A: PropTypes.func.isRequired,
+    B: PropTypes.func.isRequired,
+    C: PropTypes.func.isRequired,
     a: PropTypes.func.isRequired,
     b: PropTypes.func.isRequired,
     c: PropTypes.func.isRequired,
-    ab: PropTypes.func.isRequired,
-    ac: PropTypes.func.isRequired,
-    bc: PropTypes.func.isRequired,
   }).isRequired,
+  computed: PropTypes.shape({
+    A: PropTypes.number,
+    B: PropTypes.number,
+    C: PropTypes.number,
+    a: PropTypes.number,
+    b: PropTypes.number,
+    c: PropTypes.number,
+  }),
+};
+
+MeasurementsForm.defaultProps = {
+  computed: {},
+};
+
+const mapStateToProps = (state) => {
+  const inferred = inferMeasurements(state.measurements);
+  const computed = {};
+  Object.keys(inferred).forEach((key) => {
+    if (!state.measurements[key]) computed[key] = inferred[key];
+  });
+  console.log('Set', state.measurements);
+  console.log('All', inferred);
+  console.log('Computed', computed);
+  return { computed };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -42,22 +67,25 @@ const mapDispatchToProps = (dispatch) => {
 
   return {
     set: {
-      a: action(setAngle, Point.A),
-      b: action(setAngle, Point.B),
-      c: action(setAngle, Point.C),
-      ab: action(setSide, Side.AB),
-      ac: action(setSide, Side.AC),
-      bc: action(setSide, Side.BC),
+      A: action(setAngle, Point.A),
+      B: action(setAngle, Point.B),
+      C: action(setAngle, Point.C),
+      a: action(setSide, Side.a),
+      b: action(setSide, Side.b),
+      c: action(setSide, Side.c),
     },
     unset: {
-      a: action(unsetAngle, Point.A),
-      b: action(unsetAngle, Point.B),
-      c: action(unsetAngle, Point.C),
-      ab: action(unsetSide, Side.AB),
-      ac: action(unsetSide, Side.AC),
-      bc: action(unsetSide, Side.BC),
+      A: action(unsetAngle, Point.A),
+      B: action(unsetAngle, Point.B),
+      C: action(unsetAngle, Point.C),
+      a: action(unsetSide, Side.a),
+      b: action(unsetSide, Side.b),
+      c: action(unsetSide, Side.c),
     },
   };
 };
 
-export default connect(undefined, mapDispatchToProps)(MeasurementsForm);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MeasurementsForm);

@@ -15,16 +15,24 @@ class MeasurementInput extends Component {
   }
 
   componentWillUpdate(nextProps) {
-    const metric = this.props.metric;
-    const nextMetric = nextProps.metric;
-    if (metric === METRIC.DEG && nextMetric === METRIC.RAD) {
-      const val = parseFloat(this.input.value);
-      if (!val) return;
-      this.input.value = (val * 2 * PI / 360).toFixed(3);
-    } else if (metric === METRIC.RAD && metric === METRIC.DEG) {
-      const val = parseFloat(this.input.value);
-      if (!val) return;
-      this.input.value = (val * 360 / (2 * PI)).toFixed(0);
+    const { metric } = this.props;
+    const { computedVal } = nextProps;
+    if (computedVal) {
+      if (metric === METRIC.DEG) {
+        this.input.value = (computedVal * 360 / (2 * PI)).toFixed(1);
+      } else {
+        console.log('setting computed val');
+        this.input.value = computedVal.toFixed(3);
+      }
+    } else {
+      const nextMetric = nextProps.metric;
+      if (metric === METRIC.DEG && nextMetric === METRIC.RAD) {
+        const val = parseFloat(this.input.value);
+        if (val) this.input.value = (val * 2 * PI / 360).toFixed(3);
+      } else if (metric === METRIC.RAD && metric === METRIC.DEG) {
+        const val = parseFloat(this.input.value);
+        if (!val) this.input.value = (val * 360 / (2 * PI)).toFixed(0);
+      }
     }
   }
 
@@ -51,8 +59,8 @@ class MeasurementInput extends Component {
   }
 
   render() {
-    const { label } = this.props;
-    const isEmpty = !(this.input && this.input.value);
+    const { label, computedVal } = this.props;
+    const hideButton = computedVal || !this.input || !this.input.value;
     return (
       <fieldset className={styles.fieldset}>
         <label className={styles.label} htmlFor={label}>{label}</label>
@@ -60,7 +68,7 @@ class MeasurementInput extends Component {
           id={label}
           className={classNames(
             styles.input,
-            { [styles.computed]: this.props.computed },
+            { [styles.computed]: !!computedVal },
           )}
           ref={(input) => { this.input = input; }}
           onChange={this.handleChange}
@@ -68,7 +76,7 @@ class MeasurementInput extends Component {
         <button
           className={classNames(
             styles.button,
-            { [styles.hidden]: isEmpty },
+            { [styles.hidden]: hideButton },
           )}
           onClick={this.handleClear}
           type="button"
@@ -85,14 +93,14 @@ MeasurementInput.propTypes = {
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   onClear: PropTypes.func,
-  computed: PropTypes.bool,
+  computedVal: PropTypes.number,
   metric: PropTypes.number,
 };
 
 MeasurementInput.defaultProps = {
   onChange: () => {},
   onClear: () => {},
-  computed: false,
+  computedVal: 0,
   metric: METRIC.LENGTH,
 };
 
