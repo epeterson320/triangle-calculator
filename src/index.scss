@@ -8,7 +8,12 @@ $divider: #4CAF50;
 $gridline: transparentize($divider, 0.88);
 $cell: 24px;
 
+html {
+  height: 100%;
+}
+
 body {
+  height: 100%;
   margin: 0;
   padding: 0;
   padding-left: $left-margin;
@@ -44,6 +49,10 @@ header {
       transparent 1px,
       transparent)
     0 / calc(101% / 3) $header-height repeat-x;
+}
+
+:global(#root) {
+  min-height: calc(100% - 48px);
 }
 
 main {
