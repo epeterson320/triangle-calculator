@@ -1,4 +1,4 @@
-fieldset {
+.fieldset {
   width: 300px;
   border: 0;
   margin: 0;
@@ -8,14 +8,18 @@ fieldset {
 
 .input {
   display: inline-block;
+  background-color: transparent;
   width: 200px;
   font-size: 16px;
   border: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.87);
 }
 
-label {
+.label {
+  display: inline-block;
   font-weight: 400;
+  padding: 8px;
+  width: 32px;
 }
 
 .button {
@@ -23,6 +27,9 @@ label {
   width: 48px;
   margin: 0;
   padding: 0;
+  border: 0;
+  background-color: transparent;
+  padding: 12px;
 }
 
 .hidden {

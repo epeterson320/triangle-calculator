@@ -20,12 +20,16 @@ export const App = (props /* , dispatch */) => {
     const triangle = Triangle.FromMetrics(metrics);
     return (<div className={styles.app}>
       <MeasurementsForm />
-      <TriangleDrawing triangle={triangle} />
+      <div className={styles.triangleContainer}>
+        <TriangleDrawing triangle={triangle} />
+      </div>
     </div>);
   }
   return (<div className={styles.app}>
     <MeasurementsForm />
-    <p>Not enough measurements to complete triangle.</p>
+    <div className={styles.triangleContainer}>
+      <p>Not enough measurements to complete triangle.</p>
+    </div>
   </div>);
 };
 

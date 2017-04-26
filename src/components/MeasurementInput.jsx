@@ -38,8 +38,8 @@ class MeasurementInput extends Component {
     const { label } = this.props;
     const isEmpty = !(this.input && this.input.value);
     return (
-      <fieldset>
-        <label htmlFor={label}>{label}</label>
+      <fieldset className={styles.fieldset}>
+        <label className={styles.label} htmlFor={label}>{label}</label>
         <input
           id={label}
           className={styles.input}
