@@ -7,8 +7,8 @@
     "start": "webpack-dev-server --env=dev",
     "test": "npm run test:unit",
     "test:e2e": "nightwatch -c test/e2e/nightwatch.conf.js",
-    "test:unit": "NODE_ENV=test tape src/**/*.test.{js,jsx} --require ./testsetup.js | faucet",
-    "test:watch": "NODE_ENV=test tape-watch --require ./testsetup.js src/**/*.test.{js,jsx} | faucet",
+    "test:unit": "NODE_ENV=test tape src/**/*.test.{js,jsx} --require ./test/setup.js | faucet",
+    "test:watch": "NODE_ENV=test tape-watch --require ./test/setup.js src/**/*.test.{js,jsx} | faucet",
     "lint": "eslint ."
   },
   "repository": {
