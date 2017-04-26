@@ -1,7 +1,7 @@
 import test from 'tape';
 import React from 'react';
 import { shallow } from 'enzyme';
-import MeasurementInput from './MeasurementInput';
+import MeasurementInput, { METRIC } from './MeasurementInput';
 
 test('Should have an input element', (t) => {
   t.equal(shallow(<MeasurementInput label="ABC" />).find('input').length, 1);
@@ -22,6 +22,12 @@ test('Should match the label\'s "for" to the input\'s "id"', (t) => {
 test('Should accept an "onChange" property', (t) => {
   const el = shallow(<MeasurementInput label="ABC" onChange={() => {}} />);
   t.ok(el.find('input').prop('onChange'));
+  t.end();
+});
+
+test('Should accept a "metric" property', (t) => {
+  const el = shallow(<MeasurementInput label="ABC" metric={METRIC.DEG} />);
+  t.ok(el.instance().props.metric);
   t.end();
 });
 
