@@ -29,6 +29,10 @@ const config = {
     hot: true,
     contentBase: baseConfig.output.path,
     publicPath: '/',
+    overlay: {
+      errors: true,
+      warnings: true,
+    },
   },
 
   plugins: [
