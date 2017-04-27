@@ -7,15 +7,22 @@
     "start": "webpack-dev-server --env=dev &>/dev/null &",
     "stop": "pkill -f webpack-dev-server || true",
     "test": "jest src/**/*.test.js",
-    "test:watch": "npm test -- --watch",
     "lint": "eslint ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://epeterson320@bitbucket.org/epeterson320/trig-calculator.git"
   },
-  "keywords": ["Trigonometry", "Calculator", "Triangle", "Trig"],
-  "browserslist": ["> 5%", "last 2 versions"],
+  "keywords": [
+    "Trigonometry",
+    "Calculator",
+    "Triangle",
+    "Trig"
+  ],
+  "browserslist": [
+    "> 5%",
+    "last 2 versions"
+  ],
   "author": "Eric Peterson",
   "license": "MIT",
   "homepage": "https://bitbucket.org/epeterson320/trig-calculator#readme",
