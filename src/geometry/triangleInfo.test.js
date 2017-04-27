@@ -1,13 +1,8 @@
-import test from 'tape';
-import chai from 'chai';
-import {
-  canInferTriangle,
-  inferMeasurements,
-} from './triangleInfo';
+import { canInferAll, inferMeasurements } from './triangleInfo';
 
-const { sqrt, sin, PI } = Math;
-const assert = chai.assert;
-const delta = 1E-6;
+const { abs, sqrt, sin, PI } = Math;
+const delta = 1e-6;
+
 const c = 1;
 const b = 2;
 const a = sqrt(3);
@@ -15,60 +10,60 @@ const A = PI / 3;
 const B = PI / 2;
 const C = PI / 6;
 
+/**
+ * Returns true if the measurements are all defined and they describe a
+ * geometrically valid triangle. Returns false otherwise.
+ */
 function isValid(m) {
   const { a, b, c, A, B, C } = m; // eslint-disable-line no-shadow
-  if (a + b < c || a + c < b || b + c < a) return false;
-  assert.approximately(sin(A) / a, sin(B) / b, delta);
-  assert.approximately(sin(A) / a, sin(C) / c, delta);
-  return !!a && !!b && !!c && !!A && !!B && !!C;
+  return !!a && !!b && !!c && !!A && !!B && !!C
+    && (a + b > c) && (a + c > b) && (b + c > a)
+    && abs(sin(A) / a - sin(B) / b) < delta
+    && abs(sin(A) / a - sin(C) / c) < delta;
 }
 
-test('Can infer from 3 sides', (t) => {
-  t.true(canInferTriangle({ a, b, c }));
-  t.end();
+describe('canInferAll', () => {
+  it('Can infer from 3 sides', () => {
+    expect(canInferAll({ a, b, c })).toBe(true);
+  });
+
+  it('Can infer from 2 sides and 1 angle', () => {
+    expect(canInferAll({ a, b, A })).toBe(true);
+  });
+
+  it('Can\'t infer from 3 angles and no sides', () => {
+    expect(canInferAll({ A, B, C })).toBe(false);
+  });
 });
 
-test('Can infer from 2 sides and 1 angle', (t) => {
-  t.true(canInferTriangle({ a, b, A }));
-  t.end();
-});
+describe('inferMeasurements', () => {
+  it('Can infer 3rd angle from incomplete measurements', () => {
+    expect(inferMeasurements({ A, B }).C).toBeCloseTo(C);
+    expect(inferMeasurements({ A, B: 0, C }).B).toBeCloseTo(B);
+  });
 
-test('Can\'t infer from 3 angles and no sides', (t) => {
-  t.false(canInferTriangle({ A, B, C }));
-  t.end();
-});
+  it('Works with three sides', () => {
+    expect(isValid(inferMeasurements({ a, b, c }))).toBeTruthy();
+  });
 
-test('Can infer 3rd angle from incomplete measurements', (t) => {
-  t.inDelta(inferMeasurements({ A, B }).C, C);
-  t.inDelta(inferMeasurements({ A, B: 0, C }).B, B);
-  t.end();
-});
+  it('Works with 2 sides and 1 common angle', () => {
+    expect(isValid(inferMeasurements({ a, b, C }))).toBeTruthy();
+    expect(isValid(inferMeasurements({ a, c, B }))).toBeTruthy();
+    expect(isValid(inferMeasurements({ b, c, A }))).toBeTruthy();
+  });
 
-test('Works with three sides', (t) => {
-  t.ok(isValid(inferMeasurements({ a, b, c })));
-  t.end();
-});
+  it('Works with 2 sides and 1 uncommon angle', () => {
+    expect(isValid(inferMeasurements({ a, b, A }))).toBeTruthy();
+    expect(isValid(inferMeasurements({ a, c, C }))).toBeTruthy();
+    expect(isValid(inferMeasurements({ b, c, C }))).toBeTruthy();
+  });
 
-test('Works with 2 sides and 1 common angle', (t) => {
-  t.ok(isValid(inferMeasurements({ a, b, C })));
-  t.ok(isValid(inferMeasurements({ a, c, B })));
-  t.ok(isValid(inferMeasurements({ b, c, A })));
-  t.end();
-});
-
-test('Works with 2 sides and 1 uncommon angle', (t) => {
-  t.ok(isValid(inferMeasurements({ a, b, A })));
-  t.ok(isValid(inferMeasurements({ a, c, C })));
-  t.ok(isValid(inferMeasurements({ b, c, C })));
-  t.end();
-});
-
-test('Works with 2 angles and 1 side', (t) => {
-  t.ok(isValid(inferMeasurements({ A, B, a })));
-  t.ok(isValid(inferMeasurements({ A, B, b })));
-  t.ok(isValid(inferMeasurements({ A, C, a })));
-  t.ok(isValid(inferMeasurements({ A, C, b })));
-  t.ok(isValid(inferMeasurements({ B, C, a })));
-  t.ok(isValid(inferMeasurements({ B, C, c })));
-  t.end();
+  it('Works with 2 angles and 1 side', () => {
+    expect(isValid(inferMeasurements({ A, B, a }))).toBeTruthy();
+    expect(isValid(inferMeasurements({ A, B, b }))).toBeTruthy();
+    expect(isValid(inferMeasurements({ A, C, a }))).toBeTruthy();
+    expect(isValid(inferMeasurements({ A, C, b }))).toBeTruthy();
+    expect(isValid(inferMeasurements({ B, C, a }))).toBeTruthy();
+    expect(isValid(inferMeasurements({ B, C, c }))).toBeTruthy();
+  });
 });

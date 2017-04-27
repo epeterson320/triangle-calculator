@@ -5,26 +5,17 @@
   "scripts": {
     "build": "webpack --env=prod --progress --profile --colors",
     "start": "webpack-dev-server --env=dev &>/dev/null &",
-    "stop": "pkill -f webpack-dev-server; exit 0",
-    "test": "npm run test:unit",
-    "test:e2e": "nightwatch -c test/e2e/nightwatch.conf.js",
-    "test:unit": "NODE_ENV=test tape src/**/*.test.{js,jsx} --r ./test/setup.js | faucet",
-    "test:watch": "nodemon -q -x 'npm test'",
+    "stop": "pkill -f webpack-dev-server || true",
+    "test": "jest src/**/*.test.js",
+    "test:watch": "npm test -- --watch",
     "lint": "eslint ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://epeterson320@bitbucket.org/epeterson320/trig-calculator.git"
   },
-  "keywords": [
-    "Trigonometry",
-    "Calculator",
-    "Triangle"
-  ],
-  "browserslist": [
-    "> 5%",
-    "last 2 versions"
-  ],
+  "keywords": ["Trigonometry", "Calculator", "Triangle", "Trig"],
+  "browserslist": ["> 5%", "last 2 versions"],
   "author": "Eric Peterson",
   "license": "MIT",
   "homepage": "https://bitbucket.org/epeterson320/trig-calculator#readme",
@@ -38,7 +29,6 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.7.7",
-    "ava": "^0.19.1",
     "babel-core": "^6.22.1",
     "babel-jest": "^18.0.0",
     "babel-loader": "^6.2.10",
@@ -47,7 +37,6 @@
     "babel-preset-stage-2": "^6.22.0",
     "babel-register": "^6.24.1",
     "babel-tape-runner": "^2.0.1",
-    "chai": "^3.5.0",
     "css-loader": "^0.26.1",
     "enzyme": "^2.8.2",
     "eslint": "^3.15.0",
@@ -56,21 +45,16 @@
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.9.0",
     "extract-text-webpack-plugin": "^2.1.0",
-    "faucet": "0.0.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^18.1.0",
-    "mock-css-modules": "^1.0.0",
     "nightwatch": "^0.9.14",
     "node-sass": "^4.5.2",
-    "nodemon": "^1.11.0",
     "postcss-loader": "^1.2.2",
     "react-addons-test-utils": "^15.4.2",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-test-renderer": "^15.5.4",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.13.1",
-    "tape": "^4.6.3",
-    "tape-watch": "^2.3.0",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0",
     "webpack-merge": "^2.6.1"
@@ -79,9 +63,5 @@
     "moduleNameMapper": {
       "\\.(scss)$": "identity-obj-proxy"
     }
-  },
-  "ava": {
-    "files": "src/geometry/Point.test.js",
-    "require": "babel-register"
   }
 }

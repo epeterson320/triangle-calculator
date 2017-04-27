@@ -1,5 +1,5 @@
 import { RectPoint, PolarPoint } from './Point';
-import { canInferTriangle, inferMeasurements } from './triangleInfo';
+import { canInferAll, inferMeasurements } from './triangleInfo';
 
 const { sqrt } = Math;
 
@@ -58,7 +58,7 @@ Triangle.FromPoints = function FromPoints(a, b, c) {
 };
 
 Triangle.FromMetrics = function FromMetrics(metrics) {
-  if (!canInferTriangle(metrics)) {
+  if (!canInferAll(metrics)) {
     throw new Error('Not enough metrics specified');
   }
   const { b, c, A } = inferMeasurements(metrics);

@@ -3,21 +3,21 @@ import * as trig from './trigLaws';
 
 const { PI } = Math;
 
-export function canInferTriangle(m) {
+export function canInferAll(m) {
   const numSides = !!m.c + !!m.a + !!m.b;
   const numAngles = !!m.A + !!m.B + !!m.C;
   return (numSides + numAngles >= 3) && (numSides >= 1);
 }
 
 // input known, preferences & priorities, always returns metrics
-export function assumeMetrics() {
+export function assumeMeasurements() {
   throw new Error('TODO');
 }
 
 // input known, returns partial metrics
 // for use with measurement form to show calculated stuff
 export function inferMeasurements(m) {
-  if (canInferTriangle(m)) {
+  if (canInferAll(m)) {
     return inferAllMeasurements(m);
   }
   if (!!m.A + !!m.B + !!m.C === 2) {

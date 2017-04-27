@@ -16,7 +16,7 @@ export const App = (props /* , dispatch */) => {
     B: props.B,
     C: props.C,
   };
-  if (triangleInfo.canInferTriangle(metrics)) {
+  if (triangleInfo.canInferAll(metrics)) {
     const triangle = Triangle.FromMetrics(metrics);
     return (<div className={styles.app}>
       <MeasurementsForm />
