@@ -1,6 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import MeasurementInput from './MeasurementInput';
+import { DEG, RAD } from '../geometry/Metric';
+
+const { PI } = Math;
 
 jest.useFakeTimers();
 
@@ -11,39 +14,34 @@ function render(props) {
 }
 
 describe('<MeasurementInput>', () => {
-  it('Should have an input element', () => {
+  it('Has an input element', () => {
     expect(render().find('input')).toHaveLength(1);
   });
 
-  it('Should have a label', () => {
+  it('Has a label', () => {
     expect(render().find('label').text()).toBe('ABC');
   });
 
-  it('Should match the label\'s "for" to the input\'s "id"', () => {
+  it('Matches the label\'s "for" to the input\'s "id"', () => {
     const el = render();
     expect(el.find('label').prop('htmlFor'))
       .toBe(el.find('input').prop('id'));
   });
 
-  it('Should accept a "metric" property', () => {
-    const el = render();
-    expect(el.instance().props.metric).toBeDefined();
-  });
-
   describe('onChange', () => {
-    it('Should accept an "onChange" property', () => {
+    it('Has an "onChange" property', () => {
       const el = render();
       expect(el.instance().props.onChange).toBeDefined();
     });
 
-    it('Should not call onChange immediately when content is changed', () => {
+    it('Does not call onChange immediately when content is changed', () => {
       const fn = jest.fn();
       const el = render({ onChange: fn });
       el.find('input').simulate('change', { target: { value: '3' } });
       expect(fn).not.toBeCalled();
     });
 
-    it('Should call onChange, delayed, after a change', () => {
+    it('Calls onChange, delayed, after a change', () => {
       const fn = jest.fn();
       const el = render({ onChange: fn });
       el.find('input').simulate('change', { target: { value: '3' } });
@@ -51,7 +49,7 @@ describe('<MeasurementInput>', () => {
       expect(fn).toBeCalled();
     });
 
-    it('Should delay/debounce the call to onChange if subsequent changes are made', () => {
+    it('Debounces the call to onChange if subsequent changes are made', () => {
       const fn = jest.fn();
       const el = render({ onChange: fn });
       el.find('input').simulate('change', { target: { value: '3' } });
@@ -63,28 +61,28 @@ describe('<MeasurementInput>', () => {
   });
 
   describe('Clear', () => {
-    it('Should have a "clear" button', () => {
+    it('Has a "clear" button', () => {
       expect(render().find('button')).toHaveLength(1);
     });
 
-    it('Should not show the "clear" button if the input is empty', () => {
+    it('Hides the "clear" button if the input is empty', () => {
       expect(render().find('button').hasClass('hidden')).toBe(true);
     });
 
-    it('Should show the "clear" button when text is typed', () => {
+    it('Shows the "clear" button when text is typed', () => {
       const el = render();
       el.find('input').simulate('change', { target: { value: '3' } });
       expect(el.find('button').hasClass('hidden')).toBe(false);
     });
 
-    it('Should call "onClear" when the clear button is clicked', () => {
+    it('Calls "onClear" when the clear button is clicked', () => {
       const fn = jest.fn();
       const el = render({ onClear: fn });
       el.find('button').simulate('click');
       expect(fn).toBeCalled();
     });
 
-    it('Should call "onClear", not "onChange" when the text is deleted', () => {
+    it('Calls "onClear", not "onChange" when the text is deleted', () => {
       const onChange = jest.fn();
       const onClear = jest.fn();
       const el = render({ onChange, onClear });
@@ -96,15 +94,19 @@ describe('<MeasurementInput>', () => {
   });
 
   describe('ComputedVal', () => {
-    it('Should have a "computedVal" property', () => {
+    it('Has a "computedVal" property', () => {
       expect(render().instance().props.computedVal).toBeDefined();
     });
 
-    it('Should show the computed value in the input', () => {
+    it('Shows the computed value in the input', () => {
       expect(render({ computedVal: 42 }).find('input').prop('value')).toBe('42');
     });
 
-    it('Should disable input if the value is computed', () => {
+    it('Styles the input differently', () => {
+      expect(render({ computedVal: 42 }).find('.computed').length).toBeGreaterThan(0);
+    });
+
+    it('Disables input if the value is computed', () => {
       const fn = jest.fn();
       const el = render({ onChange: fn, computedVal: 14.523 });
       el.find('input').simulate('change', { target: { value: '3' } });
@@ -113,8 +115,55 @@ describe('<MeasurementInput>', () => {
       expect(el.find('input').prop('value')).toBe('14.523');
     });
 
-    it('Should not show the "clear" button if the value is computed', () => {
+    it('Hides the "clear" button if the value is computed', () => {
       expect(render({ computedVal: 4 }).find('button').hasClass('hidden')).toBe(true);
+    });
+
+    it('Clears the input if it loses the "computedVal" prop', () => {
+      const el = render({ computedVal: 14.523 });
+      expect(el.find('input').prop('value')).toBe('14.523');
+
+      el.setProps({ computedVal: undefined });
+      expect(el.find('input').prop('value')).toBe('');
+    });
+  });
+
+  describe('Metrics', () => {
+    it('Has a "metric" property', () => {
+      const el = render();
+      expect(el.instance().props.metric).toBeDefined();
+    });
+
+    it('Updates the input when converting from radians to degrees', () => {
+      const el = render({ metric: RAD });
+      el.find('input').simulate(
+        'change',
+        { target: { value: (PI / 3).toString() } },
+      );
+      jest.runAllTimers();
+      el.setProps({ metric: DEG });
+      const newText = el.find('input').prop('value');
+      expect(parseFloat(newText)).toBeCloseTo(60);
+    });
+
+    it('Updates the input when converting from deg to rad', () => {
+      const el = render({ metric: DEG });
+      el.find('input').simulate(
+        'change',
+        { target: { value: '60' } },
+      );
+      jest.runAllTimers();
+      el.setProps({ metric: RAD });
+      const newText = el.find('input').prop('value');
+      expect(parseFloat(newText)).toBeCloseTo(PI / 3);
+    });
+
+    it('Calls onChange with radians when showing degrees or radians', () => {
+      const onChange = jest.fn();
+      const el = render({ metric: DEG, onChange });
+      el.find('input').simulate('change', { target: { value: '60' } });
+      jest.runAllTimers();
+      expect(onChange).toHaveBeenCalledWith(60 * 2 * PI / 360);
     });
   });
 });

@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './MeasurementInput.scss';
+import { DEG, RAD, NONE } from '../geometry/Metric';
 
 const { PI } = Math;
 const DELAY = 300; // ms
-export const METRIC = { LENGTH: 0, DEG: 1, RAD: 2 };
 
 class MeasurementInput extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: props.computedVal || '' };
+    this.state = { text: '' };
 
     this.onChange = this.onChange.bind(this);
     this.onClear = this.onClear.bind(this);
@@ -19,7 +19,22 @@ class MeasurementInput extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.computedVal) {
-      this.setState({ text: nextProps.computedVal.toFixed(3) });
+      this.setState({ text: nextProps.computedVal.toString() });
+    }
+    if (this.props.computedVal && !nextProps.computedVal) {
+      this.setState({ text: '' });
+    }
+    if (this.props.metric === RAD && nextProps.metric === DEG) {
+      const val = parseFloat(this.state.text);
+      if (val) {
+        this.setState({ text: (val * 360 / (2 * PI)).toString() });
+      }
+    }
+    if (this.props.metric === DEG && nextProps.metric === RAD) {
+      const val = parseFloat(this.state.text);
+      if (val) {
+        this.setState({ text: (val * 2 * PI / 360).toString() });
+      }
     }
   }
 
@@ -32,14 +47,18 @@ class MeasurementInput extends Component {
 
   onClear() {
     this.setState({ text: '' });
-    this.props.onClear();
+    this.notify();
   }
 
   notify() {
     const text = this.state.text;
     if (text) {
       const num = parseFloat(text);
-      if (num) {
+      if (!num) return;
+
+      if (this.props.metric === DEG) {
+        this.props.onChange(num * 2 * PI / 360);
+      } else {
         this.props.onChange(num);
       }
     } else {
@@ -96,7 +115,7 @@ MeasurementInput.defaultProps = {
   onChange: () => {},
   onClear: () => {},
   computedVal: 0,
-  metric: METRIC.LENGTH,
+  metric: NONE,
 };
 
 export default MeasurementInput;
