@@ -2,19 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MeasurementInput from '../components/MeasurementInput';
+import RadioList from '../components/RadioList';
 import {
   setSide, setAngle, unsetSide, unsetAngle, Side, Point,
 } from '../modules/measurements';
+import { setAngleUnit } from '../modules/display';
 import { inferMeasurements } from '../geometry/triangleInfo';
+import { DEG, RAD } from '../geometry/Metric';
 
-const MeasurementsForm = ({ computed, set, unset }) => (
+const MeasurementsForm = ({ computed, set, unset, setAngleUnit, metric }) => (
   <form>
-    <MeasurementInput label="A" onChange={set.A} onClear={unset.A} computedVal={computed.A} />
-    <MeasurementInput label="B" onChange={set.B} onClear={unset.B} computedVal={computed.B} />
-    <MeasurementInput label="C" onChange={set.C} onClear={unset.C} computedVal={computed.C} />
-    <MeasurementInput label="a" onChange={set.a} onClear={unset.a} computedVal={computed.a} />
-    <MeasurementInput label="b" onChange={set.b} onClear={unset.b} computedVal={computed.b} />
-    <MeasurementInput label="c" onChange={set.c} onClear={unset.c} computedVal={computed.c} />
+    <RadioList
+      opts={[
+        { label: 'Degrees', value: DEG, default: true },
+        { label: 'Radians', value: RAD },
+      ]}
+      onChange={setAngleUnit}
+    />
+    <MeasurementInput label="A" onChange={set.A} onClear={unset.A} computedVal={computed.A} metric={metric} />
+    <MeasurementInput label="B" onChange={set.B} onClear={unset.B} computedVal={computed.B} metric={metric} />
+    <MeasurementInput label="C" onChange={set.C} onClear={unset.C} computedVal={computed.C} metric={metric} />
+    <MeasurementInput label="a" onChange={set.a} onClear={unset.a} computedVal={computed.a} metric={metric} />
+    <MeasurementInput label="b" onChange={set.b} onClear={unset.b} computedVal={computed.b} metric={metric} />
+    <MeasurementInput label="c" onChange={set.c} onClear={unset.c} computedVal={computed.c} metric={metric} />
   </form>
 );
 
@@ -55,10 +65,7 @@ const mapStateToProps = (state) => {
   Object.keys(inferred).forEach((key) => {
     if (!state.measurements[key]) computed[key] = inferred[key];
   });
-  console.log('Set', state.measurements);
-  console.log('All', inferred);
-  console.log('Computed', computed);
-  return { computed };
+  return { computed, metric: state.display.angleUnit };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -82,6 +89,7 @@ const mapDispatchToProps = (dispatch) => {
       b: action(unsetSide, Side.b),
       c: action(unsetSide, Side.c),
     },
+    setAngleUnit: (unit) => { dispatch(setAngleUnit(unit)); },
   };
 };
 

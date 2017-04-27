@@ -1,10 +1,3 @@
-/**
- * This is the root reducer for the application. Files in this folder
- * conform to the redux "ducks" convention.
- *
- * https://github.com/erikras/ducks-modular-redux
- */
-
 // Enums
 export const Side = { a: 'a', b: 'b', c: 'c' };
 export const Point = { A: 'A', B: 'B', C: 'C' };
