@@ -11,16 +11,21 @@ const B = PI / 2;
 const C = PI / 6;
 
 /**
- * Returns true if the measurements are all defined and they describe a
- * geometrically valid triangle. Returns false otherwise.
+ * Passes if the measurements are all defined and they describe a
+ * geometrically valid triangle. Fails otherwise.
  */
-function isValid(m) {
-  const { a, b, c, A, B, C } = m; // eslint-disable-line no-shadow
-  return !!a && !!b && !!c && !!A && !!B && !!C
-    && (a + b > c) && (a + c > b) && (b + c > a)
-    && abs(sin(A) / a - sin(B) / b) < delta
-    && abs(sin(A) / a - sin(C) / c) < delta;
-}
+expect.extend({
+  toBeValidTriangle(m) {
+    const { a, b, c, A, B, C } = m; // eslint-disable-line no-shadow
+    const pass = !!a && !!b && !!c && !!A && !!B && !!C
+      && (a + b > c) && (a + c > b) && (b + c > a)
+      && abs(sin(A) / a - sin(B) / b) < delta
+      && abs(sin(A) / a - sin(C) / c) < delta;
+    return (pass)
+      ? { message: () => 'expected an invalid triangle', pass }
+      : { message: () => 'expected a valid triangle', pass };
+  },
+});
 
 describe('canInferAll', () => {
   it('Can infer from 3 sides', () => {
@@ -42,28 +47,32 @@ describe('inferMeasurements', () => {
     expect(inferMeasurements({ A, B: 0, C }).B).toBeCloseTo(B);
   });
 
+  it('Won\'t assume missing measurements', () => {
+    expect(inferMeasurements({ A, B })).not.toBeValidTriangle();
+  });
+
   it('Works with three sides', () => {
-    expect(isValid(inferMeasurements({ a, b, c }))).toBeTruthy();
+    expect(inferMeasurements({ a, b, c })).toBeValidTriangle();
   });
 
   it('Works with 2 sides and 1 common angle', () => {
-    expect(isValid(inferMeasurements({ a, b, C }))).toBeTruthy();
-    expect(isValid(inferMeasurements({ a, c, B }))).toBeTruthy();
-    expect(isValid(inferMeasurements({ b, c, A }))).toBeTruthy();
+    expect(inferMeasurements({ a, b, C })).toBeValidTriangle();
+    expect(inferMeasurements({ a, c, B })).toBeValidTriangle();
+    expect(inferMeasurements({ b, c, A })).toBeValidTriangle();
   });
 
   it('Works with 2 sides and 1 uncommon angle', () => {
-    expect(isValid(inferMeasurements({ a, b, A }))).toBeTruthy();
-    expect(isValid(inferMeasurements({ a, c, C }))).toBeTruthy();
-    expect(isValid(inferMeasurements({ b, c, C }))).toBeTruthy();
+    expect(inferMeasurements({ a, b, A })).toBeValidTriangle();
+    expect(inferMeasurements({ a, c, C })).toBeValidTriangle();
+    expect(inferMeasurements({ b, c, C })).toBeValidTriangle();
   });
 
   it('Works with 2 angles and 1 side', () => {
-    expect(isValid(inferMeasurements({ A, B, a }))).toBeTruthy();
-    expect(isValid(inferMeasurements({ A, B, b }))).toBeTruthy();
-    expect(isValid(inferMeasurements({ A, C, a }))).toBeTruthy();
-    expect(isValid(inferMeasurements({ A, C, b }))).toBeTruthy();
-    expect(isValid(inferMeasurements({ B, C, a }))).toBeTruthy();
-    expect(isValid(inferMeasurements({ B, C, c }))).toBeTruthy();
+    expect(inferMeasurements({ A, B, a })).toBeValidTriangle();
+    expect(inferMeasurements({ A, B, b })).toBeValidTriangle();
+    expect(inferMeasurements({ A, C, a })).toBeValidTriangle();
+    expect(inferMeasurements({ A, C, b })).toBeValidTriangle();
+    expect(inferMeasurements({ B, C, a })).toBeValidTriangle();
+    expect(inferMeasurements({ B, C, c })).toBeValidTriangle();
   });
 });

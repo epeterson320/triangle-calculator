@@ -10,57 +10,51 @@ export const METRIC = { LENGTH: 0, DEG: 1, RAD: 2 };
 class MeasurementInput extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClear = this.handleClear.bind(this);
+    this.state = { text: props.computedVal || '' };
+
+    this.onChange = this.onChange.bind(this);
+    this.onClear = this.onClear.bind(this);
+    this.notify = this.notify.bind(this);
   }
 
-  componentWillUpdate(nextProps) {
-    const { metric } = this.props;
-    const { computedVal } = nextProps;
-    if (computedVal) {
-      if (metric === METRIC.DEG) {
-        this.input.value = (computedVal * 360 / (2 * PI)).toFixed(1);
-      } else {
-        console.log('setting computed val');
-        this.input.value = computedVal.toFixed(3);
-      }
-    } else {
-      const nextMetric = nextProps.metric;
-      if (metric === METRIC.DEG && nextMetric === METRIC.RAD) {
-        const val = parseFloat(this.input.value);
-        if (val) this.input.value = (val * 2 * PI / 360).toFixed(3);
-      } else if (metric === METRIC.RAD && metric === METRIC.DEG) {
-        const val = parseFloat(this.input.value);
-        if (!val) this.input.value = (val * 360 / (2 * PI)).toFixed(0);
-      }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.computedVal) {
+      this.setState({ text: nextProps.computedVal.toFixed(3) });
     }
   }
 
-  handleChange(e) {
-    window.clearTimeout(this.timeoutID);
-    const text = e.target.value;
-    const num = parseFloat(text);
-    if (text && isNaN(num)) return; // Ignore invalid input
-
-    this.timeoutID = window.setTimeout(() => {
-      if (this.input.value) {
-        this.props.onChange(num);
-      } else {
-        this.props.onClear();
-      }
-      this.forceUpdate();
-    }, DELAY);
+  onChange(e) {
+    if (this.props.computedVal) return;
+    this.setState({ text: e.target.value });
+    clearTimeout(this.timeoutID);
+    this.timeoutID = setTimeout(this.notify, DELAY);
   }
 
-  handleClear() {
-    this.input.value = '';
-    this.forceUpdate();
+  onClear() {
+    this.setState({ text: '' });
     this.props.onClear();
+  }
+
+  notify() {
+    const text = this.state.text;
+    if (text) {
+      const num = parseFloat(text);
+      if (num) {
+        this.props.onChange(num);
+      }
+    } else {
+      this.props.onClear();
+    }
   }
 
   render() {
     const { label, computedVal } = this.props;
-    const hideButton = computedVal || !this.input || !this.input.value;
+    const hideButton = computedVal || !this.state.text;
+
+    const formattedValue = (computedVal)
+      ? (computedVal.toString())
+      : this.state.text;
+
     return (
       <fieldset className={styles.fieldset}>
         <label className={styles.label} htmlFor={label}>{label}</label>
@@ -70,15 +64,16 @@ class MeasurementInput extends Component {
             styles.input,
             { [styles.computed]: !!computedVal },
           )}
-          ref={(input) => { this.input = input; }}
-          onChange={this.handleChange}
+          onChange={this.onChange}
+          value={formattedValue}
+          readOnly={this.props.computedVal}
         />
         <button
           className={classNames(
             styles.button,
             { [styles.hidden]: hideButton },
           )}
-          onClick={this.handleClear}
+          onClick={this.onClear}
           type="button"
           tabIndex={-1}
         >
