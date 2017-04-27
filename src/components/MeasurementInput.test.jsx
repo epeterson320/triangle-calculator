@@ -161,5 +161,10 @@ describe('<MeasurementInput>', () => {
       jest.runAllTimers();
       expect(onChange).toHaveBeenCalledWith(60 * 2 * PI / 360);
     });
+
+    it('Shows a computedVal in degrees', () => {
+      const el = render({ metric: DEG, computedVal: PI / 2 });
+      expect(el.find('input').prop('value')).toBe('90');
+    });
   });
 });

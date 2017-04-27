@@ -10,21 +10,27 @@ import { setAngleUnit } from '../modules/display';
 import { inferMeasurements } from '../geometry/triangleInfo';
 import { DEG, RAD } from '../geometry/Metric';
 
-const MeasurementsForm = ({ computed, set, unset, setAngleUnit, metric }) => (
+const MeasurementsForm = ({ computed, set, unset, setUnit, metric }) => (
   <form>
     <RadioList
       opts={[
         { label: 'Degrees', value: DEG, default: true },
         { label: 'Radians', value: RAD },
       ]}
-      onChange={setAngleUnit}
+      onChange={setUnit}
     />
-    <MeasurementInput label="A" onChange={set.A} onClear={unset.A} computedVal={computed.A} metric={metric} />
-    <MeasurementInput label="B" onChange={set.B} onClear={unset.B} computedVal={computed.B} metric={metric} />
-    <MeasurementInput label="C" onChange={set.C} onClear={unset.C} computedVal={computed.C} metric={metric} />
-    <MeasurementInput label="a" onChange={set.a} onClear={unset.a} computedVal={computed.a} metric={metric} />
-    <MeasurementInput label="b" onChange={set.b} onClear={unset.b} computedVal={computed.b} metric={metric} />
-    <MeasurementInput label="c" onChange={set.c} onClear={unset.c} computedVal={computed.c} metric={metric} />
+    <MeasurementInput
+      label="A" onChange={set.A} onClear={unset.A} computedVal={computed.A} metric={metric}
+    />
+    <MeasurementInput
+      label="B" onChange={set.B} onClear={unset.B} computedVal={computed.B} metric={metric}
+    />
+    <MeasurementInput
+      label="C" onChange={set.C} onClear={unset.C} computedVal={computed.C} metric={metric}
+    />
+    <MeasurementInput label="a" onChange={set.a} onClear={unset.a} computedVal={computed.a} />
+    <MeasurementInput label="b" onChange={set.b} onClear={unset.b} computedVal={computed.b} />
+    <MeasurementInput label="c" onChange={set.c} onClear={unset.c} computedVal={computed.c} />
   </form>
 );
 
@@ -53,6 +59,8 @@ MeasurementsForm.propTypes = {
     b: PropTypes.number,
     c: PropTypes.number,
   }),
+  metric: PropTypes.string.isRequired,
+  setUnit: PropTypes.func.isRequired,
 };
 
 MeasurementsForm.defaultProps = {
@@ -89,7 +97,7 @@ const mapDispatchToProps = (dispatch) => {
       b: action(unsetSide, Side.b),
       c: action(unsetSide, Side.c),
     },
-    setAngleUnit: (unit) => { dispatch(setAngleUnit(unit)); },
+    setUnit: (unit) => { dispatch(setAngleUnit(unit)); },
   };
 };
 

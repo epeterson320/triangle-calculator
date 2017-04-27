@@ -1,3 +1,3 @@
-export const NONE = 0;
-export const RAD = 1;
-export const DEG = 2;
+export const NONE = '';
+export const RAD = 'RAD';
+export const DEG = 'DEG';

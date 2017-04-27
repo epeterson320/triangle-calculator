@@ -10,7 +10,16 @@ const DELAY = 300; // ms
 class MeasurementInput extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: '' };
+
+    if (props.computedVal) {
+      if (props.metric === DEG) {
+        this.state = { text: (props.computedVal * 360 / (2 * PI)).toString() };
+      } else {
+        this.state = { text: props.computedVal.toString() };
+      }
+    } else {
+      this.state = { text: '' };
+    }
 
     this.onChange = this.onChange.bind(this);
     this.onClear = this.onClear.bind(this);
@@ -20,18 +29,18 @@ class MeasurementInput extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.computedVal) {
-      this.setState({ text: nextProps.computedVal.toString() });
-    }
-    if (this.props.computedVal && !nextProps.computedVal) {
+      const val = (nextProps.metric === DEG)
+        ? nextProps.computedVal * 360 / (PI * 2)
+        : nextProps.computedVal;
+      this.setState({ text: val.toString() });
+    } else if (this.props.computedVal && !nextProps.computedVal) {
       this.setState({ text: '' });
-    }
-    if (this.props.metric === RAD && nextProps.metric === DEG) {
+    } else if (this.props.metric === RAD && nextProps.metric === DEG) {
       const val = parseFloat(this.state.text);
       if (val) {
         this.setState({ text: (val * 360 / (2 * PI)).toString() });
       }
-    }
-    if (this.props.metric === DEG && nextProps.metric === RAD) {
+    } else if (this.props.metric === DEG && nextProps.metric === RAD) {
       const val = parseFloat(this.state.text);
       if (val) {
         this.setState({ text: (val * 2 * PI / 360).toString() });
@@ -73,10 +82,6 @@ class MeasurementInput extends Component {
     const { label, computedVal } = this.props;
     const hideButton = computedVal || !this.state.text;
 
-    const formattedValue = (computedVal)
-      ? (computedVal.toString())
-      : this.state.text;
-
     return (
       <fieldset className={styles.fieldset}>
         <label className={styles.label} htmlFor={label}>{label}</label>
@@ -87,8 +92,8 @@ class MeasurementInput extends Component {
             { [styles.computed]: !!computedVal },
           )}
           onChange={this.onChange}
-          value={formattedValue}
-          readOnly={this.props.computedVal}
+          value={this.state.text}
+          readOnly={!!this.props.computedVal}
         />
         <button
           className={classNames(
@@ -111,7 +116,7 @@ MeasurementInput.propTypes = {
   onChange: PropTypes.func,
   onClear: PropTypes.func,
   computedVal: PropTypes.number,
-  metric: PropTypes.number,
+  metric: PropTypes.string,
 };
 
 MeasurementInput.defaultProps = {
