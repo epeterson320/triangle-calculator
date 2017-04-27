@@ -15,6 +15,7 @@ class MeasurementInput extends Component {
     this.onChange = this.onChange.bind(this);
     this.onClear = this.onClear.bind(this);
     this.notify = this.notify.bind(this);
+    this.requestNotify = this.requestNotify.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,14 +41,16 @@ class MeasurementInput extends Component {
 
   onChange(e) {
     if (this.props.computedVal) return;
-    this.setState({ text: e.target.value });
-    clearTimeout(this.timeoutID);
-    this.timeoutID = setTimeout(this.notify, DELAY);
+    this.setState({ text: e.target.value }, this.requestNotify);
   }
 
   onClear() {
-    this.setState({ text: '' });
-    this.notify();
+    this.setState({ text: '' }, this.notify);
+  }
+
+  requestNotify() {
+    clearTimeout(this.timeoutID);
+    this.timeoutID = setTimeout(this.notify, DELAY);
   }
 
   notify() {

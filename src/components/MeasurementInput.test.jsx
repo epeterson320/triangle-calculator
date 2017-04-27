@@ -136,9 +136,8 @@ describe('<MeasurementInput>', () => {
 
     it('Updates the input when converting from radians to degrees', () => {
       const el = render({ metric: RAD });
-      el.find('input').simulate(
-        'change',
-        { target: { value: (PI / 3).toString() } },
+      const text = (PI / 3).toString();
+      el.find('input').simulate('change', { target: { value: text } },
       );
       jest.runAllTimers();
       el.setProps({ metric: DEG });
@@ -148,10 +147,7 @@ describe('<MeasurementInput>', () => {
 
     it('Updates the input when converting from deg to rad', () => {
       const el = render({ metric: DEG });
-      el.find('input').simulate(
-        'change',
-        { target: { value: '60' } },
-      );
+      el.find('input').simulate('change', { target: { value: '60' } });
       jest.runAllTimers();
       el.setProps({ metric: RAD });
       const newText = el.find('input').prop('value');
