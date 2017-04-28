@@ -8,6 +8,7 @@ jobs:
       - checkout
       - run: npm install
       - run: npm test
+      - add_ssh_keys
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
