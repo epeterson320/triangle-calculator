@@ -66,6 +66,7 @@
     "webpack-dev-server": "^2.3.0",
     "webpack-merge": "^2.6.1"
   },
+  "engines": { "node": "^6.0.0" },
   "jest": {
     "moduleNameMapper": {
       "\\.(scss)$": "identity-obj-proxy"
