@@ -8,3 +8,8 @@ jobs:
       - checkout
       - run: npm install
       - run: npm test
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              npm run deploy
+            fi
