@@ -2,10 +2,10 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:7.9
+      - image: node:7.9 # Can't use alpine, git is needed to deploy
     branches:
-    ignore:
-      - gh-pages
+      ignore:
+        - gh-pages
     working_directory: ~/trig
     steps:
       - checkout
@@ -15,5 +15,7 @@ jobs:
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              git config --global user.email $CIRCLE_USERNAME
+              git config --global user.name $CIRCLE_USERNAME
               npm run deploy
             fi
