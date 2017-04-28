@@ -16,43 +16,47 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  padding-left: $left-margin;
-  padding-right: $right-margin;
 
   background:
     // top rule
     linear-gradient($divider, $divider)
-    0 #{$header-height} / 100% 1px no-repeat,
-    // left rule
-    linear-gradient($divider, $divider)
-    $left-margin 0 / 1px 100% no-repeat,
-    // right rule
-    linear-gradient($divider, $divider)
-    top right #{$right-margin} / 1px 100% no-repeat,
-    // holes on the side
-    radial-gradient(circle,
-      rgba(0, 0, 0, 0.6) 0,
-      rgba(0, 0, 0, 0.7) 12px,
-      transparent 12px,
-      transparent)
-    24px -104px / 24px 384px repeat-y;
-  background-color: $bg;
+    0 #{$header-height} / 100% 1px no-repeat $bg;
+
+  @media screen and (min-width: 600px) {
+    padding-left: $left-margin;
+    padding-right: $right-margin;
+    background:
+      // top rule
+      linear-gradient($divider, $divider)
+      0 #{$header-height} / 100% 1px no-repeat,
+      // left rule
+      linear-gradient($divider, $divider)
+      $left-margin 0 / 1px 100% no-repeat,
+      // right rule
+      linear-gradient($divider, $divider)
+      top right #{$right-margin} / 1px 100% no-repeat,
+      // holes on the side
+      radial-gradient(circle,
+        rgba(0, 0, 0, 0.6) 0,
+        rgba(0, 0, 0, 0.7) 12px,
+        transparent 12px,
+        transparent)
+      24px -104px / 24px 384px repeat-y $bg;
+  }
 }
 
 header {
   height: $header-height;
-  // top section divider lines
-  background:
-    linear-gradient(90deg,
-      $divider 0,
-      $divider 1px,
-      transparent 1px,
-      transparent)
-    0 / calc(101% / 3) $header-height repeat-x;
-}
-
-:global(#root) {
-  min-height: calc(100% - 48px);
+  @media screen and (min-width: 600px) {
+    // top section divider lines
+    background:
+      linear-gradient(90deg,
+        $divider 0,
+        $divider 1px,
+        transparent 1px,
+        transparent)
+      0 / calc(101% / 3) $header-height repeat-x;
+  }
 }
 
 main {
@@ -104,4 +108,15 @@ main {
       transparent)
      0 0 / 120px 100% repeat-x;
   border-bottom: 1px solid $gridline;
+}
+
+:global(#root) {
+  min-height: calc(100% - 48px);
+}
+
+:global(.title) {
+  font-size: 32px;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0 4px;
 }
