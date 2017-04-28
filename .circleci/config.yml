@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: node:7.9-alpine
+    working_directory: ~/trig
     steps:
       - checkout
       - run: npm install
