@@ -1,11 +1,11 @@
 version: 2
 jobs:
-  branches:
-    ignore:
-      - gh-pages
   build:
     docker:
       - image: node:7.9
+    branches:
+    ignore:
+      - gh-pages
     working_directory: ~/trig
     steps:
       - checkout
