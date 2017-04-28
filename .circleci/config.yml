@@ -9,8 +9,10 @@ jobs:
     working_directory: ~/trig
     steps:
       - checkout
-      - run: npm install
-      - run: npm test
+      - restore_cache:
+          key: proj={{ checksum "yarn.lock" }}
+      - run: yarn install
+      - run: yarn test
       - add_ssh_keys
       - deploy:
           command: |
@@ -19,3 +21,8 @@ jobs:
               git config --global user.name $CIRCLE_USERNAME
               npm run deploy
             fi
+      - save_cache:
+          key: proj-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/trig/node_modules
+            - ~/.cache/yarn/
