@@ -9,7 +9,7 @@
     "test": "jest src/.*.test.jsx?",
     "lint": "eslint .",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist --dotfiles"
   },
   "repository": {
     "type": "git",
