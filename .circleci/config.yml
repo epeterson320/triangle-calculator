@@ -1,0 +1,28 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: node:7.9 # Can't use alpine, git is needed to deploy
+    branches:
+      ignore:
+        - gh-pages
+    working_directory: ~/trig
+    steps:
+      - checkout
+      - restore_cache:
+          key: proj-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - run: yarn test
+      - add_ssh_keys
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              git config --global user.email $CIRCLE_USERNAME
+              git config --global user.name $CIRCLE_USERNAME
+              npm run deploy
+            fi
+      - save_cache:
+          key: proj-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/trig/node_modules
+            - ~/.cache/yarn/
