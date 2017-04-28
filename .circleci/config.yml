@@ -1,0 +1,9 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: node:7.9-alpine
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm test
