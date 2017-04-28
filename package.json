@@ -6,7 +6,7 @@
     "build": "webpack --env=prod --progress --profile --colors",
     "start": "webpack-dev-server --env=dev &>/dev/null &",
     "stop": "pkill -f webpack-dev-server || true",
-    "test": "jest src/**/*.test.js",
+    "test": "jest src\/.*.test.jsx?",
     "lint": "eslint ."
   },
   "repository": {

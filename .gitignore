@@ -1,7 +1,6 @@
 node_modules/
 npm-debug.log
 
-test/output/
-test/e2e/selenium-server-standalone.jar
+coverage/
 
 # Don't ignore dist/ since this is hosted on Github pages
