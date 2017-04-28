@@ -2,7 +2,10 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:7.9-alpine
+      - image: node:7.9
+    branches:
+    ignore:
+      - gh-pages
     working_directory: ~/trig
     steps:
       - checkout
