@@ -6,7 +6,7 @@
     "build": "webpack --env=prod --progress --profile --colors",
     "start": "webpack-dev-server --env=dev &>/dev/null &",
     "stop": "pkill -f webpack-dev-server || true",
-    "test": "jest src\/.*.test.jsx?",
+    "test": "jest src/.*.test.jsx?",
     "lint": "eslint ."
   },
   "repository": {
@@ -39,6 +39,7 @@
     "babel-core": "^6.22.1",
     "babel-jest": "^18.0.0",
     "babel-loader": "^6.2.10",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.22.0",
     "babel-preset-stage-2": "^6.22.0",
@@ -66,7 +67,9 @@
     "webpack-dev-server": "^2.3.0",
     "webpack-merge": "^2.6.1"
   },
-  "engines": { "node": "^6.0.0" },
+  "engines": {
+    "node": "^6.0.0"
+  },
   "jest": {
     "moduleNameMapper": {
       "\\.(scss)$": "identity-obj-proxy"
