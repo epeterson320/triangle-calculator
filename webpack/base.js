@@ -1,14 +1,14 @@
-const { resolve } = require('path');
+const { resolve } = require('path')
 
 module.exports = {
   resolve: {
-    extensions: ['.webpack.js', '.js', '.jsx'],
+    extensions: ['.webpack.js', '.js', '.jsx']
   },
 
   output: {
     filename: 'bundle.js',
     path: resolve(__dirname, '../dist'),
-    publicPath: '/',
+    publicPath: '/'
   },
 
   context: resolve(__dirname, '../src'),
@@ -17,7 +17,7 @@ module.exports = {
     rules: [{
       test: /\.jsx?$/,
       use: ['babel-loader'],
-      exclude: /node_modules/,
-    }],
-  },
-};
+      exclude: /node_modules/
+    }]
+  }
+}

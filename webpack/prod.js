@@ -1,7 +1,7 @@
-const webpack = require('webpack');
-const webpackMerge = require('webpack-merge');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const baseConfig = require('./base');
+const webpack = require('webpack')
+const webpackMerge = require('webpack-merge')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const baseConfig = require('./base')
 
 const config = {
   entry: './index.jsx',
@@ -14,27 +14,27 @@ const config = {
         use: [
           'css-loader?modules',
           'postcss-loader',
-          'sass-loader',
-        ],
-      }),
-    }],
+          'sass-loader'
+        ]
+      })
+    }]
   },
 
   plugins: [
     new ExtractTextPlugin('style.css'),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
+        NODE_ENV: JSON.stringify('production')
+      }
     }),
     new webpack.LoaderOptionsPlugin({ minimize: true, debug: false }),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       mangle: { screw_ie8: true, keep_fnames: true },
       compress: { screw_ie8: true },
-      comments: false,
-    }),
-  ],
-};
+      comments: false
+    })
+  ]
+}
 
-module.exports = () => webpackMerge(baseConfig, config);
+module.exports = () => webpackMerge(baseConfig, config)

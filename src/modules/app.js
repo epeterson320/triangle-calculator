@@ -4,11 +4,11 @@
  *
  * https://github.com/erikras/ducks-modular-redux
  */
-import { combineReducers } from 'redux';
-import measurements from './measurements';
-import display from './display';
+import { combineReducers } from 'redux'
+import measurements from './measurements'
+import display from './display'
 
 export default combineReducers({
   measurements,
-  display,
-});
+  display
+})
