@@ -12,6 +12,7 @@ jobs:
       - restore_cache:
           key: proj-{{ checksum "yarn.lock" }}
       - run: yarn install
+      - run: yarn lint
       - run: yarn test
       - add_ssh_keys
       - deploy:

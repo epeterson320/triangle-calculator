@@ -1,21 +1,21 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import styles from './RadioList.scss';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import styles from './RadioList.scss'
 
 class RadioList extends PureComponent {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
-    this.onChange = this.onChange.bind(this);
-    this.state = { selected: props.opts.find(opt => opt.default).value };
+    this.onChange = this.onChange.bind(this)
+    this.state = { selected: props.opts.find(opt => opt.default).value }
   }
 
-  onChange(value) {
-    this.setState({ selected: value });
-    this.props.onChange(value);
+  onChange (value) {
+    this.setState({ selected: value })
+    this.props.onChange(value)
   }
 
-  render() {
+  render () {
     return (
       <fieldset className={styles.fieldset}>
         {this.props.opts.map(option => [
@@ -25,14 +25,14 @@ class RadioList extends PureComponent {
           <input
             id={option.label}
             key={option.label}
-            type="radio"
-            name="name"
+            type='radio'
+            name='name'
             checked={option.value === this.state.selected}
             onChange={() => this.onChange(option.value)}
-          />,
+          />
         ])}
       </fieldset>
-    );
+    )
   }
 }
 
@@ -40,13 +40,13 @@ RadioList.propTypes = {
   opts: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     value: PropTypes.any,
-    default: PropTypes.bool,
+    default: PropTypes.bool
   })).isRequired,
-  onChange: PropTypes.func,
-};
+  onChange: PropTypes.func
+}
 
 RadioList.defaultProps = {
-  onChange: () => {},
-};
+  onChange: () => {}
+}
 
-export default RadioList;
+export default RadioList

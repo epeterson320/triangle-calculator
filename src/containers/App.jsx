@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import styles from './App.scss';
-import MeasurementsForm from './MeasurementsForm';
-import TriangleDrawing from './TriangleDrawing';
-import Triangle from '../geometry/Triangle';
-import * as triangleInfo from '../geometry/triangleInfo';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import styles from './App.scss'
+import MeasurementsForm from './MeasurementsForm'
+import TriangleDrawing from './TriangleDrawing'
+import Triangle from '../geometry/Triangle'
+import * as triangleInfo from '../geometry/triangleInfo'
 
 export const App = (props /* , dispatch */) => {
   const metrics = {
@@ -14,24 +14,24 @@ export const App = (props /* , dispatch */) => {
     c: props.c,
     A: props.A,
     B: props.B,
-    C: props.C,
-  };
+    C: props.C
+  }
   if (triangleInfo.canInferAll(metrics)) {
-    const triangle = Triangle.FromMetrics(metrics);
+    const triangle = Triangle.FromMetrics(metrics)
     return (<div className={styles.app}>
       <MeasurementsForm />
       <div className={styles.triangleContainer}>
         <TriangleDrawing triangle={triangle} />
       </div>
-    </div>);
+    </div>)
   }
   return (<div className={styles.app}>
     <MeasurementsForm />
     <div className={styles.triangleContainer}>
       <p>Not enough measurements to complete triangle.</p>
     </div>
-  </div>);
-};
+  </div>)
+}
 
 App.propTypes = {
   a: PropTypes.number,
@@ -39,10 +39,10 @@ App.propTypes = {
   c: PropTypes.number,
   A: PropTypes.number,
   B: PropTypes.number,
-  C: PropTypes.number,
-};
+  C: PropTypes.number
+}
 
-App.defaultProps = { a: 0, b: 0, c: 0, A: 0, B: 0, C: 0 };
+App.defaultProps = { a: 0, b: 0, c: 0, A: 0, B: 0, C: 0 }
 
 /*
 On Mobile & portrait tablet
@@ -74,6 +74,6 @@ Note: Per RFC3986 it is ok to skip the slash after the host.
 Therefore, trig.ericp.co?a=60&b=60&C=3.24 is a valid URL.
 */
 
-const mapStateToProps = state => state.measurements;
+const mapStateToProps = state => state.measurements
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(App)

@@ -1,14 +1,14 @@
-const webpack = require('webpack');
-const webpackMerge = require('webpack-merge');
+const webpack = require('webpack')
+const webpackMerge = require('webpack-merge')
 
-const baseConfig = require('./base');
+const baseConfig = require('./base')
 
 const config = {
   entry: [
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
-    './index-hot.jsx',
+    './index-hot.jsx'
   ],
 
   module: {
@@ -18,9 +18,9 @@ const config = {
         'style-loader',
         'css-loader?modules',
         'postcss-loader',
-        'sass-loader',
-      ],
-    }],
+        'sass-loader'
+      ]
+    }]
   },
 
   devtool: 'inline-source-map',
@@ -31,14 +31,14 @@ const config = {
     publicPath: '/',
     overlay: {
       errors: true,
-      warnings: true,
-    },
+      warnings: true
+    }
   },
 
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-  ],
-};
+    new webpack.NamedModulesPlugin()
+  ]
+}
 
-module.exports = () => webpackMerge(baseConfig, config);
+module.exports = () => webpackMerge(baseConfig, config)
