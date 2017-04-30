@@ -8,7 +8,6 @@
     "stop": "pkill -f webpack-dev-server || true",
     "test": "jest src/.*.test.jsx?",
     "lint": "standard --env jest",
-    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist --dotfiles"
   },
   "repository": {
