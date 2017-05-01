@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --env=dev &>/dev/null &",
     "stop": "pkill -f webpack-dev-server || true",
     "test": "jest src/.*.test.jsx?",
-    "lint": "standard --env jest",
+    "lint": "standard --verbose --env jest | snazzy",
     "deploy": "gh-pages -d dist --dotfiles"
   },
   "repository": {
@@ -59,6 +59,7 @@
     "react-hot-loader": "^3.0.0-beta.6",
     "react-test-renderer": "^15.5.4",
     "sass-loader": "^6.0.3",
+    "snazzy": "^7.0.0",
     "standard": "^10.0.2",
     "style-loader": "^0.13.1",
     "webpack": "^2.2.1",
