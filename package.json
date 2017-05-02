@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --env=dev &>/dev/null &",
     "stop": "pkill -f webpack-dev-server || true",
     "test": "jest src/.*.test.jsx?",
-    "lint": "standard --verbose --env jest | snazzy",
+    "lint": "standard --verbose | snazzy",
     "deploy": "gh-pages -d dist --dotfiles"
   },
   "repository": {
@@ -73,5 +73,8 @@
     "moduleNameMapper": {
       "\\.(scss)$": "identity-obj-proxy"
     }
+  },
+  "standard": {
+    "env": "jest"
   }
 }
