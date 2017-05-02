@@ -53,14 +53,17 @@ Triangle.FromPoints = function FromPoints (a, b, c) {
   t.b = b
   t.c = c
   t.ab = Line.PointPoint(a, b)
+  t.ba = Line.PointPoint(b, a)
   t.ac = Line.PointPoint(a, c)
+  t.ca = Line.PointPoint(c, a)
   t.bc = Line.PointPoint(b, c)
+  t.cb = Line.PointPoint(c, b)
   t.p = t.ab.distance + t.ac.distance + t.bc.distance
-  const labelOffset = t.p * 0.10
+  const labelOffset = t.p * 0.05
 
   t.label = {
     a: t.bc.midpoint.movePolar(t.bc.angle - ANG_90, labelOffset),
-    b: t.ac.midpoint.movePolar(t.ac.angle + ANG_90, labelOffset),
+    b: t.ac.midpoint.movePolar(t.ca.angle - ANG_90, labelOffset),
     c: t.ab.midpoint.movePolar(t.ab.angle - ANG_90, labelOffset)
   }
 
