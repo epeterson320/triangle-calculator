@@ -37,7 +37,7 @@ Object.defineProperty(Triangle.prototype, 'viewbox', {
     const dx = u.x - a.x
     const dy = u.y - a.y
     const r = sqrt(dx * dx + dy * dy) // radius of circumcenter
-    const hs = r * 1.20 // half the side length of viewbox
+    const hs = r * 1.40 // half the side length of viewbox
     return {
       xl: u.x - hs,
       xr: u.x + hs,
