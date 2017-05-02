@@ -1,17 +1,18 @@
-import { RectPoint } from './Point'
+import { RectPoint, PolarPoint, Point } from './Point'
 import Line from './LineSegment'
 
 const origin = RectPoint(0, 0)
 const unitX = RectPoint(1, 0)
 
+const PI = Math.PI
 const ANG_45 = Math.PI / 4
 const ANG_90 = Math.PI / 2
 const ANG_180 = Math.PI
 const ANG_360 = Math.PI * 2
 
-const xEqY = Line.SlopeIntercept(1, 0)
-const xEq0 = Line.PointAngle(origin, ANG_90)
-const yEq4 = Line.SlopeIntercept(0, 4)
+const xEqY = Line.PointPoint(origin, RectPoint(10, 10))
+const xEq0 = Line.PointPoint(origin, RectPoint(0, 10))
+const yEq4 = Line.PointAngleDistance(RectPoint(0, 4), 0, 10)
 
 describe('Line', () => {
   it('Has a PointPoint constructor', () => {
@@ -19,19 +20,9 @@ describe('Line', () => {
     expect(new Line.PointPoint(origin, unitX)).toBeInstanceOf(Line)
   })
 
-  it('Has a PointAngle constructor', () => {
-    expect(Line.PointAngle(origin, ANG_180)).toBeInstanceOf(Line)
-    expect(new Line.PointAngle(origin, ANG_180)).toBeInstanceOf(Line)
-  })
-
-  it('Has a PointSlope constructor', () => {
-    expect(Line.PointAngle(origin, 4)).toBeInstanceOf(Line)
-    expect(new Line.PointAngle(origin, 4)).toBeInstanceOf(Line)
-  })
-
-  it('Has a SlopeIntercept constructor', () => {
-    expect(Line.SlopeIntercept(4, -4)).toBeInstanceOf(Line)
-    expect(new Line.SlopeIntercept(4, -4)).toBeInstanceOf(Line)
+  it('Has a PointAngleDistance constructor', () => {
+    expect(Line.PointAngleDistance(origin, ANG_45, 4.2)).toBeInstanceOf(Line)
+    expect(new Line.PointAngleDistance(origin, ANG_180, 4.2)).toBeInstanceOf(Line)
   })
 
   describe('Intersect', () => {
@@ -57,35 +48,57 @@ describe('Line', () => {
     })
   })
 
-  it('Point At X gets the right coords', () => {
-    expect(xEqY.pointAtX(4).y).toBeCloseTo(4)
-  })
-
-  it('Point At Y Gets the right coords', () => {
-    expect(xEqY.pointAtY(4).x).toBeCloseTo(4)
-  })
-
   describe('Equality', () => {
     it('Compares identical lines with separate constructors', () => {
-      const l1 = Line.SlopeIntercept(1, 0)
-      const l2 = Line.PointAngle(origin, ANG_45)
+      const l1 = Line.PointPoint(origin, RectPoint(10.0, 0.0))
+      const l2 = Line.PointAngleDistance(origin, 0, 10.0)
       expect(l1.equals(l2)).toBeTruthy()
     })
 
     it('Compares vertical lines correctly', () => {
-      const l1 = Line.SlopeIntercept(Infinity, 4)
-      const l2 = new Line.PointAngle(origin, ANG_90)
+      const l1 = Line.PointPoint(RectPoint(0, -1), RectPoint(0, 9))
+      const l2 = new Line.PointAngleDistance(PolarPoint(1, -ANG_90), ANG_90, 10)
       expect(l1.equals(l2)).toBeTruthy()
     })
 
     it('Compares lines with different # rotations correctly', () => {
-      const l1 = Line.PointAngle(origin, ANG_45)
-      const l2 = Line.PointAngle(origin, ANG_45 + ANG_360)
+      const l1 = Line.PointAngleDistance(origin, ANG_45, 42)
+      const l2 = Line.PointAngleDistance(origin, ANG_45 + ANG_360, 42)
       expect(l1.equals(l2)).toBeTruthy()
 
-      const l3 = Line.PointAngle(origin, ANG_90)
-      const l4 = Line.PointAngle(origin, ANG_90 + ANG_360)
+      const l3 = Line.PointAngleDistance(origin, ANG_90, -5)
+      const l4 = Line.PointAngleDistance(origin, ANG_90 + ANG_360, -5)
       expect(l3.equals(l4)).toBeTruthy()
+    })
+  })
+
+  it('Has a distance', () => {
+    expect(Line.PointPoint(origin, RectPoint(3, 4)).distance).toBeCloseTo(5)
+    expect(Line.PointAngleDistance(origin, 2, 60).distance).toBeCloseTo(60)
+  })
+
+  it('Has a midpoint', () => {
+    const line = Line.PointPoint(RectPoint(0, 1), RectPoint(2, 3))
+    expect(line.midpoint).toBeInstanceOf(Point)
+    expect(line.midpoint.equals(RectPoint(1, 2))).toBe(true)
+  })
+
+  it('Has an angle', () => {
+    const identity = Line.PointPoint(origin, RectPoint(40, 40))
+    expect(identity.angle).toBeCloseTo(ANG_45)
+
+    const horiz = Line.PointPoint(origin, RectPoint(3, 0))
+    expect(horiz.angle).toBeCloseTo(0)
+
+    const vert = Line.PointPoint(origin, RectPoint(0, 4))
+    expect(vert.angle).toBeCloseTo(ANG_90)
+  })
+
+  it('Has the correct angle in every quadrant', () => {
+    [0, 45, 90, 135, 180, 225, 270, 315, 360].forEach((deg) => {
+      const angle = deg / 360 * 2 * PI
+      const line = Line.PointPoint(origin, origin.movePolar(angle, 1))
+      expect(line.angle).toBeCloseTo(angle)
     })
   })
 })

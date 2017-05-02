@@ -1,13 +1,11 @@
 import { RectPoint, PolarPoint } from './Point'
 import { canInferAll, inferMeasurements } from './triangleInfo'
+import Line from './LineSegment'
 
-const { sqrt } = Math
+const { sqrt, PI } = Math
+const ANG_90 = PI / 2
 
 export default function Triangle () { /* Base Prototype */ }
-
-Triangle.prototype.someMethod = function someMethod () {
-  return 'foobar'
-}
 
 Object.defineProperty(Triangle.prototype, 'circumcenter', {
   get: function get () {
@@ -39,7 +37,7 @@ Object.defineProperty(Triangle.prototype, 'viewbox', {
     const dx = u.x - a.x
     const dy = u.y - a.y
     const r = sqrt(dx * dx + dy * dy) // radius of circumcenter
-    const hs = r * 1.20 // half the side length of viewbox
+    const hs = r * 1.40 // half the side length of viewbox
     return {
       xl: u.x - hs,
       xr: u.x + hs,
@@ -54,6 +52,21 @@ Triangle.FromPoints = function FromPoints (a, b, c) {
   t.a = a
   t.b = b
   t.c = c
+  t.ab = Line.PointPoint(a, b)
+  t.ba = Line.PointPoint(b, a)
+  t.ac = Line.PointPoint(a, c)
+  t.ca = Line.PointPoint(c, a)
+  t.bc = Line.PointPoint(b, c)
+  t.cb = Line.PointPoint(c, b)
+  t.p = t.ab.distance + t.ac.distance + t.bc.distance
+  const labelOffset = t.p * 0.05
+
+  t.label = {
+    a: t.bc.midpoint.movePolar(t.bc.angle - ANG_90, labelOffset),
+    b: t.ac.midpoint.movePolar(t.ca.angle - ANG_90, labelOffset),
+    c: t.ab.midpoint.movePolar(t.ab.angle - ANG_90, labelOffset)
+  }
+
   return t
 }
 
