@@ -52,6 +52,13 @@ const TriangleDrawing = ({ triangle }) => {
       <text className={styles.label} fontSize={fontSize} x={lAx} y={lAy} dy={dy}>A</text>
       <text className={styles.label} fontSize={fontSize} x={lBx} y={lBy} dy={dy}>B</text>
       <text className={styles.label} fontSize={fontSize} x={lCx} y={lCy} dy={dy}>C</text>
+
+      <clipPath id='triangleClip'>
+        <path d={`M ${ax},${ay} L ${bx},${by} L ${cx},${cy} Z`} />
+      </clipPath>
+      <circle className={styles.arc} cx={ax} cy={ay} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
+      <circle className={styles.arc} cx={bx} cy={by} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
+      <circle className={styles.arc} cx={cx} cy={cy} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
     </svg>
   )
 }

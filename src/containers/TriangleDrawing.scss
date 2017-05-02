@@ -11,3 +11,9 @@
 .label {
   text-anchor: middle;
 }
+
+.arc {
+  fill: transparent;
+  stroke: rgba(0,0,200,0.54);
+  stroke-width: .5%;
+}
