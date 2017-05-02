@@ -1,79 +1,47 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import MeasurementInput from '../components/MeasurementInput'
 import RadioList from '../components/RadioList'
 import {
-  setSide, setAngle, unsetSide, unsetAngle, Side, Point
-} from '../modules/measurements'
-import { setAngleUnit } from '../modules/display'
-import { inferMeasurements } from '../geometry/triangleInfo'
+  setSide, setAngle, unsetSide, unsetAngle, Side, Point, setAngleUnit
+} from '../modules/app'
+import { inferMeasurements, getErrors } from '../geometry/triangleInfo'
 import { DEG, RAD } from '../geometry/Metric'
 
-const MeasurementsForm = ({ computed, set, unset, setUnit, metric }) => (
+const radioOpts = [
+  { label: 'Degrees', value: DEG, default: true },
+  { label: 'Radians', value: RAD }
+]
+
+const MeasurementsForm = (props) => (
   <form>
-    <RadioList
-      opts={[
-        { label: 'Degrees', value: DEG, default: true },
-        { label: 'Radians', value: RAD }
-      ]}
-      onChange={setUnit}
-    />
-    <MeasurementInput
-      label='A' onChange={set.A} onClear={unset.A} computedVal={computed.A} metric={metric}
-    />
-    <MeasurementInput
-      label='B' onChange={set.B} onClear={unset.B} computedVal={computed.B} metric={metric}
-    />
-    <MeasurementInput
-      label='C' onChange={set.C} onClear={unset.C} computedVal={computed.C} metric={metric}
-    />
-    <MeasurementInput label='a' onChange={set.a} onClear={unset.a} computedVal={computed.a} />
-    <MeasurementInput label='b' onChange={set.b} onClear={unset.b} computedVal={computed.b} />
-    <MeasurementInput label='c' onChange={set.c} onClear={unset.c} computedVal={computed.c} />
+    <RadioList opts={radioOpts} onChange={props.setUnit} />
+    {['A', 'B', 'C', 'a', 'b', 'c'].map(key => {
+      const measurement = props[key]
+      return (
+        <MeasurementInput
+          key={key}
+          label={key}
+          text={measurement.text}
+          onChange={measurement.set}
+          computed={measurement.computed}
+        />
+      )
+    })}
   </form>
 )
 
-MeasurementsForm.propTypes = {
-  set: PropTypes.shape({
-    A: PropTypes.func.isRequired,
-    B: PropTypes.func.isRequired,
-    C: PropTypes.func.isRequired,
-    a: PropTypes.func.isRequired,
-    b: PropTypes.func.isRequired,
-    c: PropTypes.func.isRequired
-  }).isRequired,
-  unset: PropTypes.shape({
-    A: PropTypes.func.isRequired,
-    B: PropTypes.func.isRequired,
-    C: PropTypes.func.isRequired,
-    a: PropTypes.func.isRequired,
-    b: PropTypes.func.isRequired,
-    c: PropTypes.func.isRequired
-  }).isRequired,
-  computed: PropTypes.shape({
-    A: PropTypes.number,
-    B: PropTypes.number,
-    C: PropTypes.number,
-    a: PropTypes.number,
-    b: PropTypes.number,
-    c: PropTypes.number
-  }),
-  metric: PropTypes.string.isRequired,
-  setUnit: PropTypes.func.isRequired
-}
-
-MeasurementsForm.defaultProps = {
-  computed: {}
-}
-
 const mapStateToProps = (state) => {
-  const inferred = inferMeasurements(state.measurements)
-  const computed = {}
-  Object.keys(inferred).forEach((key) => {
-    if (!state.measurements[key]) computed[key] = inferred[key]
-  })
-  return { computed, metric: state.display.angleUnit }
+  const m = inferMeasurements(state)
+  const errors = getErrors(state)
+  return {
+    a: { text: (m.a || '').toString(), computed: !!m.a && !state.a, error: errors.a },
+    b: { text: (m.b || '').toString(), computed: !!m.b && !state.b, error: errors.b },
+    c: { text: (m.c || '').toString(), computed: !!m.c && !state.c, error: errors.c },
+    A: { text: (m.A || '').toString(), computed: !!m.A && !state.A, error: errors.A },
+    B: { text: (m.B || '').toString(), computed: !!m.B && !state.B, error: errors.B },
+    C: { text: (m.C || '').toString(), computed: !!m.C && !state.C, error: errors.C }
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -81,27 +49,28 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(creator(element, text))
 
   return {
-    set: {
-      A: action(setAngle, Point.A),
-      B: action(setAngle, Point.B),
-      C: action(setAngle, Point.C),
-      a: action(setSide, Side.a),
-      b: action(setSide, Side.b),
-      c: action(setSide, Side.c)
-    },
-    unset: {
-      A: action(unsetAngle, Point.A),
-      B: action(unsetAngle, Point.B),
-      C: action(unsetAngle, Point.C),
-      a: action(unsetSide, Side.a),
-      b: action(unsetSide, Side.b),
-      c: action(unsetSide, Side.c)
-    },
+    A: { set: action(setAngle, Point.A) },
+    B: { set: action(setAngle, Point.B) },
+    C: { set: action(setAngle, Point.C) },
+    a: { set: action(setSide, Side.a) },
+    b: { set: action(setSide, Side.b) },
+    c: { set: action(setSide, Side.c) },
     setUnit: (unit) => { dispatch(setAngleUnit(unit)) }
   }
 }
 
+const mergeProps = (sp, dp) => ({ // state props, dispatch props
+  a: { text: sp.a.text, computed: sp.a.computed, error: sp.a.error, set: dp.a.set },
+  b: { text: sp.b.text, computed: sp.b.computed, error: sp.b.error, set: dp.b.set },
+  c: { text: sp.c.text, computed: sp.c.computed, error: sp.c.error, set: dp.c.set },
+  A: { text: sp.A.text, computed: sp.A.computed, error: sp.A.error, set: dp.A.set },
+  B: { text: sp.B.text, computed: sp.B.computed, error: sp.B.error, set: dp.B.set },
+  C: { text: sp.C.text, computed: sp.C.computed, error: sp.C.error, set: dp.C.set },
+  setUnit: dp.setUnit
+})
+
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeProps
 )(MeasurementsForm)

@@ -8,7 +8,7 @@ const { PI } = Math
 jest.useFakeTimers()
 
 function render (props) {
-  const defaults = { label: 'ABC' }
+  const defaults = { label: 'ABC', text: '6.7' }
   const merged = Object.assign({}, defaults, props)
   return shallow(<MeasurementInput {...merged} />)
 }
@@ -19,13 +19,17 @@ describe('<MeasurementInput>', () => {
   })
 
   it('Has a label', () => {
-    expect(render().find('label').text()).toBe('ABC')
+    expect(render().find('.label').text()).toBe('ABC')
   })
 
   it('Matches the label\'s "for" to the input\'s "id"', () => {
     const el = render()
-    expect(el.find('label').prop('htmlFor'))
+    expect(el.find('.label').prop('htmlFor'))
       .toBe(el.find('input').prop('id'))
+  })
+
+  it('Shows the given text in the input', () => {
+    expect(render({ text: '42' }).find('input').prop('value')).toBe('42')
   })
 
   describe('onChange', () => {
@@ -66,105 +70,57 @@ describe('<MeasurementInput>', () => {
     })
 
     it('Hides the "clear" button if the input is empty', () => {
-      expect(render().find('button').hasClass('hidden')).toBe(true)
+      expect(render({ text: '' }).find('button').hasClass('hidden')).toBe(true)
     })
 
     it('Shows the "clear" button when text is typed', () => {
-      const el = render()
+      const el = render({ text: '' })
       el.find('input').simulate('change', { target: { value: '3' } })
       expect(el.find('button').hasClass('hidden')).toBe(false)
     })
 
-    it('Calls "onClear" when the clear button is clicked', () => {
+    it('Calls "onChange" with the empty string when the clear button is clicked', () => {
       const fn = jest.fn()
-      const el = render({ onClear: fn })
+      const el = render({ onChange: fn })
       el.find('button').simulate('click')
-      expect(fn).toBeCalled()
-    })
-
-    it('Calls "onClear", not "onChange" when the text is deleted', () => {
-      const onChange = jest.fn()
-      const onClear = jest.fn()
-      const el = render({ onChange, onClear })
-      el.find('input').simulate('change', { target: { value: '' } })
-      jest.runAllTimers()
-      expect(onClear).toBeCalled()
-      expect(onChange).not.toBeCalled()
+      expect(fn).toBeCalledWith('')
     })
   })
 
-  describe('ComputedVal', () => {
-    it('Has a "computedVal" property', () => {
-      expect(render().instance().props.computedVal).toBeDefined()
-    })
-
-    it('Shows the computed value in the input', () => {
-      expect(render({ computedVal: 42 }).find('input').prop('value')).toBe('42')
+  describe('computed', () => {
+    it('Has a "computed" property', () => {
+      expect(render().instance().props.computed).toBeDefined()
     })
 
     it('Styles the input differently', () => {
-      expect(render({ computedVal: 42 }).find('.computed').length).toBeGreaterThan(0)
+      expect(render({ computed: true }).find('.computed').length).toBeGreaterThan(0)
     })
 
     it('Disables input if the value is computed', () => {
-      const fn = jest.fn()
-      const el = render({ onChange: fn, computedVal: 14.523 })
+      const onChange = jest.fn()
+      const el = render({ onChange, text: '14.523', computed: true })
       el.find('input').simulate('change', { target: { value: '3' } })
       jest.runAllTimers()
-      expect(fn).not.toBeCalled()
+      expect(onChange).not.toBeCalled()
       expect(el.find('input').prop('value')).toBe('14.523')
     })
 
     it('Hides the "clear" button if the value is computed', () => {
-      expect(render({ computedVal: 4 }).find('button').hasClass('hidden')).toBe(true)
-    })
-
-    it('Clears the input if it loses the "computedVal" prop', () => {
-      const el = render({ computedVal: 14.523 })
-      expect(el.find('input').prop('value')).toBe('14.523')
-
-      el.setProps({ computedVal: undefined })
-      expect(el.find('input').prop('value')).toBe('')
+      expect(render({ computed: true }).find('button').hasClass('hidden')).toBe(true)
     })
   })
 
-  describe('Metrics', () => {
-    it('Has a "metric" property', () => {
-      const el = render()
-      expect(el.instance().props.metric).toBeDefined()
+  describe('error message', () => {
+    it('Has an error property', () => {
+      expect(render().instance().props.error).toBeDefined()
     })
 
-    it('Updates the input when converting from radians to degrees', () => {
-      const el = render({ metric: RAD })
-      const text = (PI / 3).toString()
-      el.find('input').simulate('change', { target: { value: text } }
-      )
-      jest.runAllTimers()
-      el.setProps({ metric: DEG })
-      const newText = el.find('input').prop('value')
-      expect(parseFloat(newText)).toBeCloseTo(60)
+    it('Shows the error message', () => {
+      expect(render({ error: 'Invalid' }).find('.error').text()).toMatch('Invalid')
     })
 
-    it('Updates the input when converting from deg to rad', () => {
-      const el = render({ metric: DEG })
-      el.find('input').simulate('change', { target: { value: '60' } })
-      jest.runAllTimers()
-      el.setProps({ metric: RAD })
-      const newText = el.find('input').prop('value')
-      expect(parseFloat(newText)).toBeCloseTo(PI / 3)
-    })
-
-    it('Calls onChange with radians when showing degrees or radians', () => {
-      const onChange = jest.fn()
-      const el = render({ metric: DEG, onChange })
-      el.find('input').simulate('change', { target: { value: '60' } })
-      jest.runAllTimers()
-      expect(onChange).toHaveBeenCalledWith(60 * 2 * PI / 360)
-    })
-
-    it('Shows a computedVal in degrees', () => {
-      const el = render({ metric: DEG, computedVal: PI / 2 })
-      expect(el.find('input').prop('value')).toBe('90')
+    it('Hides the error message when a falsy message is provided', () => {
+      expect(render({ error: '' }).find('.error').hasClass('hidden')).toBe(true)
     })
   })
 })

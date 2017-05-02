@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "A web app to calculate triangle angles and sides",
   "scripts": {
-    "build": "webpack --env=prod --progress --profile --colors && cp -R src/index.html .circleci dist",
+    "build": "webpack --env=prod --progress --profile --colors && cp src/index.html dist",
     "start": "webpack-dev-server --env=dev &>/dev/null &",
     "stop": "pkill -f webpack-dev-server || true",
-    "test": "jest src/.*.test.jsx?",
+    "test": "jest",
     "lint": "standard --verbose | snazzy",
+    "predeploy": "cp -R .circleci dist",
     "deploy": "gh-pages -d dist --dotfiles"
   },
   "repository": {

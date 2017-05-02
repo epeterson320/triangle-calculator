@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import styles from './MeasurementInput.scss'
-import { DEG, RAD, NONE } from '../geometry/Metric'
 
 const { PI } = Math
 const DELAY = 300 // ms
@@ -10,46 +8,21 @@ const DELAY = 300 // ms
 class MeasurementInput extends Component {
   constructor (props) {
     super(props)
-
-    if (props.computedVal) {
-      if (props.metric === DEG) {
-        this.state = { text: (props.computedVal * 360 / (2 * PI)).toString() }
-      } else {
-        this.state = { text: props.computedVal.toString() }
-      }
-    } else {
-      this.state = { text: '' }
-    }
+    this.state = { text: props.text || '' }
 
     this.onChange = this.onChange.bind(this)
     this.onClear = this.onClear.bind(this)
-    this.notify = this.notify.bind(this)
     this.requestNotify = this.requestNotify.bind(this)
+    this.notify = this.notify.bind(this)
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.computedVal) {
-      const val = (nextProps.metric === DEG)
-        ? nextProps.computedVal * 360 / (PI * 2)
-        : nextProps.computedVal
-      this.setState({ text: val.toString() })
-    } else if (this.props.computedVal && !nextProps.computedVal) {
-      this.setState({ text: '' })
-    } else if (this.props.metric === RAD && nextProps.metric === DEG) {
-      const val = parseFloat(this.state.text)
-      if (val) {
-        this.setState({ text: (val * 360 / (2 * PI)).toString() })
-      }
-    } else if (this.props.metric === DEG && nextProps.metric === RAD) {
-      const val = parseFloat(this.state.text)
-      if (val) {
-        this.setState({ text: (val * 2 * PI / 360).toString() })
-      }
-    }
+    this.setState({ text: nextProps.text || '' })
   }
 
+  // Local handler for input changes. Will not immediately call props.onChange
   onChange (e) {
-    if (this.props.computedVal) return
+    if (this.props.computed) return
     this.setState({ text: e.target.value }, this.requestNotify)
   }
 
@@ -63,24 +36,14 @@ class MeasurementInput extends Component {
   }
 
   notify () {
-    const text = this.state.text
-    if (text) {
-      const num = parseFloat(text)
-      if (!num) return
-
-      if (this.props.metric === DEG) {
-        this.props.onChange(num * 2 * PI / 360)
-      } else {
-        this.props.onChange(num)
-      }
-    } else {
-      this.props.onClear()
-    }
+    this.props.onChange(this.state.text)
   }
 
   render () {
-    const { label, computedVal } = this.props
-    const hideButton = computedVal || !this.state.text
+    const { label, computed, error } = this.props
+    const { text } = this.state
+    const hideButton = computed || !text
+    const hideError = !error
 
     return (
       <fieldset className={styles.fieldset}>
@@ -89,11 +52,11 @@ class MeasurementInput extends Component {
           id={label}
           className={classNames(
             styles.input,
-            { [styles.computed]: !!computedVal }
+            { [styles.computed]: computed }
           )}
           onChange={this.onChange}
-          value={this.state.text}
-          readOnly={!!this.props.computedVal}
+          value={text}
+          readOnly={computed}
         />
         <button
           className={classNames(
@@ -106,24 +69,20 @@ class MeasurementInput extends Component {
         >
           Clear
         </button>
+        <label
+          className={classNames(styles.error, { [styles.hidden]: hideError })}
+          htmlFor={label}
+        >
+          {error}
+        </label>
       </fieldset>
     )
   }
 }
 
-MeasurementInput.propTypes = {
-  label: PropTypes.string.isRequired,
-  onChange: PropTypes.func,
-  onClear: PropTypes.func,
-  computedVal: PropTypes.number,
-  metric: PropTypes.string
-}
-
 MeasurementInput.defaultProps = {
   onChange: () => {},
-  onClear: () => {},
-  computedVal: 0,
-  metric: NONE
+  computed: false,
+  error: ''
 }
-
 export default MeasurementInput
