@@ -9,6 +9,12 @@ const ptB = RectPoint(1, 0)
 const ptC = PolarPoint(sqrt(3), PI / 2)
 const t306090 = Triangle.FromPoints(ptA, ptB, ptC)
 
+const equilateral10 = Triangle.FromPoints(
+  RectPoint(0, 0),
+  RectPoint(10, 0),
+  RectPoint(5, sqrt(3) * 5)
+)
+
 describe('Triangle', () => {
   it('Has a FromPoints constructor', () => {
     expect(Triangle.FromPoints(ptA, ptB, ptC)).toBeInstanceOf(Triangle)
@@ -58,6 +64,30 @@ describe('Triangle', () => {
       const vbWidth = xr - xl
       const vbHeight = yt - yb
       expect(max(tWidth / vbWidth, tHeight / vbHeight)).toBeGreaterThan(0.5)
+    })
+  })
+
+  describe('Label Coords', () => {
+    it('Gets decent coords for sides of an equilateral triangle', () => {
+      const expa = RectPoint(7.5 + 1.5 * sqrt(3), 2.5 * sqrt(3) + 1.5)
+      expect(equilateral10.label.a.equals(expa)).toBe(true)
+
+      const expb = RectPoint(2.5 - 1.5 * sqrt(3), 2.5 * sqrt(3) + 1.5)
+      expect(equilateral10.label.b.equals(expb)).toBe(true)
+
+      const expc = RectPoint(5, -3)
+      expect(equilateral10.label.c.equals(expc)).toBe(true)
+    })
+
+    it('Gets decent coords for angles of an equilateral triangle', () => {
+      const expa = RectPoint(7.5 + 1.5 * sqrt(3), 2.5 * sqrt(3) + 1.5)
+      expect(equilateral10.label.a.equals(expa)).toBe(true)
+
+      const expb = RectPoint(2.5 - 1.5 * sqrt(3), 2.5 * sqrt(3) + 1.5)
+      expect(equilateral10.label.b.equals(expb)).toBe(true)
+
+      const expc = RectPoint(5, -3)
+      expect(equilateral10.label.c.equals(expc)).toBe(true)
     })
   })
 })

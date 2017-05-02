@@ -1,13 +1,11 @@
 import { RectPoint, PolarPoint } from './Point'
 import { canInferAll, inferMeasurements } from './triangleInfo'
+import Line from './LineSegment'
 
-const { sqrt } = Math
+const { sqrt, PI } = Math
+const ANG_90 = PI / 2
 
 export default function Triangle () { /* Base Prototype */ }
-
-Triangle.prototype.someMethod = function someMethod () {
-  return 'foobar'
-}
 
 Object.defineProperty(Triangle.prototype, 'circumcenter', {
   get: function get () {
@@ -54,6 +52,18 @@ Triangle.FromPoints = function FromPoints (a, b, c) {
   t.a = a
   t.b = b
   t.c = c
+  t.ab = Line.PointPoint(a, b)
+  t.ac = Line.PointPoint(a, c)
+  t.bc = Line.PointPoint(b, c)
+  t.p = t.ab.distance + t.ac.distance + t.bc.distance
+  const labelOffset = t.p * 0.10
+
+  t.label = {
+    a: t.bc.midpoint.movePolar(t.bc.angle - ANG_90, labelOffset),
+    b: t.ac.midpoint.movePolar(t.ac.angle + ANG_90, labelOffset),
+    c: t.ab.midpoint.movePolar(t.ab.angle - ANG_90, labelOffset)
+  }
+
   return t
 }
 
