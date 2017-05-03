@@ -1,9 +1,13 @@
 .container {
   margin: 16px;
+  position: relative;
+}
+
+.cantShow {
+  position: absolute;
 }
 
 .svg {
-
 }
 
 .trianglePath {

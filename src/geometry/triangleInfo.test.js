@@ -58,7 +58,12 @@ describe('canInferAll', () => {
 describe('inferMeasurements', () => {
   it('Can infer 3rd angle from incomplete measurements', () => {
     expect(inferMeasurements({ A, B }).C).toBeCloseTo(parseFloat(C))
-    expect(inferMeasurements({ A, B: '0', C }).B).toBeCloseTo(parseFloat(B))
+    expect(inferMeasurements({ A, B: '', C }).B).toBeCloseTo(parseFloat(B))
+  })
+
+  it('Returns the input when given invalid input', () => {
+    expect(inferMeasurements({ A: 90, B: 90, angleUnit: DEG }))
+      .toEqual({ A: 90, B: 90, angleUnit: DEG })
   })
 
   it('Won\'t assume missing measurements', () => {
@@ -89,11 +94,33 @@ describe('inferMeasurements', () => {
     expect(inferMeasurements({ B, C, a })).toBeValidTriangle()
     expect(inferMeasurements({ B, C, c })).toBeValidTriangle()
   })
+
+  it('Works with degrees', () => {
+    const actual = inferMeasurements({ A: 90, B: 60, a: 2, angleUnit: DEG })
+    const expected = {
+      A: 90,
+      B: 60,
+      C: 30,
+      a: 2,
+      b: sqrt(3),
+      c: 1,
+      angleUnit: DEG
+    }
+    expect.assertions(7)
+    expect(actual.angleUnit).toBe(expected.angleUnit)
+    Object.keys(expected)
+      .filter(k => typeof expected[k] === 'number')
+      .forEach((key) => { expect(actual[key]).toBeCloseTo(expected[key]) })
+  })
 })
 
 describe('getErrors', () => {
   it('Returns null when there are no errors', () => {
-    expect(getErrors({})).toEqual(null)
+    expect(getErrors({})).toBe(null)
+  })
+
+  it('Does not treat the empty string as an error', () => {
+    expect(getErrors({ a: '', A: '' })).toBe(null)
   })
 
   it('Flags input that can\'t be parsed into a number', () => {

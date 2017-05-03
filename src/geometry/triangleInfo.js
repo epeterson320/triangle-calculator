@@ -19,7 +19,7 @@ export function getErrors (m) {
 
   // Invalid numbers
   sides.concat(angles)
-    .filter(key => m[key] != null)
+    .filter(key => !!m[key])
     .forEach(key => {
       const val = parseFloat(m[key])
       if (isNaN(val)) errors[key] = Texts.CANT_PARSE
@@ -69,25 +69,40 @@ export function assumeMeasurements () {
 // input known, returns partial metrics
 // for use with measurement form to show calculated stuff
 export function inferMeasurements (_m) {
-  const m = {
+  if (getErrors(_m)) return _m
+
+  let m = {
     a: parseFloat(_m.a) || 0,
     b: parseFloat(_m.b) || 0,
     c: parseFloat(_m.c) || 0,
     A: parseFloat(_m.A) || 0,
     B: parseFloat(_m.B) || 0,
-    C: parseFloat(_m.C) || 0,
-    angleUnit: _m.angleUnit
+    C: parseFloat(_m.C) || 0
+  }
+
+  if (_m.angleUnit === DEG) {
+    m.A = m.A * PI / 180
+    m.B = m.B * PI / 180
+    m.C = m.C * PI / 180
+  }
+
+  if (!!m.A + !!m.B + !!m.C === 2) {
+    m.A = m.A || PI - m.B - m.C
+    m.B = m.B || PI - m.A - m.C
+    m.C = m.C || PI - m.A - m.B
   }
 
   if (canInferAll(m)) {
-    return inferAllMeasurements(m)
+    m = inferAllMeasurements(m)
   }
-  if (!!m.A + !!m.B + !!m.C === 2) {
-    const sum = (m.angleUnit === DEG) ? 180 : PI
-    m.A = m.A || sum - m.B - m.C
-    m.B = m.B || sum - m.A - m.C
-    m.C = m.C || sum - m.A - m.B
+
+  if (_m.angleUnit === DEG) {
+    m.A = m.A * 180 / PI
+    m.B = m.B * 180 / PI
+    m.C = m.C * 180 / PI
   }
+
+  m.angleUnit = _m.angleUnit
   return m
 }
 
@@ -98,11 +113,8 @@ function inferAllMeasurements (metrics) {
   // 3 Sides
   if (a && b && c) {
     [A, B, C] = trig.ABCfromabc(a, b, c)
-  // 1 side & 2 angles
-  } else if (numAngles === 2) {
-    A = A || (PI - B - C)
-    B = B || (PI - A - C)
-    C = C || (PI - A - B)
+  // 1 side & 3 angles
+  } else if (numAngles === 3) {
     if (a) { [b, c] = trig.bcfromaABC(a, A, B, C) }
     if (b) { [a, c] = trig.bcfromaABC(b, B, A, C) }
     if (c) { [b, a] = trig.bcfromaABC(c, C, B, A) }

@@ -2,9 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import MeasurementInput from '../components/MeasurementInput'
 import RadioList from '../components/RadioList'
-import {
-  setSide, setAngle, unsetSide, unsetAngle, Side, Point, setAngleUnit
-} from '../modules/app'
+import { setSide, setAngle, Side, Point, setAngleUnit } from '../modules/app'
 import { inferMeasurements, getErrors } from '../geometry/triangleInfo'
 import { DEG, RAD } from '../geometry/Metric'
 
@@ -25,23 +23,34 @@ const MeasurementsForm = (props) => (
           text={measurement.text}
           onChange={measurement.set}
           computed={measurement.computed}
+          error={measurement.error}
+          disabled={measurement.disabled}
         />
       )
     })}
   </form>
 )
 
+const fields = ['a', 'b', 'c', 'A', 'B', 'C']
+
 const mapStateToProps = (state) => {
+  const errors = getErrors(state) || {}
+  const hasErrors = Object.keys(errors).length > 0
   const m = inferMeasurements(state)
-  const errors = getErrors(state)
-  return {
-    a: { text: (m.a || '').toString(), computed: !!m.a && !state.a, error: errors.a },
-    b: { text: (m.b || '').toString(), computed: !!m.b && !state.b, error: errors.b },
-    c: { text: (m.c || '').toString(), computed: !!m.c && !state.c, error: errors.c },
-    A: { text: (m.A || '').toString(), computed: !!m.A && !state.A, error: errors.A },
-    B: { text: (m.B || '').toString(), computed: !!m.B && !state.B, error: errors.B },
-    C: { text: (m.C || '').toString(), computed: !!m.C && !state.C, error: errors.C }
-  }
+  const props = {}
+  fields.forEach(field => {
+    const computed = !!m[field] && !state[field]
+    let text = state[field]
+    if (computed && m[field] >= 100) {
+      text = m[field].toFixed(1)
+    } else if (computed && m[field] < 100) {
+      text = m[field].toPrecision(4)
+    }
+    const error = errors[field]
+    const disabled = hasErrors && !error
+    props[field] = { text, computed, error, disabled }
+  })
+  return props
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -59,15 +68,19 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const mergeProps = (sp, dp) => ({ // state props, dispatch props
-  a: { text: sp.a.text, computed: sp.a.computed, error: sp.a.error, set: dp.a.set },
-  b: { text: sp.b.text, computed: sp.b.computed, error: sp.b.error, set: dp.b.set },
-  c: { text: sp.c.text, computed: sp.c.computed, error: sp.c.error, set: dp.c.set },
-  A: { text: sp.A.text, computed: sp.A.computed, error: sp.A.error, set: dp.A.set },
-  B: { text: sp.B.text, computed: sp.B.computed, error: sp.B.error, set: dp.B.set },
-  C: { text: sp.C.text, computed: sp.C.computed, error: sp.C.error, set: dp.C.set },
-  setUnit: dp.setUnit
-})
+const mergeProps = (sp, dp) => {
+  const props = {}
+  fields.forEach(f => {
+    props[f] = {
+      text: sp[f].text,
+      computed: sp[f].computed,
+      error: sp[f].error,
+      disabled: sp[f].disabled,
+      set: dp[f].set
+    }
+  })
+  return props
+}
 
 export default connect(
   mapStateToProps,

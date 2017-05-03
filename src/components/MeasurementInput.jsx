@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import styles from './MeasurementInput.scss'
 
 const { PI } = Math
-const DELAY = 300 // ms
+const DELAY = 600 // ms
 
 class MeasurementInput extends Component {
   constructor (props) {
@@ -40,7 +40,7 @@ class MeasurementInput extends Component {
   }
 
   render () {
-    const { label, computed, error } = this.props
+    const { label, computed, error, disabled } = this.props
     const { text } = this.state
     const hideButton = computed || !text
     const hideError = !error
@@ -50,13 +50,13 @@ class MeasurementInput extends Component {
         <label className={styles.label} htmlFor={label}>{label}</label>
         <input
           id={label}
-          className={classNames(
-            styles.input,
-            { [styles.computed]: computed }
-          )}
+          className={classNames(styles.input, {
+            [styles.computed]: computed,
+            [styles.disabled]: disabled
+          })}
           onChange={this.onChange}
           value={text}
-          readOnly={computed}
+          readOnly={computed || disabled}
         />
         <button
           className={classNames(
@@ -83,6 +83,7 @@ class MeasurementInput extends Component {
 MeasurementInput.defaultProps = {
   onChange: () => {},
   computed: false,
-  error: ''
+  error: '',
+  disabled: false
 }
 export default MeasurementInput

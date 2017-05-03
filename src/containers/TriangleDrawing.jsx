@@ -6,15 +6,20 @@ import { getErrors, canInferAll } from '../geometry/triangleInfo'
 
 const PI = Math.PI
 
-const TriangleDrawing = (m) => {
-  if (getErrors(m) || !canInferAll(m)) {
+const TriangleDrawing = ({ triangle }) => {
+  if (!triangle) {
     return (
       <div className={styles.container}>
-        <p>Not enough measurements to complete triangle.</p>
+        <p className={styles.cantShow}>Not enough measurements to complete triangle.</p>
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          width={300} height={300} viewBox='0 0 100 100'
+          className={styles.svg}
+        >
+        </svg>
       </div>
     )
   }
-  const triangle = Triangle.FromMetrics(m)
   const { a, b, c, ab, ba, ac, ca, bc, cb, p, label } = triangle
   const { xl, xr, yt, yb } = triangle.viewbox
   const svgViewbox = `0 0 ${xr - xl} ${yt - yb}`
@@ -46,6 +51,7 @@ const TriangleDrawing = (m) => {
   const lBy = yt - lB.y
   return (
     <div className={styles.container}>
+      <p className={styles.cantShow}></p>
       <svg
         xmlns='http://www.w3.org/2000/svg'
         width={300} height={300} viewBox={svgViewbox}
@@ -74,4 +80,14 @@ const TriangleDrawing = (m) => {
   )
 }
 
-export default connect()(TriangleDrawing)
+function mapStateToProps (state) {
+  if (!getErrors(state) && canInferAll(state)) {
+    return { triangle: Triangle.FromMetrics(state) }
+  } else {
+    return {}
+  }
+}
+
+const mapDispatchToProps = () => ({})
+
+export default connect(mapStateToProps, mapDispatchToProps)(TriangleDrawing)
