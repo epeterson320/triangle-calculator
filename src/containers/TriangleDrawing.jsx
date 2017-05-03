@@ -4,7 +4,8 @@ import Triangle from '../geometry/Triangle'
 import styles from './TriangleDrawing.scss'
 import { getErrors, canInferAll } from '../geometry/triangleInfo'
 
-const PI = Math.PI
+const { PI, abs } = Math
+const rt = PI / 2
 
 const TriangleDrawing = ({ triangle }) => {
   if (!triangle) {
@@ -48,6 +49,15 @@ const TriangleDrawing = ({ triangle }) => {
   const lB = b.movePolar((ab.angle + cb.angle) / 2 + PI, p * 0.05)
   const lBx = lB.x - xl
   const lBy = yt - lB.y
+  const aRt = abs(triangle.ac.angle - triangle.ab.angle - rt) < 0.000001
+  const bRt = abs(triangle.ba.angle - triangle.bc.angle - rt) < 0.000001
+  const cRt = abs(triangle.cb.angle - triangle.ca.angle - rt) < 0.000001
+  const arcA = <circle className={styles.arc} cx={ax} cy={ay} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
+  const arcB = <circle className={styles.arc} cx={bx} cy={by} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
+  const arcC = <circle className={styles.arc} cx={cx} cy={cy} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
+  const sqA = <rect className={styles.arc} x={ax} y={ay} width={fontSize * 0.7} height={fontSize * 0.7} transform={`rotate(${triangle.ab.angle * 180 / PI - 90} ${ax} ${ay})`} />
+  const sqB = <rect className={styles.arc} x={bx} y={by} width={fontSize * 0.7} height={fontSize * 0.7} transform={`rotate(${triangle.bc.angle * 180 / PI + 90} ${bx} ${by})`} />
+  const sqC = <rect className={styles.arc} x={cx} y={cy} width={fontSize * 0.7} height={fontSize * 0.7} transform={`rotate(${-triangle.cb.angle * 180 / PI} ${cx} ${cy})`} />
   return (
     <div className={styles.container}>
       <p className={styles.cantShow} />
@@ -56,6 +66,12 @@ const TriangleDrawing = ({ triangle }) => {
         width={300} height={300} viewBox={svgViewbox}
         className={styles.svg}
       >
+        <clipPath id='triangleClip'>
+          <path d={`M ${ax},${ay} L ${bx},${by} L ${cx},${cy} Z`} />
+        </clipPath>
+        {aRt ? sqA : arcA}
+        {bRt ? sqB : arcB}
+        {cRt ? sqC : arcC}
         <path
           d={`M ${ax},${ay} L ${bx},${by} L ${cx},${cy} Z`}
           className={styles.trianglePath}
@@ -67,13 +83,6 @@ const TriangleDrawing = ({ triangle }) => {
         <text className={styles.label} fontSize={fontSize} x={lAx} y={lAy} dy={dy}>A</text>
         <text className={styles.label} fontSize={fontSize} x={lBx} y={lBy} dy={dy}>B</text>
         <text className={styles.label} fontSize={fontSize} x={lCx} y={lCy} dy={dy}>C</text>
-
-        <clipPath id='triangleClip'>
-          <path d={`M ${ax},${ay} L ${bx},${by} L ${cx},${cy} Z`} />
-        </clipPath>
-        <circle className={styles.arc} cx={ax} cy={ay} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
-        <circle className={styles.arc} cx={bx} cy={by} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
-        <circle className={styles.arc} cx={cx} cy={cy} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
       </svg>
     </div>
   )
