@@ -1,6 +1,7 @@
 import { RectPoint, PolarPoint } from './Point'
 import { canInferAll, inferMeasurements } from './triangleInfo'
 import Line from './LineSegment'
+import { DEG } from './Metric'
 
 const { sqrt, PI } = Math
 const ANG_90 = PI / 2
@@ -75,8 +76,9 @@ Triangle.FromMetrics = function FromMetrics (metrics) {
     throw new Error('Not enough metrics specified')
   }
   const { b, c, A } = inferMeasurements(metrics)
+  const adjA = metrics.angleUnit === DEG ? A * PI / 180 : A
   const ptA = RectPoint(0, 0)
   const ptB = RectPoint(c, 0)
-  const ptC = PolarPoint(b, A)
+  const ptC = PolarPoint(b, adjA)
   return Triangle.FromPoints(ptA, ptB, ptC)
 }
