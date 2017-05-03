@@ -1,9 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import MeasurementInput from './MeasurementInput'
-import { DEG, RAD } from '../geometry/Metric'
-
-const { PI } = Math
 
 jest.useFakeTimers()
 

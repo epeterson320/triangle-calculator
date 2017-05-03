@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import styles from './MeasurementInput.scss'
 
-const { PI } = Math
 const DELAY = 600 // ms
 
 class MeasurementInput extends Component {

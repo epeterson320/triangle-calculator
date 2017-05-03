@@ -15,8 +15,7 @@ const TriangleDrawing = ({ triangle }) => {
           xmlns='http://www.w3.org/2000/svg'
           width={300} height={300} viewBox='0 0 100 100'
           className={styles.svg}
-        >
-        </svg>
+        />
       </div>
     )
   }
@@ -51,7 +50,7 @@ const TriangleDrawing = ({ triangle }) => {
   const lBy = yt - lB.y
   return (
     <div className={styles.container}>
-      <p className={styles.cantShow}></p>
+      <p className={styles.cantShow} />
       <svg
         xmlns='http://www.w3.org/2000/svg'
         width={300} height={300} viewBox={svgViewbox}
