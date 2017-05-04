@@ -29,6 +29,11 @@ describe('<MeasurementInput>', () => {
     expect(render({ text: '42' }).find('input').prop('value')).toBe('42')
   })
 
+  it('Updates its text based on the text prop', () => {
+    const el = render({ text: '14.523' })
+    expect(el.find('input').prop('value')).toBe('14.523')
+  })
+
   describe('onChange', () => {
     it('Has an "onChange" property', () => {
       const el = render()
@@ -58,6 +63,29 @@ describe('<MeasurementInput>', () => {
       el.find('input').simulate('change', { target: { value: '3.5' } })
       jest.runAllTimers()
       expect(fn).toHaveBeenCalledTimes(1)
+    })
+
+    it.only('Doesn\'t update its text when about to send onChanged', () => {
+      const onChange = jest.fn()
+      const el = render({ onChange, text: '14.523' })
+      el.find('input').simulate('change', { target: { value: '3' } })
+      el.setProps({ text: '' })
+      expect(el.find('input').prop('value')).toBe('3')
+      jest.runAllTimers()
+      expect(onChange).toBeCalled()
+      expect(el.find('input').prop('value')).toBe('3')
+    })
+
+    it('Cancels the onChanged timeout when it becomes computed', () => {
+      const onChange = jest.fn()
+      const el = render({ onChange, text: '14.523', computed: false })
+      el.find('input').simulate('change', { target: { value: '3' } })
+      expect(el.find('input').prop('value')).toBe('3')
+      el.setProps({ text: '15', computed: true })
+      expect(el.find('input').prop('value')).toBe('15')
+      jest.runAllTimers()
+      expect(onChange).not.toBeCalled()
+      expect(el.find('input').prop('value')).toBe('15')
     })
   })
 

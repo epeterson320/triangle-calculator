@@ -9,6 +9,7 @@ class MeasurementInput extends Component {
     super(props)
     this.state = { text: props.text || '' }
 
+    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onClear = this.onClear.bind(this)
     this.requestNotify = this.requestNotify.bind(this)
@@ -16,11 +17,19 @@ class MeasurementInput extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    console.log(nextProps)
+    console.log(this.timeoutID)
+    if (nextProps.computed) {
+      delete this.timeoutID
+    } else if (this.timeoutID) {
+      return
+    }
     this.setState({ text: nextProps.text || '' })
   }
 
   // Local handler for input changes. Will not immediately call props.onChange
   onChange (e) {
+    console.log('changing')
     if (this.props.computed) return
     this.setState({ text: e.target.value }, this.requestNotify)
   }
@@ -30,12 +39,15 @@ class MeasurementInput extends Component {
   }
 
   requestNotify () {
+    console.log('requesting notify')
     clearTimeout(this.timeoutID)
     this.timeoutID = setTimeout(this.notify, DELAY)
+    console.log(this.timeoutID)
   }
 
   notify () {
     this.props.onChange(this.state.text)
+    delete this.timeoutID
   }
 
   render () {
@@ -83,6 +95,7 @@ MeasurementInput.defaultProps = {
   onChange: () => {},
   computed: false,
   error: '',
-  disabled: false
+  disabled: false,
+  text: ''
 }
 export default MeasurementInput
