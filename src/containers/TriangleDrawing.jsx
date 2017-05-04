@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import classnames from 'classnames'
 import Triangle from '../geometry/Triangle'
 import styles from './TriangleDrawing.scss'
 import { getErrors, canInferAll } from '../geometry/triangleInfo'
@@ -7,7 +8,7 @@ import { getErrors, canInferAll } from '../geometry/triangleInfo'
 const { PI, abs } = Math
 const rt = PI / 2
 
-const TriangleDrawing = ({ triangle }) => {
+const TriangleDrawing = ({ triangle, labels }) => {
   if (!triangle) {
     return (
       <div className={styles.container}>
@@ -76,9 +77,9 @@ const TriangleDrawing = ({ triangle }) => {
           d={`M ${ax},${ay} L ${bx},${by} L ${cx},${cy} Z`}
           className={styles.trianglePath}
         />
-        <text className={styles.label} fontSize={fontSize} x={lax} y={lay} dy={dy}>a</text>
-        <text className={styles.label} fontSize={fontSize} x={lbx} y={lby} dy={dy}>b</text>
-        <text className={styles.label} fontSize={fontSize} x={lcx} y={lcy} dy={dy}>c</text>
+        <text className={classnames(styles.label, styles.side)} fontSize={fontSize * 0.8} x={lax} y={lay} dy={dy}>{`${labels.B}${labels.C}`}</text>
+        <text className={classnames(styles.label, styles.side)} fontSize={fontSize * 0.8} x={lbx} y={lby} dy={dy}>{`${labels.A}${labels.C}`}</text>
+        <text className={classnames(styles.label, styles.side)} fontSize={fontSize * 0.8} x={lcx} y={lcy} dy={dy}>{`${labels.A}${labels.B}`}</text>
 
         <text className={styles.label} fontSize={fontSize} x={lAx} y={lAy} dy={dy}>A</text>
         <text className={styles.label} fontSize={fontSize} x={lBx} y={lBy} dy={dy}>B</text>
@@ -90,7 +91,10 @@ const TriangleDrawing = ({ triangle }) => {
 
 function mapStateToProps (state) {
   if (!getErrors(state) && canInferAll(state)) {
-    return { triangle: Triangle.FromMetrics(state) }
+    return {
+      triangle: Triangle.FromMetrics(state),
+      labels: state.labels
+    }
   } else {
     return {}
   }
