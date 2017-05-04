@@ -13,14 +13,11 @@ export const setSide = (side, length) => ({ type: SET_SIDE, side, length })
 export const SET_ANGLE = 'SET_ANGLE'
 export const setAngle = (point, angle) => ({ type: SET_ANGLE, point, angle })
 
-export const UNSET_SIDE = 'UNSET_SIDE'
-export const unsetSide = side => ({ type: UNSET_SIDE, side })
-
-export const UNSET_ANGLE = 'UNSET_ANGLE'
-export const unsetAngle = point => ({ type: UNSET_ANGLE, point })
-
 export const SET_ANGLE_UNIT = 'SET_ANGLE_UNIT'
 export const setAngleUnit = unit => ({ type: SET_ANGLE_UNIT, unit })
+
+export const RENAME_POINT = 'RENAME_POINT'
+export const renamePoint = (point, name) => ({ type: RENAME_POINT, point, name })
 
 // No set measurements initially
 // Up to 3 sides, 2 sides + 1 angle, or 1 side + 2 angles
@@ -57,12 +54,6 @@ export default function app (state = init, action = {}) {
 
       // It is possible, return the new state
       return newState
-    }
-    case UNSET_SIDE: {
-      return Object.assign({}, state, { [action.side]: '' })
-    }
-    case UNSET_ANGLE: {
-      return Object.assign({}, state, { [action.point]: '' })
     }
     case SET_ANGLE_UNIT: {
       if (action.unit === state.angleUnit) return state
