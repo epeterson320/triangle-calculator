@@ -125,17 +125,23 @@ describe('Reducer', () => {
     const state1 = reduce(state0, app.setAngleUnit(NONE))
     expect(state0.angleUnit).toBe(state1.angleUnit)
   })
+
+  it('renames points', () => {
+    const state0 = reduce()
+    const state1 = reduce(state0, app.renamePoint(Point.B, 'P'))
+    expect(state1.labels.B).toBe('P')
+  })
 })
 
 describe('Action Creators', () => {
-  it('should create an action to set a side length', () => {
+  it('creates an action to set a side length', () => {
     const side = Side.a
     const length = '50.0'
     expect(app.setSide(side, length))
       .toEqual({ type: app.SET_SIDE, side, length })
   })
 
-  it('should create an action to set an angle', () => {
+  it('creates an action to set an angle', () => {
     const point = Point.A
     const angle = A45
     expect(app.setAngle(point, angle))

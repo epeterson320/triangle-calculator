@@ -24,7 +24,20 @@ export const renamePoint = (point, name) => ({ type: RENAME_POINT, point, name }
 // Lengths can be any positive number, but the sum of the two smaller lengths
 //   must be greater than the larger length.
 // Angles can be between 0 and PI non-inclusive
-const init = { a: '', b: '', c: '', C: '', B: '', A: '', angleUnit: DEG }
+const init = {
+  a: '',
+  b: '',
+  c: '',
+  C: '',
+  B: '',
+  A: '',
+  angleUnit: DEG,
+  labels: {
+    A: 'A',
+    B: 'B',
+    C: 'C'
+  }
+}
 
 export default function app (state = init, action = {}) {
   switch (action.type) {
@@ -73,6 +86,11 @@ export default function app (state = init, action = {}) {
         })
       }
       return state // invalid input
+    }
+    case RENAME_POINT: {
+      const { point, name } = action
+      const labels = Object.assign({}, state.labels, { [point]: name })
+      return Object.assign({}, state, { labels })
     }
 
     default:
