@@ -6,8 +6,8 @@ import TriangleDrawing from './TriangleDrawing'
 const App = (props) => {
   return (
     <div className={styles.app}>
-      <MeasurementsForm />
       <TriangleDrawing />
+      <MeasurementsForm />
     </div>
   )
 }

@@ -5,6 +5,7 @@ import RadioList from '../components/RadioList'
 import { setSide, setAngle, Side, Point, setAngleUnit, renamePoint } from '../modules/app'
 import { inferMeasurements, getErrors } from '../geometry/triangleInfo'
 import { DEG, RAD } from '../geometry/Metric'
+import styles from './MeasurementsForm.scss'
 
 const radioOpts = [
   { label: 'Degrees', value: DEG, default: true },
@@ -12,7 +13,7 @@ const radioOpts = [
 ]
 
 const MeasurementsForm = (props) => (
-  <form>
+  <form className={styles.container}>
     <RadioList opts={radioOpts} onChange={props.setUnit} />
     {['A', 'B', 'C', 'c', 'b', 'a'].map(key => {
       const measurement = props[key]

@@ -7,6 +7,7 @@
     "start": "webpack-dev-server --env=dev &>/dev/null &",
     "stop": "pkill -f webpack-dev-server || true",
     "test": "jest",
+    "size": "echo Minifed and gzipped: $((`gzip -9 -c dist/bundle.js | wc -c`/1000))KB",
     "lint": "standard --verbose | snazzy",
     "predeploy": "cp -R .circleci dist",
     "deploy": "gh-pages -d dist --dotfiles"

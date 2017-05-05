@@ -19,7 +19,7 @@ class RadioList extends PureComponent {
     return (
       <fieldset className={styles.fieldset}>
         {this.props.opts.map(option => [
-          <label htmlFor={option.label} key={`l${option.label}`}>
+          <label className={styles.label} htmlFor={option.label} key={`l${option.label}`}>
             {option.label}
           </label>,
           <input
