@@ -12,26 +12,26 @@ function render (props) {
 
 describe('<MeasurementInput>', () => {
   it('Has an input element', () => {
-    expect(render().find('input')).toHaveLength(1)
+    expect(render().find('.input')).toHaveLength(1)
   })
 
   it('Has a label', () => {
-    expect(render().find('.label').text()).toBe('ABC')
+    expect(render().find('.name').prop('value')).toBe('ABC')
   })
 
   it('Matches the label\'s "for" to the input\'s "id"', () => {
     const el = render()
     expect(el.find('.label').prop('htmlFor'))
-      .toBe(el.find('input').prop('id'))
+      .toBe(el.find('.input').prop('id'))
   })
 
   it('Shows the given text in the input', () => {
-    expect(render({ text: '42' }).find('input').prop('value')).toBe('42')
+    expect(render({ text: '42' }).find('.input').prop('value')).toBe('42')
   })
 
   it('Updates its text based on the text prop', () => {
     const el = render({ text: '14.523' })
-    expect(el.find('input').prop('value')).toBe('14.523')
+    expect(el.find('.input').prop('value')).toBe('14.523')
   })
 
   describe('onChange', () => {
@@ -43,14 +43,14 @@ describe('<MeasurementInput>', () => {
     it('Does not call onChange immediately when content is changed', () => {
       const fn = jest.fn()
       const el = render({ onChange: fn })
-      el.find('input').simulate('change', { target: { value: '3' } })
+      el.find('.input').simulate('change', { target: { value: '3' } })
       expect(fn).not.toBeCalled()
     })
 
     it('Calls onChange, delayed, after a change', () => {
       const fn = jest.fn()
       const el = render({ onChange: fn })
-      el.find('input').simulate('change', { target: { value: '3' } })
+      el.find('.input').simulate('change', { target: { value: '3' } })
       jest.runAllTimers()
       expect(fn).toBeCalled()
     })
@@ -58,34 +58,34 @@ describe('<MeasurementInput>', () => {
     it('Debounces the call to onChange if subsequent changes are made', () => {
       const fn = jest.fn()
       const el = render({ onChange: fn })
-      el.find('input').simulate('change', { target: { value: '3' } })
-      el.find('input').simulate('change', { target: { value: '3.' } })
-      el.find('input').simulate('change', { target: { value: '3.5' } })
+      el.find('.input').simulate('change', { target: { value: '3' } })
+      el.find('.input').simulate('change', { target: { value: '3.' } })
+      el.find('.input').simulate('change', { target: { value: '3.5' } })
       jest.runAllTimers()
       expect(fn).toHaveBeenCalledTimes(1)
     })
 
-    it.only('Doesn\'t update its text when about to send onChanged', () => {
+    it('Doesn\'t update its text when about to send onChanged', () => {
       const onChange = jest.fn()
       const el = render({ onChange, text: '14.523' })
-      el.find('input').simulate('change', { target: { value: '3' } })
+      el.find('.input').simulate('change', { target: { value: '3' } })
       el.setProps({ text: '' })
-      expect(el.find('input').prop('value')).toBe('3')
+      expect(el.find('.input').prop('value')).toBe('3')
       jest.runAllTimers()
       expect(onChange).toBeCalled()
-      expect(el.find('input').prop('value')).toBe('3')
+      expect(el.find('.input').prop('value')).toBe('3')
     })
 
     it('Cancels the onChanged timeout when it becomes computed', () => {
       const onChange = jest.fn()
       const el = render({ onChange, text: '14.523', computed: false })
-      el.find('input').simulate('change', { target: { value: '3' } })
-      expect(el.find('input').prop('value')).toBe('3')
+      el.find('.input').simulate('change', { target: { value: '3' } })
+      expect(el.find('.input').prop('value')).toBe('3')
       el.setProps({ text: '15', computed: true })
-      expect(el.find('input').prop('value')).toBe('15')
+      expect(el.find('.input').prop('value')).toBe('15')
       jest.runAllTimers()
       expect(onChange).not.toBeCalled()
-      expect(el.find('input').prop('value')).toBe('15')
+      expect(el.find('.input').prop('value')).toBe('15')
     })
   })
 
@@ -100,7 +100,7 @@ describe('<MeasurementInput>', () => {
 
     it('Shows the "clear" button when text is typed', () => {
       const el = render({ text: '' })
-      el.find('input').simulate('change', { target: { value: '3' } })
+      el.find('.input').simulate('change', { target: { value: '3' } })
       expect(el.find('button').hasClass('hidden')).toBe(false)
     })
 
@@ -124,10 +124,10 @@ describe('<MeasurementInput>', () => {
     it('Disables input if the value is computed', () => {
       const onChange = jest.fn()
       const el = render({ onChange, text: '14.523', computed: true })
-      el.find('input').simulate('change', { target: { value: '3' } })
+      el.find('.input').simulate('change', { target: { value: '3' } })
       jest.runAllTimers()
       expect(onChange).not.toBeCalled()
-      expect(el.find('input').prop('value')).toBe('14.523')
+      expect(el.find('.input').prop('value')).toBe('14.523')
     })
 
     it('Hides the "clear" button if the value is computed', () => {

@@ -81,9 +81,9 @@ const TriangleDrawing = ({ triangle, labels }) => {
         <text className={classnames(styles.label, styles.side)} fontSize={fontSize * 0.8} x={lbx} y={lby} dy={dy}>{`${labels.A}${labels.C}`}</text>
         <text className={classnames(styles.label, styles.side)} fontSize={fontSize * 0.8} x={lcx} y={lcy} dy={dy}>{`${labels.A}${labels.B}`}</text>
 
-        <text className={styles.label} fontSize={fontSize} x={lAx} y={lAy} dy={dy}>A</text>
-        <text className={styles.label} fontSize={fontSize} x={lBx} y={lBy} dy={dy}>B</text>
-        <text className={styles.label} fontSize={fontSize} x={lCx} y={lCy} dy={dy}>C</text>
+        <text className={styles.label} fontSize={fontSize} x={lAx} y={lAy} dy={dy}>{labels.A}</text>
+        <text className={styles.label} fontSize={fontSize} x={lBx} y={lBy} dy={dy}>{labels.B}</text>
+        <text className={styles.label} fontSize={fontSize} x={lCx} y={lCy} dy={dy}>{labels.C}</text>
       </svg>
     </div>
   )

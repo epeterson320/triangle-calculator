@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import MeasurementInput from '../components/MeasurementInput'
 import RadioList from '../components/RadioList'
-import { setSide, setAngle, Side, Point, setAngleUnit } from '../modules/app'
+import { setSide, setAngle, Side, Point, setAngleUnit, renamePoint } from '../modules/app'
 import { inferMeasurements, getErrors } from '../geometry/triangleInfo'
 import { DEG, RAD } from '../geometry/Metric'
 
@@ -22,6 +22,7 @@ const MeasurementsForm = (props) => (
           label={measurement.name}
           text={measurement.text}
           onChange={measurement.set}
+          onChangeLabel={measurement.onChangeLabel}
           computed={measurement.computed}
           error={measurement.error}
           disabled={measurement.disabled}
@@ -34,7 +35,7 @@ const MeasurementsForm = (props) => (
 const sides = Object.keys(Side)
 const points = Object.keys(Point)
 
-const mergeProps = (state, { setSide, setAngle, setAngleUnit }) => {
+const mergeProps = (state, { setSide, setAngle, setAngleUnit, renamePoint }) => {
   const errors = getErrors(state) || {}
   const hasErrors = Object.keys(errors).length > 0
   const m = inferMeasurements(state)
@@ -56,6 +57,7 @@ const mergeProps = (state, { setSide, setAngle, setAngleUnit }) => {
   points.forEach(angle => {
     props[angle].name = state.labels[angle]
     props[angle].set = text => setAngle(angle, text)
+    props[angle].onChangeLabel = text => renamePoint(angle, text)
   })
 
   sides.forEach(side => { props[side].set = text => setSide(side, text) })
@@ -72,7 +74,8 @@ export default connect(
   dispatch => ({
     setSide (s, l) { dispatch(setSide(s, l)) },
     setAngle (p, l) { dispatch(setAngle(p, l)) },
-    setAngleUnit (u) { dispatch(setAngleUnit(u)) }
+    setAngleUnit (u) { dispatch(setAngleUnit(u)) },
+    renamePoint (p, n) { dispatch(renamePoint(p, n)) }
   }),
   mergeProps
 )(MeasurementsForm)
