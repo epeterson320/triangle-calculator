@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import MeasurementInput from '../components/MeasurementInput'
 import RadioList from '../components/RadioList'
-import { setSide, setAngle, Side, Point, setAngleUnit } from '../modules/app'
+import { setSide, setAngle, Side, Point, setAngleUnit, renamePoint } from '../modules/app'
 import { inferMeasurements, getErrors } from '../geometry/triangleInfo'
 import { DEG, RAD } from '../geometry/Metric'
 
@@ -14,14 +14,15 @@ const radioOpts = [
 const MeasurementsForm = (props) => (
   <form>
     <RadioList opts={radioOpts} onChange={props.setUnit} />
-    {['A', 'B', 'C', 'a', 'b', 'c'].map(key => {
+    {['A', 'B', 'C', 'c', 'b', 'a'].map(key => {
       const measurement = props[key]
       return (
         <MeasurementInput
           key={key}
-          label={key}
+          label={measurement.name}
           text={measurement.text}
           onChange={measurement.set}
+          onChangeLabel={measurement.onChangeLabel}
           computed={measurement.computed}
           error={measurement.error}
           disabled={measurement.disabled}
@@ -31,14 +32,16 @@ const MeasurementsForm = (props) => (
   </form>
 )
 
-const fields = ['a', 'b', 'c', 'A', 'B', 'C']
+const sides = Object.keys(Side)
+const points = Object.keys(Point)
 
-const mapStateToProps = (state) => {
+const mergeProps = (state, { setSide, setAngle, setAngleUnit, renamePoint }) => {
   const errors = getErrors(state) || {}
   const hasErrors = Object.keys(errors).length > 0
   const m = inferMeasurements(state)
   const props = {}
-  fields.forEach(field => {
+
+  sides.concat(points).forEach(field => {
     const computed = !!m[field] && !state[field]
     let text = state[field]
     if (computed && m[field] >= 100) {
@@ -50,40 +53,29 @@ const mapStateToProps = (state) => {
     const disabled = hasErrors && !error
     props[field] = { text, computed, error, disabled }
   })
-  return props
-}
 
-const mapDispatchToProps = (dispatch) => {
-  const action = (creator, element) => text =>
-    dispatch(creator(element, text))
-
-  return {
-    A: { set: action(setAngle, Point.A) },
-    B: { set: action(setAngle, Point.B) },
-    C: { set: action(setAngle, Point.C) },
-    a: { set: action(setSide, Side.a) },
-    b: { set: action(setSide, Side.b) },
-    c: { set: action(setSide, Side.c) },
-    setUnit: (unit) => { dispatch(setAngleUnit(unit)) }
-  }
-}
-
-const mergeProps = (sp, dp) => {
-  const props = {}
-  fields.forEach(f => {
-    props[f] = {
-      text: sp[f].text,
-      computed: sp[f].computed,
-      error: sp[f].error,
-      disabled: sp[f].disabled,
-      set: dp[f].set
-    }
+  points.forEach(angle => {
+    props[angle].name = state.labels[angle]
+    props[angle].set = text => setAngle(angle, text)
+    props[angle].onChangeLabel = text => renamePoint(angle, text)
   })
+
+  sides.forEach(side => { props[side].set = text => setSide(side, text) })
+  props.a.name = state.labels.B + state.labels.C
+  props.b.name = state.labels.A + state.labels.C
+  props.c.name = state.labels.A + state.labels.B
+
+  props.setUnit = setAngleUnit
   return props
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+  state => state,
+  dispatch => ({
+    setSide (s, l) { dispatch(setSide(s, l)) },
+    setAngle (p, l) { dispatch(setAngle(p, l)) },
+    setAngleUnit (u) { dispatch(setAngleUnit(u)) },
+    renamePoint (p, n) { dispatch(renamePoint(p, n)) }
+  }),
   mergeProps
 )(MeasurementsForm)

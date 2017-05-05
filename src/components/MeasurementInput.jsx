@@ -9,13 +9,21 @@ class MeasurementInput extends Component {
     super(props)
     this.state = { text: props.text || '' }
 
+    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this)
     this.onChange = this.onChange.bind(this)
+    this.onChangeLabel = this.onChangeLabel.bind(this)
+    this.onClickName = this.onClickName.bind(this)
     this.onClear = this.onClear.bind(this)
     this.requestNotify = this.requestNotify.bind(this)
     this.notify = this.notify.bind(this)
   }
 
   componentWillReceiveProps (nextProps) {
+    if (nextProps.computed) {
+      clearTimeout(this.timeoutID)
+    } else if (this.timeoutID) {
+      return
+    }
     this.setState({ text: nextProps.text || '' })
   }
 
@@ -29,6 +37,21 @@ class MeasurementInput extends Component {
     this.setState({ text: '' }, this.notify)
   }
 
+  onClickName (e) {
+    if (this.props.onChangeLabel) {
+      e.target.focus()
+      e.target.select()
+    }
+  }
+
+  onChangeLabel (e) {
+    const newName = e.target.value.toUpperCase()
+    if (this.props.onChangeLabel && newName) {
+      this.props.onChangeLabel(newName[0])
+    }
+    e.target.blur()
+  }
+
   requestNotify () {
     clearTimeout(this.timeoutID)
     this.timeoutID = setTimeout(this.notify, DELAY)
@@ -36,17 +59,35 @@ class MeasurementInput extends Component {
 
   notify () {
     this.props.onChange(this.state.text)
+    clearTimeout(this.timeoutID)
   }
 
   render () {
-    const { label, computed, error, disabled } = this.props
+    const { label, computed, error, disabled, onChangeLabel } = this.props
     const { text } = this.state
     const hideButton = computed || !text
     const hideError = !error
+    const canChangeLabel = onChangeLabel != null
 
     return (
       <fieldset className={styles.fieldset}>
-        <label className={styles.label} htmlFor={label}>{label}</label>
+        <label className={styles.nameLabel} htmlFor={`n-${label}`}>
+          {canChangeLabel ? 'Point' : 'Side'}
+        </label>
+        <input
+          className={styles.name}
+          id={`n-${label}`}
+          value={label}
+          onChange={this.onChangeLabel}
+          onClick={this.onClickName}
+          ref={el => { this.nameInput = el; console.log(this.nameInput) }}
+          readOnly={!canChangeLabel}
+          maxLength={1}
+          tabIndex={-1}
+        />
+        <label className={styles.label} htmlFor={label}>
+          {canChangeLabel ? 'Angle' : 'Length'}
+        </label>
         <input
           id={label}
           className={classNames(styles.input, {
@@ -83,6 +124,7 @@ MeasurementInput.defaultProps = {
   onChange: () => {},
   computed: false,
   error: '',
-  disabled: false
+  disabled: false,
+  text: ''
 }
 export default MeasurementInput

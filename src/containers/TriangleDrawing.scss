@@ -12,7 +12,7 @@
 
 .trianglePath {
   fill-opacity: 0.12;
-  stroke-width: .5%;
+  stroke-width: 0.5%;
   stroke: black;
 }
 
@@ -20,8 +20,12 @@
   text-anchor: middle;
 }
 
+.side {
+  text-decoration: overline;
+}
+
 .arc {
   fill: transparent;
   stroke: rgba(0,0,200,0.54);
-  stroke-width: .5%;
+  stroke-width: 0.5%;
 }
