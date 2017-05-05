@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import styles from './MeasurementInput.scss'
+import Clear from './icon_clear.svg'
 
 const DELAY = 600 // ms
 
@@ -107,7 +108,7 @@ class MeasurementInput extends Component {
           type='button'
           tabIndex={-1}
         >
-          Clear
+          <Clear />
         </button>
         <label
           className={classNames(styles.error, { [styles.hidden]: hideError })}
