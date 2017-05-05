@@ -73,7 +73,8 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "\\.(scss)$": "identity-obj-proxy"
+      "\\.(scss)$": "identity-obj-proxy",
+      "\\.(svg)$": "<rootDir>/__mocks__/fileMock.js"
     }
   },
   "standard": {
