@@ -18,6 +18,10 @@ module.exports = {
       test: /\.jsx?$/,
       use: ['babel-loader'],
       exclude: /node_modules/
+    }, {
+      test: /\.svg$/,
+      use: ['babel-loader', 'svg-react-loader'],
+      exclude: /node_modules/
     }]
   }
 }
