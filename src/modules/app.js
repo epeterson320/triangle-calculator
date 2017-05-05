@@ -73,16 +73,16 @@ export default function app (state = init, action = {}) {
       if (state.angleUnit === DEG && action.unit === RAD) {
         return Object.assign({}, state, {
           angleUnit: RAD,
-          A: state.A * PI / 180,
-          B: state.B * PI / 180,
-          C: state.C * PI / 180
+          A: (parseFloat(state.A) * PI / 180 || state.A).toString(),
+          B: (parseFloat(state.B) * PI / 180 || state.B).toString(),
+          C: (parseFloat(state.C) * PI / 180 || state.C).toString()
         })
       } else if (state.angleUnit === RAD && action.unit === DEG) {
         return Object.assign({}, state, {
           angleUnit: DEG,
-          A: state.A * 180 / PI,
-          B: state.B * 180 / PI,
-          C: state.C * 180 / PI
+          A: (parseFloat(state.A) * 180 / PI || state.A).toString(),
+          B: (parseFloat(state.B) * 180 / PI || state.B).toString(),
+          C: (parseFloat(state.C) * 180 / PI || state.C).toString()
         })
       }
       return state // invalid input

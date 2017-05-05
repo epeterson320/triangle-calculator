@@ -21,7 +21,8 @@ class MeasurementInput extends Component {
   componentWillReceiveProps (nextProps) {
     if (nextProps.computed) {
       clearTimeout(this.timeoutID)
-    } else if (this.timeoutID) {
+      delete this.timeoutID
+    } else if ('timeoutID' in this) {
       return
     }
     this.setState({ text: nextProps.text || '' })
@@ -60,6 +61,7 @@ class MeasurementInput extends Component {
   notify () {
     this.props.onChange(this.state.text)
     clearTimeout(this.timeoutID)
+    delete this.timeoutID
   }
 
   render () {
