@@ -10,7 +10,6 @@ class MeasurementInput extends Component {
     super(props)
     this.state = { text: props.text || '' }
 
-    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onChangeLabel = this.onChangeLabel.bind(this)
     this.onClickName = this.onClickName.bind(this)
@@ -81,7 +80,6 @@ class MeasurementInput extends Component {
           value={label}
           onChange={this.onChangeLabel}
           onClick={this.onClickName}
-          ref={el => { this.nameInput = el; console.log(this.nameInput) }}
           readOnly={!canChangeLabel}
           maxLength={1}
           tabIndex={-1}
