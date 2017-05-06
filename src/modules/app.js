@@ -19,6 +19,9 @@ export const setAngleUnit = unit => ({ type: SET_ANGLE_UNIT, unit })
 export const RENAME_POINT = 'RENAME_POINT'
 export const renamePoint = (point, name) => ({ type: RENAME_POINT, point, name })
 
+export const TOGGLE_SHOW_CCENTER = 'TOGGLE_SHOW_CCENTER'
+export const toggleShowCCenter = () => ({ type: TOGGLE_SHOW_CCENTER })
+
 // No set measurements initially
 // Up to 3 sides, 2 sides + 1 angle, or 1 side + 2 angles
 // Lengths can be any positive number, but the sum of the two smaller lengths
@@ -36,7 +39,8 @@ const init = {
     A: 'A',
     B: 'B',
     C: 'C'
-  }
+  },
+  showCCenter: false
 }
 
 export default function app (state = init, action = {}) {
@@ -92,6 +96,8 @@ export default function app (state = init, action = {}) {
       const labels = Object.assign({}, state.labels, { [point]: name })
       return Object.assign({}, state, { labels })
     }
+    case TOGGLE_SHOW_CCENTER:
+      return Object.assign({}, state, { showCCenter: !state.showCCenter })
 
     default:
       return state

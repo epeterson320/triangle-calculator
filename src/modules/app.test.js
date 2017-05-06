@@ -131,6 +131,12 @@ describe('Reducer', () => {
     const state1 = reduce(state0, app.renamePoint(Point.B, 'P'))
     expect(state1.labels.B).toBe('P')
   })
+
+  it('toggles the display of the circumcenter', () => {
+    const state1 = reduce()
+    const state2 = reduce(state1, app.toggleShowCCenter())
+    expect(state2.showCCenter).toBe(!state1.showCCenter)
+  })
 })
 
 describe('Action Creators', () => {
