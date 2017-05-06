@@ -133,9 +133,8 @@ describe('Reducer', () => {
   })
 
   it('toggles the display of the circumcenter', () => {
-    const state1 = reduce()
-    const state2 = reduce(state1, app.toggleShowCCenter())
-    expect(state2.showCCenter).toBe(!state1.showCCenter)
+    expect(reduce(undefined, app.showCCenter(true)).showCCenter).toBe(true)
+    expect(reduce(undefined, app.showCCenter(false)).showCCenter).toBe(false)
   })
 })
 
