@@ -2,9 +2,9 @@ import { RectPoint } from './Point'
 
 const { atan, sqrt, PI } = Math
 
-function Line () { /* Abstract base prototype */ }
+function LineSegment () { /* Abstract base prototype */ }
 
-Line.prototype.intersect = function intersect (that) {
+LineSegment.prototype.intersect = function intersect (that) {
   // Method used from
   // en.wikipedia.org/wiki/Line–line_intersection#Given_two_points_on_each_line
   const x1 = this.point1.x
@@ -29,12 +29,12 @@ Line.prototype.intersect = function intersect (that) {
   return RectPoint(x, y)
 }
 
-Line.prototype.equals = function equals (that, precision = 0.01) {
+LineSegment.prototype.equals = function equals (that, precision = 0.01) {
   return this.point1.equals(that.point1, precision) &&
     this.point2.equals(that.point2, precision)
 }
 
-Object.defineProperty(Line.prototype, 'midpoint', {
+Object.defineProperty(LineSegment.prototype, 'midpoint', {
   get: function get () {
     const x = (this.point1.x + this.point2.x) / 2
     const y = (this.point1.y + this.point2.y) / 2
@@ -42,7 +42,7 @@ Object.defineProperty(Line.prototype, 'midpoint', {
   }
 })
 
-Object.defineProperty(Line.prototype, 'angle', {
+Object.defineProperty(LineSegment.prototype, 'angle', {
   get: function get () {
     const dx = this.point2.x - this.point1.x
     const dy = this.point2.y - this.point1.y
@@ -54,7 +54,7 @@ Object.defineProperty(Line.prototype, 'angle', {
   }
 })
 
-Object.defineProperty(Line.prototype, 'distance', {
+Object.defineProperty(LineSegment.prototype, 'distance', {
   get: function get () {
     const dx = this.point2.x - this.point1.x
     const dy = this.point2.y - this.point1.y
@@ -62,17 +62,17 @@ Object.defineProperty(Line.prototype, 'distance', {
   }
 })
 
-Line.PointPoint = function PointPoint (point1, point2) {
+LineSegment.PointPoint = function PointPoint (point1, point2) {
   if (point1.equals(point2, 0)) throw new Error('Points are identical')
-  const line = Object.create(Line.prototype)
+  const line = Object.create(LineSegment.prototype)
   line.point1 = point1
   line.point2 = point2
   return line
 }
 
-Line.PointAngleDistance = function PointAngle (point, angle, d) {
+LineSegment.PointAngleDistance = function PointAngle (point, angle, d) {
   const point2 = point.movePolar(angle, d)
-  return Line.PointPoint(point, point2)
+  return LineSegment.PointPoint(point, point2)
 }
 
-export default Line
+export default LineSegment

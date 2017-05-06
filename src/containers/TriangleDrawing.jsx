@@ -1,14 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
+import LineSegment from '../geometry/LineSegment'
 import Triangle from '../geometry/Triangle'
 import styles from './TriangleDrawing.scss'
 import { getErrors, canInferAll } from '../geometry/triangleInfo'
 
-const { PI, abs } = Math
+const { PI, abs, min } = Math
 const rt = PI / 2
 
-const TriangleDrawing = ({ triangle, labels }) => {
+const TriangleDrawing = ({ triangle, labels, showCC }) => {
   if (!triangle) {
     return (
       <div className={styles.container}>
@@ -50,6 +51,13 @@ const TriangleDrawing = ({ triangle, labels }) => {
   const lB = b.movePolar((ab.angle + cb.angle) / 2 + PI, p * 0.05)
   const lBx = lB.x - xl
   const lBy = yt - lB.y
+  const U = triangle.circumcenter
+  const ux = U.x - xl
+  const uy = yt - U.y
+  const ur = min(
+    LineSegment.PointPoint(U, triangle.a).distance,
+    LineSegment.PointPoint(U, triangle.b).distance
+  )
   const aRt = abs(triangle.ac.angle - triangle.ab.angle - rt) < 0.000001
   const bRt = abs(triangle.ba.angle - triangle.bc.angle - rt) < 0.000001
   const cRt = abs(triangle.cb.angle - triangle.ca.angle - rt) < 0.000001
@@ -84,6 +92,8 @@ const TriangleDrawing = ({ triangle, labels }) => {
         <text className={styles.label} fontSize={fontSize} x={lAx} y={lAy} dy={dy}>{labels.A}</text>
         <text className={styles.label} fontSize={fontSize} x={lBx} y={lBy} dy={dy}>{labels.B}</text>
         <text className={styles.label} fontSize={fontSize} x={lCx} y={lCy} dy={dy}>{labels.C}</text>
+        <circle className={classnames(styles.circumcircle, { [styles.hidden]: !showCC })} cx={ux} cy={uy} r={ur} />
+        <circle className={classnames(styles.circumcenter, { [styles.hidden]: !showCC })} cx={ux} cy={uy} r={fontSize * 0.05} />
       </svg>
     </div>
   )
@@ -93,7 +103,8 @@ function mapStateToProps (state) {
   if (!getErrors(state) && canInferAll(state)) {
     return {
       triangle: Triangle.FromMetrics(state),
-      labels: state.labels
+      labels: state.labels,
+      showCC: state.showCCenter
     }
   } else {
     return {}
