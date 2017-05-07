@@ -9,7 +9,7 @@ import { getErrors, canInferAll } from '../geometry/triangleInfo'
 const { PI, abs, min } = Math
 const rt = PI / 2
 
-const TriangleDrawing = ({ triangle, labels, showCC }) => {
+const TriangleDrawing = ({ triangle, labels, showCC, showIC }) => {
   if (!triangle) {
     return (
       <div className={styles.container}>
@@ -58,6 +58,10 @@ const TriangleDrawing = ({ triangle, labels, showCC }) => {
     LineSegment.PointPoint(U, triangle.a).distance,
     LineSegment.PointPoint(U, triangle.b).distance
   )
+  const I = triangle.incenter
+  const ix = I.x - xl
+  const iy = yt - I.y
+  const ir = triangle.inradius
   const aRt = abs(triangle.ac.angle - triangle.ab.angle - rt) < 0.000001
   const bRt = abs(triangle.ba.angle - triangle.bc.angle - rt) < 0.000001
   const cRt = abs(triangle.cb.angle - triangle.ca.angle - rt) < 0.000001
@@ -93,7 +97,9 @@ const TriangleDrawing = ({ triangle, labels, showCC }) => {
         <text className={styles.label} fontSize={fontSize} x={lBx} y={lBy} dy={dy}>{labels.B}</text>
         <text className={styles.label} fontSize={fontSize} x={lCx} y={lCy} dy={dy}>{labels.C}</text>
         <circle className={classnames(styles.circumcircle, { [styles.hidden]: !showCC })} cx={ux} cy={uy} r={ur} />
-        <circle className={classnames(styles.circumcenter, { [styles.hidden]: !showCC })} cx={ux} cy={uy} r={fontSize * 0.05} />
+        <circle className={classnames(styles.circumcenter, { [styles.hidden]: !showCC })} cx={ux} cy={uy} r={fontSize * 0.1} />
+        <circle className={classnames(styles.incircle, { [styles.hidden]: !showIC })} cx={ix} cy={iy} r={ir} />
+        <circle className={classnames(styles.incenter, { [styles.hidden]: !showIC })} cx={ix} cy={iy} r={fontSize * 0.1} />
       </svg>
     </div>
   )
@@ -104,7 +110,8 @@ function mapStateToProps (state) {
     return {
       triangle: Triangle.FromMetrics(state),
       labels: state.labels,
-      showCC: state.showCCenter
+      showCC: state.showCCenter,
+      showIC: state.showICenter
     }
   } else {
     return {}

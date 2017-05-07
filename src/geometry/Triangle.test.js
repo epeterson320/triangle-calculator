@@ -36,6 +36,25 @@ describe('Triangle', () => {
     expect(t306090.circumcenter.equals(exp)).toBeTruthy()
   })
 
+  it('Has an incenter', () => {
+    // I'm just going off of
+    // wikipedia.org/wiki/Incircle_and_excircles_of_a_triangle#Cartesian_coordinates_of_the_incenter
+    const t = t306090
+    const a = t.bc.distance
+    const b = t.ac.distance
+    const c = t.ab.distance
+    const A = t.a
+    const B = t.b
+    const C = t.c
+    const x = (a * A.x + b * B.x + c * C.x) / (a + b + c)
+    const y = (a * A.y + b * B.y + c * C.y) / (a + b + c)
+    expect(t.incenter.equals(RectPoint(x, y))).toBeTruthy()
+  })
+
+  it.skip('Has an inradius', () => {
+
+  })
+
   describe('Viewbox', () => {
     it('Should have a viewbox', () => {
       expect(t306090.viewbox).toBeDefined()
@@ -76,17 +95,6 @@ describe('Triangle', () => {
       expect(equilateral10.label.b.equals(expb)).toBe(true)
 
       const expc = RectPoint(5, -1.5)
-      expect(equilateral10.label.c.equals(expc)).toBe(true)
-    })
-
-    it.skip('Gets decent coords for sides of an equilateral triangle', () => {
-      const expa = RectPoint(7.5 + 1.5 * sqrt(3), 2.5 * sqrt(3) + 1.5)
-      expect(equilateral10.label.a.equals(expa)).toBe(true)
-
-      const expb = RectPoint(2.5 - 1.5 * sqrt(3), 2.5 * sqrt(3) + 1.5)
-      expect(equilateral10.label.b.equals(expb)).toBe(true)
-
-      const expc = RectPoint(5, -3)
       expect(equilateral10.label.c.equals(expc)).toBe(true)
     })
   })

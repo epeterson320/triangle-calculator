@@ -48,6 +48,20 @@ Object.defineProperty(Triangle.prototype, 'viewbox', {
   }
 })
 
+Object.defineProperty(Triangle.prototype, 'incenter', {
+  get: function get () {
+    const b1 = this.ab.bisect(this.ac)
+    const b2 = this.ba.bisect(this.bc)
+    return b1.intersect(b2)
+  }
+})
+
+Object.defineProperty(Triangle.prototype, 'inradius', {
+  get: function get () {
+    const I = this.incenter
+    return Line.PointPerpendicular(I, this.ab).distance
+  }
+})
 Triangle.FromPoints = function FromPoints (a, b, c) {
   const t = Object.create(Triangle.prototype)
   t.a = a

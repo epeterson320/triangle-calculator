@@ -37,11 +37,11 @@
   stroke-width: 0.5%;
 }
 
-.circumcircle {
+.circumcircle, .incircle {
   stroke-width: 0.5%;
   stroke: rgba(200, 0, 0, 0.54);
   fill: transparent;
 }
-.circumcenter {
+.circumcenter, .incenter {
   fill: rgba(200, 0, 0, 0.87);
 }

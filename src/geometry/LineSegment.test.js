@@ -14,6 +14,10 @@ const xEqY = Line.PointPoint(origin, RectPoint(10, 10))
 const xEq0 = Line.PointPoint(origin, RectPoint(0, 10))
 const yEq4 = Line.PointAngleDistance(RectPoint(0, 4), 0, 10)
 
+function makeLine (x1 = 0, y1 = 0, x2 = 1, y2 = 0) {
+  return Line.PointPoint(RectPoint(x1, y1), RectPoint(x2, y2))
+}
+
 describe('Line', () => {
   it('Has a PointPoint constructor', () => {
     expect(Line.PointPoint(origin, unitX)).toBeInstanceOf(Line)
@@ -23,6 +27,24 @@ describe('Line', () => {
   it('Has a PointAngleDistance constructor', () => {
     expect(Line.PointAngleDistance(origin, ANG_45, 4.2)).toBeInstanceOf(Line)
     expect(new Line.PointAngleDistance(origin, ANG_180, 4.2)).toBeInstanceOf(Line)
+  })
+
+  describe('PointPerpendicular constructor', () => {
+    it('Works with the point below the line', () => {
+      const perp = makeLine(-1, 0, 1, 2)
+      const point = RectPoint(1, 0)
+      const line = Line.PointPerpendicular(point, perp)
+      expect(line.point2.equals(RectPoint(0, 1))).toBe(true)
+      expect(line.angle).toBeCloseTo(3 * PI / 4)
+    })
+
+    it('Works with the point above the line', () => {
+      const perp = makeLine(-1, 0, 1, 2)
+      const point = RectPoint(-1, 2)
+      const line = Line.PointPerpendicular(point, perp)
+      expect(line.point2.equals(RectPoint(0, 1))).toBe(true)
+      expect(line.angle).toBeCloseTo(7 * PI / 4)
+    })
   })
 
   describe('Intersect', () => {
@@ -92,6 +114,18 @@ describe('Line', () => {
 
     const vert = Line.PointPoint(origin, RectPoint(0, 4))
     expect(vert.angle).toBeCloseTo(ANG_90)
+  })
+
+  it('Bisects other lines', () => {
+    const bisector1 = makeLine().bisect(makeLine(0, 0, 1, 1))
+    expect(bisector1.equals(Line.PointAngleDistance(origin, PI / 8, 1)))
+      .toBe(true)
+
+    const bisector2 = Line.PointAngleDistance(origin, -PI / 8, 1)
+      .bisect(Line.PointAngleDistance(origin, 3 * PI / 8, 1))
+
+    expect(bisector2.angle)
+      .toBeCloseTo(Line.PointAngleDistance(origin, PI / 8, 1).angle)
   })
 
   it('Has the correct angle in every quadrant', () => {

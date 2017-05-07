@@ -34,6 +34,12 @@ LineSegment.prototype.equals = function equals (that, precision = 0.01) {
     this.point2.equals(that.point2, precision)
 }
 
+LineSegment.prototype.bisect = function bisect (that) {
+  const point = this.intersect(that)
+  const angle = (this.angle + that.angle) / 2 % PI
+  return LineSegment.PointAngleDistance(point, angle, 1)
+}
+
 Object.defineProperty(LineSegment.prototype, 'midpoint', {
   get: function get () {
     const x = (this.point1.x + this.point2.x) / 2
@@ -72,6 +78,13 @@ LineSegment.PointPoint = function PointPoint (point1, point2) {
 
 LineSegment.PointAngleDistance = function PointAngle (point, angle, d) {
   const point2 = point.movePolar(angle, d)
+  return LineSegment.PointPoint(point, point2)
+}
+
+LineSegment.PointPerpendicular = function PointPerpendicular (point, otherLine) {
+  const angle = otherLine.angle + (PI / 2)
+  const _line = LineSegment.PointAngleDistance(point, angle, 1)
+  const point2 = _line.intersect(otherLine)
   return LineSegment.PointPoint(point, point2)
 }
 

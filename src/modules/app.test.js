@@ -136,32 +136,9 @@ describe('Reducer', () => {
     expect(reduce(undefined, app.showCCenter(true)).showCCenter).toBe(true)
     expect(reduce(undefined, app.showCCenter(false)).showCCenter).toBe(false)
   })
-})
 
-describe('Action Creators', () => {
-  it('creates an action to set a side length', () => {
-    const side = Side.a
-    const length = '50.0'
-    expect(app.setSide(side, length))
-      .toEqual({ type: app.SET_SIDE, side, length })
-  })
-
-  it('creates an action to set an angle', () => {
-    const point = Point.A
-    const angle = A45
-    expect(app.setAngle(point, angle))
-      .toEqual({ type: app.SET_ANGLE, point, angle })
-  })
-
-  it('creates an action to set the metric', () => {
-    expect(app.setAngleUnit(DEG))
-      .toEqual({ type: app.SET_ANGLE_UNIT, unit: DEG })
-    expect(app.setAngleUnit(RAD))
-      .toEqual({ type: app.SET_ANGLE_UNIT, unit: RAD })
-  })
-
-  it('creates actions to rename points', () => {
-    expect(app.renamePoint(Point.A, 'P'))
-      .toEqual({ type: app.RENAME_POINT, point: Point.A, name: 'P' })
+  it('toggles the display of the incenter', () => {
+    expect(reduce(undefined, app.showICenter(true)).showICenter).toBe(true)
+    expect(reduce(undefined, app.showICenter(false)).showICenter).toBe(false)
   })
 })

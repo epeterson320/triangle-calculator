@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Checkbox from '../components/Checkbox'
-import { showCCenter } from '../modules/app'
+import * as app from '../modules/app'
 import styles from './DisplayPrefsForm.scss'
 
 export class DisplayPrefsForm extends Component {
@@ -12,16 +12,22 @@ export class DisplayPrefsForm extends Component {
         label='Circumcenter'
         onChange={this.props.showCC}
         checked={this.props.isShowingCC} />
+      <Checkbox
+        label='Incenter'
+        onChange={this.props.showIC}
+        checked={this.props.isShowingIC} />
     </form>)
   }
 }
 
 const mapStateToProps = state => ({
-  isShowingCC: state.showCCenter
+  isShowingCC: state.showCCenter,
+  isShowingIC: state.showICenter
 })
 
 const mapDispatchToProps = dispatch => ({
-  showCC (show) { dispatch(showCCenter(show)) }
+  showCC (show) { dispatch(app.showCCenter(show)) },
+  showIC (show) { dispatch(app.showICenter(show)) }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DisplayPrefsForm)

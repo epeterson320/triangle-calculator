@@ -22,6 +22,9 @@ export const renamePoint = (point, name) => ({ type: RENAME_POINT, point, name }
 export const SHOW_CCENTER = 'SHOW_CCENTER'
 export const showCCenter = (show = true) => ({ type: SHOW_CCENTER, show })
 
+export const SHOW_ICENTER = 'SHOW_ICENTER'
+export const showICenter = (show = true) => ({ type: SHOW_ICENTER, show })
+
 // No set measurements initially
 // Up to 3 sides, 2 sides + 1 angle, or 1 side + 2 angles
 // Lengths can be any positive number, but the sum of the two smaller lengths
@@ -98,7 +101,8 @@ export default function app (state = init, action = {}) {
     }
     case SHOW_CCENTER:
       return Object.assign({}, state, { showCCenter: action.show })
-
+    case SHOW_ICENTER:
+      return Object.assign({}, state, { showICenter: action.show })
     default:
       return state
   }
