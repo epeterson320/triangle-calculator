@@ -90,6 +90,15 @@ describe('Triangle', () => {
     expect(t306090.centroid.equals(RectPoint(1 / 3, sqrt(3) / 3))).toBe(true)
   })
 
+  it('Has Euler\'s line', () => {
+    expect(t306090.eulerLine.contains(origin, { extend: true })).toBe(true)
+    expect(t306090.eulerLine.contains(RectPoint(0.5, sqrt(3) / 2), { extend: true })).toBe(true)
+  })
+
+  it('Doesn\'t have Euler\'s line (equilateral)', () => {
+    expect(equilateral10.eulerLine).toBe(null)
+  })
+
   describe('Viewbox', () => {
     it('Should have a viewbox', () => {
       expect(t306090.viewbox).toBeDefined()

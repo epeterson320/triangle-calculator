@@ -5,6 +5,7 @@ import { DEG } from './Metric'
 
 const { max, PI } = Math
 const ANG_90 = PI / 2
+const ANG_60 = PI / 3
 
 export default function Triangle () { /* Base Prototype */ }
 
@@ -84,6 +85,17 @@ Object.defineProperty(Triangle.prototype, 'centroid', {
   get: function get () {
     return Line.PointPoint(this.a, this.bc.midpoint)
       .intersect(Line.PointPoint(this.b, this.ac.midpoint))
+  }
+})
+
+function is60 (angle) {
+  return angle - ANG_60 < 0.00001 && angle - ANG_60 > -0.00001
+}
+
+Object.defineProperty(Triangle.prototype, 'eulerLine', {
+  get: function get () {
+    if (is60(this.A) && is60(this.B) && is60(this.C)) return null
+    return Line.PointPoint(this.circumcenter, this.orthocenter)
   }
 })
 

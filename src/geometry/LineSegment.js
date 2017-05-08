@@ -1,6 +1,6 @@
 import { RectPoint } from './Point'
 
-const { atan, sqrt, PI } = Math
+const { atan, sqrt, abs, max, min, PI } = Math
 
 function LineSegment () { /* Abstract base prototype */ }
 
@@ -40,23 +40,30 @@ LineSegment.prototype.bisect = function bisect (that) {
   return LineSegment.PointAngleDistance(point, angle, 1)
 }
 
+LineSegment.prototype.contains = function bisect (p, opts = {}) {
+  const extend = opts.extend || false
+  const precision = opts.precision || 0.02
+  if (p.equals(this.point1) || p.equals(this.point2)) return true
+  const dx = p.x - this.point1.x
+  const dy = p.y - this.point1.y
+  const m = dx / dy
+  const onExtended = abs(this.m - m) < precision
+  if (!onExtended) return false
+  else if (extend) return true
+  else {
+    const xUpper = max(this.point1.x, this.point2.x)
+    const xLower = min(this.point1.x, this.point2.x)
+    const yUpper = max(this.point1.y, this.point2.y)
+    const yLower = min(this.point1.y, this.point2.y)
+    return p.x >= xLower && p.x <= xUpper && p.y >= yLower && p.y <= yUpper
+  }
+}
+
 Object.defineProperty(LineSegment.prototype, 'midpoint', {
   get: function get () {
     const x = (this.point1.x + this.point2.x) / 2
     const y = (this.point1.y + this.point2.y) / 2
     return RectPoint(x, y)
-  }
-})
-
-Object.defineProperty(LineSegment.prototype, 'angle', {
-  get: function get () {
-    const dx = this.point2.x - this.point1.x
-    const dy = this.point2.y - this.point1.y
-
-    const angle = atan(dy / dx)
-    if (dx < 0) return angle + PI
-    if (dy < 0) return angle + (2 * PI)
-    return angle
   }
 })
 
@@ -73,6 +80,12 @@ LineSegment.PointPoint = function PointPoint (point1, point2) {
   const line = Object.create(LineSegment.prototype)
   line.point1 = point1
   line.point2 = point2
+  const dx = point2.x - point1.x
+  const dy = point2.y - point1.y
+  line.m = dy / dx
+  line.angle = atan(line.m)
+  if (dx < 0) line.angle = line.angle + PI
+  else if (dy < 0) line.angle = line.angle + (2 * PI)
   return line
 }
 

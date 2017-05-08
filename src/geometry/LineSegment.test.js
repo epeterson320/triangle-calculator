@@ -135,4 +135,14 @@ describe('Line', () => {
       expect(line.angle).toBeCloseTo(angle)
     })
   })
+
+  it('Contains points', () => {
+    expect(xEqY.contains(RectPoint(4, 4))).toBe(true)
+    expect(xEqY.contains(RectPoint(0, 0))).toBe(true)
+    expect(xEqY.contains(RectPoint(-1, -1))).toBe(false)
+  })
+
+  it('Contains points when extended', () => {
+    expect(xEqY.contains(RectPoint(100000, 100000), { extend: true })).toBe(true)
+  })
 })
