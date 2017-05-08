@@ -1,14 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
+import LineSegment from '../geometry/LineSegment'
 import Triangle from '../geometry/Triangle'
 import styles from './TriangleDrawing.scss'
 import { getErrors, canInferAll } from '../geometry/triangleInfo'
 
-const { PI, abs } = Math
+const { PI, abs, min } = Math
 const rt = PI / 2
 
-const TriangleDrawing = ({ triangle, labels }) => {
+const TriangleDrawing = ({ triangle, labels, showCC, showIC, showOC, showCentroid, showEuler }) => {
   if (!triangle) {
     return (
       <div className={styles.container}>
@@ -50,6 +51,40 @@ const TriangleDrawing = ({ triangle, labels }) => {
   const lB = b.movePolar((ab.angle + cb.angle) / 2 + PI, p * 0.05)
   const lBx = lB.x - xl
   const lBy = yt - lB.y
+  const U = triangle.circumcenter
+  const ux = U.x - xl
+  const uy = yt - U.y
+  const ur = min(
+    LineSegment.PointPoint(U, triangle.a).distance,
+    LineSegment.PointPoint(U, triangle.b).distance
+  )
+  const I = triangle.incenter
+  const ix = I.x - xl
+  const iy = yt - I.y
+  const ir = triangle.inradius
+
+  const O = triangle.orthocenter
+  const ox = O.x - xl
+  const oy = yt - O.y
+
+  const G = triangle.centroid
+  const gx = G.x - xl
+  const gy = yt - G.y
+
+  const euler = triangle.eulerLine
+  let e = { x1: 0, y1: 0, x2: 1, y2: 0 }
+  if (euler) {
+    const s = xr - xl
+    const p1 = euler.point1.movePolar(euler.angle + PI, s)
+    const p2 = euler.point2.movePolar(euler.angle, s)
+    e = {
+      x1: p1.x - xl,
+      y1: yt - p1.y,
+      x2: p2.x - xl,
+      y2: yt - p2.y
+    }
+  }
+
   const aRt = abs(triangle.ac.angle - triangle.ab.angle - rt) < 0.000001
   const bRt = abs(triangle.ba.angle - triangle.bc.angle - rt) < 0.000001
   const cRt = abs(triangle.cb.angle - triangle.ca.angle - rt) < 0.000001
@@ -84,6 +119,29 @@ const TriangleDrawing = ({ triangle, labels }) => {
         <text className={styles.label} fontSize={fontSize} x={lAx} y={lAy} dy={dy}>{labels.A}</text>
         <text className={styles.label} fontSize={fontSize} x={lBx} y={lBy} dy={dy}>{labels.B}</text>
         <text className={styles.label} fontSize={fontSize} x={lCx} y={lCy} dy={dy}>{labels.C}</text>
+        <circle className={classnames(styles.circumcircle, { [styles.hidden]: !showCC })} cx={ux} cy={uy} r={ur} />
+        <circle className={classnames(styles.circumcenter, { [styles.hidden]: !showCC })} cx={ux} cy={uy} r={fontSize * 0.1} />
+        <circle className={classnames(styles.incircle, { [styles.hidden]: !showIC })} cx={ix} cy={iy} r={ir} />
+        <circle className={classnames(styles.incenter, { [styles.hidden]: !showIC })} cx={ix} cy={iy} r={fontSize * 0.1} />
+        <circle className={classnames(styles.orthocenter, { [styles.hidden]: !showOC })} cx={ox} cy={oy} r={fontSize * 0.1} />
+        <circle className={classnames(styles.centroid, { [styles.hidden]: !showCentroid })} cx={gx} cy={gy} r={fontSize * 0.1} />
+        {(euler != null)
+          ? <line
+            className={classnames(styles.euler, { [styles.hidden]: !showEuler })}
+            x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
+            />
+          : null
+        }
+        <text
+          className={classnames(
+          styles.noEuler,
+          { [styles.hidden]: euler != null || !showEuler }
+          )}
+          fontSize={fontSize * 0.5}
+          x={xl + (xr - xl) * 0.3} y={yt + (yt - yb) * 0.2}
+        >
+          Euler line cannot be determined.
+        </text>
       </svg>
     </div>
   )
@@ -93,7 +151,12 @@ function mapStateToProps (state) {
   if (!getErrors(state) && canInferAll(state)) {
     return {
       triangle: Triangle.FromMetrics(state),
-      labels: state.labels
+      labels: state.labels,
+      showCC: state.showCCenter,
+      showIC: state.showICenter,
+      showOC: state.showOCenter,
+      showCentroid: state.showCentroid,
+      showEuler: state.showEuler
     }
   } else {
     return {}
