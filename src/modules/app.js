@@ -31,6 +31,9 @@ export const showOCenter = (show = true) => ({ type: SHOW_OCENTER, show })
 export const SHOW_CENTROID = 'SHOW_CENTROID'
 export const showCentroid = (show = true) => ({ type: SHOW_CENTROID, show })
 
+export const SHOW_EULER = 'SHOW_EULER'
+export const showEuler = (show = true) => ({ type: SHOW_EULER, show })
+
 // No set measurements initially
 // Up to 3 sides, 2 sides + 1 angle, or 1 side + 2 angles
 // Lengths can be any positive number, but the sum of the two smaller lengths
@@ -52,7 +55,8 @@ const init = {
   showCCenter: false,
   showICenter: false,
   showOCenter: false,
-  showCentroid: false
+  showCentroid: false,
+  showEuler: false
 }
 
 export default function app (state = init, action = {}) {
@@ -116,6 +120,8 @@ export default function app (state = init, action = {}) {
       return Object.assign({}, state, { showOCenter: action.show })
     case SHOW_CENTROID:
       return Object.assign({}, state, { showCentroid: action.show })
+    case SHOW_EULER:
+      return Object.assign({}, state, { showEuler: action.show })
     default:
       return state
   }

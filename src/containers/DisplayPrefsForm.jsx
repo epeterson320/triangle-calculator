@@ -24,6 +24,10 @@ export class DisplayPrefsForm extends Component {
         label='Centroid'
         onChange={this.props.showCentroid}
         checked={this.props.isShowingCentroid} />
+      <Checkbox
+        label='Euler Line'
+        onChange={this.props.showEuler}
+        checked={this.props.isShowingEuler} />
     </form>)
   }
 }
@@ -32,14 +36,16 @@ const mapStateToProps = state => ({
   isShowingCC: state.showCCenter,
   isShowingIC: state.showICenter,
   isShowingOC: state.showOCenter,
-  isShowingCentroid: state.showCentroid
+  isShowingCentroid: state.showCentroid,
+  isShowingEuler: state.showEuler
 })
 
 const mapDispatchToProps = dispatch => ({
   showCC (show) { dispatch(app.showCCenter(show)) },
   showIC (show) { dispatch(app.showICenter(show)) },
   showOC (show) { dispatch(app.showOCenter(show)) },
-  showCentroid (show) { dispatch(app.showCentroid(show)) }
+  showCentroid (show) { dispatch(app.showCentroid(show)) },
+  showEuler (show) { dispatch(app.showEuler(show)) }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DisplayPrefsForm)

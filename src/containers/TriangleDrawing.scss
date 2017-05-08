@@ -37,11 +37,16 @@
   stroke-width: 0.5%;
 }
 
-.circumcircle, .incircle {
+.circumcircle, .incircle, .euler {
   stroke-width: 0.5%;
   stroke: rgba(200, 0, 0, 0.54);
   fill: transparent;
 }
 .circumcenter, .incenter, .orthocenter, .centroid {
   fill: rgba(200, 0, 0, 0.87);
+}
+
+.noEuler {
+  text-anchor: start;
+  fill: rgba(200, 0, 0, 0.87)
 }

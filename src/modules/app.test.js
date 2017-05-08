@@ -151,4 +151,9 @@ describe('Reducer', () => {
     expect(reduce(undefined, app.showCentroid(true)).showCentroid).toBe(true)
     expect(reduce(undefined, app.showCentroid(false)).showCentroid).toBe(false)
   })
+
+  it('toggles the display of the Euler line', () => {
+    expect(reduce(undefined, app.showEuler(true)).showEuler).toBe(true)
+    expect(reduce(undefined, app.showEuler(false)).showEuler).toBe(false)
+  })
 })

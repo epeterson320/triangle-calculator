@@ -9,7 +9,7 @@ import { getErrors, canInferAll } from '../geometry/triangleInfo'
 const { PI, abs, min } = Math
 const rt = PI / 2
 
-const TriangleDrawing = ({ triangle, labels, showCC, showIC, showOC, showCentroid }) => {
+const TriangleDrawing = ({ triangle, labels, showCC, showIC, showOC, showCentroid, showEuler }) => {
   if (!triangle) {
     return (
       <div className={styles.container}>
@@ -71,6 +71,20 @@ const TriangleDrawing = ({ triangle, labels, showCC, showIC, showOC, showCentroi
   const gx = G.x - xl
   const gy = yt - G.y
 
+  const euler = triangle.eulerLine
+  let e = { x1: 0, y1: 0, x2: 1, y2: 0 }
+  if (euler) {
+    const s = xr - xl
+    const p1 = euler.point1.movePolar(euler.angle + PI, s)
+    const p2 = euler.point2.movePolar(euler.angle, s)
+    e = {
+      x1: p1.x - xl,
+      y1: yt - p1.y,
+      x2: p2.x - xl,
+      y2: yt - p2.y
+    }
+  }
+
   const aRt = abs(triangle.ac.angle - triangle.ab.angle - rt) < 0.000001
   const bRt = abs(triangle.ba.angle - triangle.bc.angle - rt) < 0.000001
   const cRt = abs(triangle.cb.angle - triangle.ca.angle - rt) < 0.000001
@@ -111,6 +125,23 @@ const TriangleDrawing = ({ triangle, labels, showCC, showIC, showOC, showCentroi
         <circle className={classnames(styles.incenter, { [styles.hidden]: !showIC })} cx={ix} cy={iy} r={fontSize * 0.1} />
         <circle className={classnames(styles.orthocenter, { [styles.hidden]: !showOC })} cx={ox} cy={oy} r={fontSize * 0.1} />
         <circle className={classnames(styles.centroid, { [styles.hidden]: !showCentroid })} cx={gx} cy={gy} r={fontSize * 0.1} />
+        {(euler != null)
+          ? <line
+            className={classnames(styles.euler, { [styles.hidden]: !showEuler })}
+            x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
+            />
+          : null
+        }
+        <text
+          className={classnames(
+          styles.noEuler,
+          { [styles.hidden]: euler != null || !showEuler }
+          )}
+          fontSize={fontSize * 0.5}
+          x={xl + (xr - xl) * 0.3} y={yt + (yt - yb) * 0.2}
+        >
+          Euler line cannot be determined.
+        </text>
       </svg>
     </div>
   )
@@ -124,7 +155,8 @@ function mapStateToProps (state) {
       showCC: state.showCCenter,
       showIC: state.showICenter,
       showOC: state.showOCenter,
-      showCentroid: state.showCentroid
+      showCentroid: state.showCentroid,
+      showEuler: state.showEuler
     }
   } else {
     return {}
