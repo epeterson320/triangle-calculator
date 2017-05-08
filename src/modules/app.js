@@ -25,6 +25,12 @@ export const showCCenter = (show = true) => ({ type: SHOW_CCENTER, show })
 export const SHOW_ICENTER = 'SHOW_ICENTER'
 export const showICenter = (show = true) => ({ type: SHOW_ICENTER, show })
 
+export const SHOW_OCENTER = 'SHOW_OCENTER'
+export const showOCenter = (show = true) => ({ type: SHOW_OCENTER, show })
+
+export const SHOW_CENTROID = 'SHOW_CENTROID'
+export const showCentroid = (show = true) => ({ type: SHOW_CENTROID, show })
+
 // No set measurements initially
 // Up to 3 sides, 2 sides + 1 angle, or 1 side + 2 angles
 // Lengths can be any positive number, but the sum of the two smaller lengths
@@ -43,7 +49,10 @@ const init = {
     B: 'B',
     C: 'C'
   },
-  showCCenter: false
+  showCCenter: false,
+  showICenter: false,
+  showOCenter: false,
+  showCentroid: false
 }
 
 export default function app (state = init, action = {}) {
@@ -103,6 +112,10 @@ export default function app (state = init, action = {}) {
       return Object.assign({}, state, { showCCenter: action.show })
     case SHOW_ICENTER:
       return Object.assign({}, state, { showICenter: action.show })
+    case SHOW_OCENTER:
+      return Object.assign({}, state, { showOCenter: action.show })
+    case SHOW_CENTROID:
+      return Object.assign({}, state, { showCentroid: action.show })
     default:
       return state
   }

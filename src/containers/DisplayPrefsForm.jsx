@@ -16,18 +16,30 @@ export class DisplayPrefsForm extends Component {
         label='Incenter'
         onChange={this.props.showIC}
         checked={this.props.isShowingIC} />
+      <Checkbox
+        label='Orthocenter'
+        onChange={this.props.showOC}
+        checked={this.props.isShowingOC} />
+      <Checkbox
+        label='Centroid'
+        onChange={this.props.showCentroid}
+        checked={this.props.isShowingCentroid} />
     </form>)
   }
 }
 
 const mapStateToProps = state => ({
   isShowingCC: state.showCCenter,
-  isShowingIC: state.showICenter
+  isShowingIC: state.showICenter,
+  isShowingOC: state.showOCenter,
+  isShowingCentroid: state.showCentroid
 })
 
 const mapDispatchToProps = dispatch => ({
   showCC (show) { dispatch(app.showCCenter(show)) },
-  showIC (show) { dispatch(app.showICenter(show)) }
+  showIC (show) { dispatch(app.showICenter(show)) },
+  showOC (show) { dispatch(app.showOCenter(show)) },
+  showCentroid (show) { dispatch(app.showCentroid(show)) }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DisplayPrefsForm)

@@ -141,4 +141,14 @@ describe('Reducer', () => {
     expect(reduce(undefined, app.showICenter(true)).showICenter).toBe(true)
     expect(reduce(undefined, app.showICenter(false)).showICenter).toBe(false)
   })
+
+  it('toggles the display of the orthocenter', () => {
+    expect(reduce(undefined, app.showOCenter(true)).showOCenter).toBe(true)
+    expect(reduce(undefined, app.showOCenter(false)).showOCenter).toBe(false)
+  })
+
+  it('toggles the display of the centroid', () => {
+    expect(reduce(undefined, app.showCentroid(true)).showCentroid).toBe(true)
+    expect(reduce(undefined, app.showCentroid(false)).showCentroid).toBe(false)
+  })
 })
