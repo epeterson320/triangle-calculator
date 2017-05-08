@@ -3,7 +3,7 @@ import { canInferAll, inferMeasurements } from './triangleInfo'
 import Line from './LineSegment'
 import { DEG } from './Metric'
 
-const { sqrt, PI } = Math
+const { max, PI } = Math
 const ANG_90 = PI / 2
 
 export default function Triangle () { /* Base Prototype */ }
@@ -31,19 +31,28 @@ Object.defineProperty(Triangle.prototype, 'circumcenter', {
   }
 })
 
+Object.defineProperty(Triangle.prototype, 'minBoundingCircle', {
+  get: function get () {
+    if (this.A > ANG_90) return this.bc.midpoint
+    if (this.B > ANG_90) return this.ac.midpoint
+    if (this.C > ANG_90) return this.ab.midpoint
+    return this.circumcenter
+  }
+})
+
 Object.defineProperty(Triangle.prototype, 'viewbox', {
   get: function get () {
-    const u = this.circumcenter
-    const a = this.a
-    const dx = u.x - a.x
-    const dy = u.y - a.y
-    const r = sqrt(dx * dx + dy * dy) // radius of circumcenter
+    const m = this.minBoundingCircle
+    const r = max( // radius of minimum bounding circle
+      Line.PointPoint(m, this.a).distance,
+      Line.PointPoint(m, this.b).distance)
+
     const hs = r * 1.40 // half the side length of viewbox
     return {
-      xl: u.x - hs,
-      xr: u.x + hs,
-      yb: u.y - hs,
-      yt: u.y + hs
+      xl: m.x - hs,
+      xr: m.x + hs,
+      yb: m.y - hs,
+      yt: m.y + hs
     }
   }
 })
@@ -73,6 +82,9 @@ Triangle.FromPoints = function FromPoints (a, b, c) {
   t.ca = Line.PointPoint(c, a)
   t.bc = Line.PointPoint(b, c)
   t.cb = Line.PointPoint(c, b)
+  t.A = t.ac.angle - t.ab.angle
+  t.B = t.ba.angle - t.bc.angle
+  t.C = t.cb.angle - t.ca.angle
   t.p = t.ab.distance + t.ac.distance + t.bc.distance
   const labelOffset = t.p * 0.05
 

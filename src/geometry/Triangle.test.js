@@ -1,5 +1,6 @@
 import Triangle from './Triangle'
 import { RectPoint, PolarPoint } from './Point'
+import { DEG, RAD } from './Metric'
 
 const { sqrt, max, min, PI } = Math
 
@@ -78,6 +79,17 @@ describe('Triangle', () => {
     it('Viewport is not too big', () => {
       const { a, b, c } = t306090 // eslint-disable-line no-shadow
       const { xl, xr, yt, yb } = t306090.viewbox
+      const tWidth = max(a.x, b.x, c.x) - min(a.x, b.x, c.x)
+      const tHeight = max(a.y, b.y, c.y) - min(a.y, b.y, c.y)
+      const vbWidth = xr - xl
+      const vbHeight = yt - yb
+      expect(max(tWidth / vbWidth, tHeight / vbHeight)).toBeGreaterThan(0.5)
+    })
+
+    it('Viewport is not too big for obtuse triangles', () => {
+      const t = Triangle.FromMetrics({ A: 170, b: 3, c: 3, angleUnit: DEG })
+      const { a, b, c } = t // eslint-disable-line no-shadow
+      const { xl, xr, yt, yb } = t.viewbox
       const tWidth = max(a.x, b.x, c.x) - min(a.x, b.x, c.x)
       const tHeight = max(a.y, b.y, c.y) - min(a.y, b.y, c.y)
       const vbWidth = xr - xl
