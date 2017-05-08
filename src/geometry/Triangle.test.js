@@ -1,20 +1,24 @@
 import Triangle from './Triangle'
 import { RectPoint, PolarPoint } from './Point'
-import { DEG, RAD } from './Metric'
+import { DEG } from './Metric'
 
 const { sqrt, max, min, PI } = Math
 
+const origin = RectPoint(0, 0)
+
 // A 30-60-90 triangle for various tests.
-const ptA = RectPoint(0, 0)
+const ptA = origin
 const ptB = RectPoint(1, 0)
 const ptC = PolarPoint(sqrt(3), PI / 2)
 const t306090 = Triangle.FromPoints(ptA, ptB, ptC)
 
 const equilateral10 = Triangle.FromPoints(
-  RectPoint(0, 0),
+  origin,
   RectPoint(10, 0),
   RectPoint(5, sqrt(3) * 5)
 )
+
+const eqCenter = RectPoint(5, 5 * sqrt(3) / 3)
 
 describe('Triangle', () => {
   it('Has a FromPoints constructor', () => {
@@ -35,6 +39,8 @@ describe('Triangle', () => {
   it('Should have a correct circumcenter', () => {
     const exp = RectPoint(0.5, sqrt(3) / 2)
     expect(t306090.circumcenter.equals(exp)).toBeTruthy()
+
+    expect(equilateral10.circumcenter.equals(eqCenter)).toBe(true)
   })
 
   it('Has an incenter', () => {
@@ -52,8 +58,36 @@ describe('Triangle', () => {
     expect(t.incenter.equals(RectPoint(x, y))).toBeTruthy()
   })
 
-  it.skip('Has an inradius', () => {
+  it('Has an incircle (equilateral)', () => {
+    expect(equilateral10.incenter.equals(eqCenter)).toBe(true)
+    expect(equilateral10.inradius).toBeCloseTo(5 * sqrt(3) / 3)
+  })
 
+  it('Has an incenter (30-60-90)', () => {
+    const t = Triangle.FromMetrics({ a: 2, b: sqrt(3), c: 1 })
+    const exp = RectPoint((sqrt(3) - 1) / 2, (sqrt(3) - 1) / 2)
+    expect(t.incenter.equals(exp)).toBe(true)
+  })
+
+  it('Has an inradius (30-60-90)', () => {
+    const t = Triangle.FromMetrics({ a: 2, b: sqrt(3), c: 1 })
+    expect(t.inradius).toBeCloseTo((sqrt(3) - 1) / 2)
+  })
+
+  it('Has an orthocenter (equilateral)', () => {
+    expect(equilateral10.orthocenter.equals(eqCenter)).toBe(true)
+  })
+
+  it('Has an orthocenter (30-60-90)', () => {
+    expect(t306090.orthocenter.equals(origin)).toBe(true)
+  })
+
+  it('Has a centroid (equilateral)', () => {
+    expect(equilateral10.centroid.equals(eqCenter)).toBe(true)
+  })
+
+  it('Has a centroid (30-60-90)', () => {
+    expect(t306090.centroid.equals(RectPoint(1 / 3, sqrt(3) / 3))).toBe(true)
   })
 
   describe('Viewbox', () => {

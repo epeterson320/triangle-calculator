@@ -57,6 +57,14 @@ Object.defineProperty(Triangle.prototype, 'viewbox', {
   }
 })
 
+Object.defineProperty(Triangle.prototype, 'orthocenter', {
+  get: function get () {
+    const alt1 = Line.PointPerpendicular(this.a, this.bc)
+    const alt2 = Line.PointPerpendicular(this.b, this.ac)
+    return alt1.intersect(alt2)
+  }
+})
+
 Object.defineProperty(Triangle.prototype, 'incenter', {
   get: function get () {
     const b1 = this.ab.bisect(this.ac)
@@ -71,6 +79,14 @@ Object.defineProperty(Triangle.prototype, 'inradius', {
     return Line.PointPerpendicular(I, this.ab).distance
   }
 })
+
+Object.defineProperty(Triangle.prototype, 'centroid', {
+  get: function get () {
+    return Line.PointPoint(this.a, this.bc.midpoint)
+      .intersect(Line.PointPoint(this.b, this.ac.midpoint))
+  }
+})
+
 Triangle.FromPoints = function FromPoints (a, b, c) {
   const t = Object.create(Triangle.prototype)
   t.a = a
