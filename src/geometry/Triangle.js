@@ -1,4 +1,5 @@
 import { RectPoint, PolarPoint } from './Point'
+import Circle from './Circle'
 import { canInferAll, inferMeasurements } from './triangleInfo'
 import Line from './LineSegment'
 import { DEG } from './Metric'
@@ -11,24 +12,7 @@ export default function Triangle () { /* Base Prototype */ }
 
 Object.defineProperty(Triangle.prototype, 'circumcenter', {
   get: function get () {
-    // Lifted from
-    // en.wikipedia.org/wiki/Circumscribed_circle#Cartesian_coordinates_2
-    const ax = this.a.x
-    const ay = this.a.y
-    const bx = this.b.x
-    const by = this.b.y
-    const cx = this.c.x
-    const cy = this.c.y
-    const a2 = ax * ax + ay * ay
-    const b2 = bx * bx + by * by
-    const c2 = cx * cx + cy * cy
-
-    const D = 2 * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by))
-
-    const Ux = 1 / D * (a2 * (by - cy) + b2 * (cy - ay) + c2 * (ay - by))
-    const Uy = 1 / D * (a2 * (cx - bx) + b2 * (ax - cx) + c2 * (bx - ax))
-
-    return RectPoint(Ux, Uy)
+    return Circle(this.a, this.b, this.c).center
   }
 })
 
