@@ -1,6 +1,7 @@
 import Triangle from './Triangle'
 import { RectPoint, PolarPoint } from './Point'
-import { DEG } from './Metric'
+import { DEG } from '../constants'
+import solve from '../selectors/solveTriangle'
 
 const { sqrt, max, min, PI } = Math
 
@@ -20,20 +21,29 @@ const equilateral10 = Triangle.FromPoints(
 
 const eqCenter = RectPoint(5, 5 * sqrt(3) / 3)
 
+function tFromPartial (metrics) {
+  return Triangle.FromMetrics(solve(metrics).computed)
+}
+
 describe('Triangle', () => {
   it('Has a FromPoints constructor', () => {
     expect(Triangle.FromPoints(ptA, ptB, ptC)).toBeInstanceOf(Triangle)
   })
 
   it('Has a FromMetrics constructor', () => {
-    expect(Triangle.FromMetrics({ a: 3, b: 4, c: 5 })).toBeInstanceOf(Triangle)
+    const t = Triangle.FromMetrics({
+      a: 1,
+      b: 1,
+      c: 1,
+      A: PI / 3,
+      B: PI / 3,
+      C: PI / 3
+    })
+    expect(t).toBeInstanceOf(Triangle)
   })
 
-  it('Throws an error if not provided with enough metrics', () => {
-    expect(() => Triangle.fromMetrics({ A: PI / 3, B: PI / 2, C: PI / 6 })).toThrow()
-    expect(() => Triangle.fromMetrics({ A: PI / 3, a: 2, B: 0 })).toThrow()
-    expect(() => Triangle.fromMetrics({ A: PI / 3, b: 2, B: 0 })).toThrow()
-    expect(() => Triangle.fromMetrics({ b: 2, c: 3 })).toThrow()
+  it('Throws an error if not provided with all metrics', () => {
+    expect(() => Triangle.FromMetrics({ b: 2, c: 3 })).toThrow()
   })
 
   it('Should have a correct circumcenter', () => {
@@ -64,13 +74,13 @@ describe('Triangle', () => {
   })
 
   it('Has an incenter (30-60-90)', () => {
-    const t = Triangle.FromMetrics({ a: 2, b: sqrt(3), c: 1 })
+    const t = tFromPartial({ a: 2, b: sqrt(3), c: 1 })
     const exp = RectPoint((sqrt(3) - 1) / 2, (sqrt(3) - 1) / 2)
     expect(t.incenter.equals(exp)).toBe(true)
   })
 
   it('Has an inradius (30-60-90)', () => {
-    const t = Triangle.FromMetrics({ a: 2, b: sqrt(3), c: 1 })
+    const t = tFromPartial({ a: 2, b: sqrt(3), c: 1 })
     expect(t.inradius).toBeCloseTo((sqrt(3) - 1) / 2)
   })
 
@@ -130,7 +140,7 @@ describe('Triangle', () => {
     })
 
     it('Viewport is not too big for obtuse triangles', () => {
-      const t = Triangle.FromMetrics({ A: 170, b: 3, c: 3, angleUnit: DEG })
+      const t = tFromPartial({ A: 170, b: 3, c: 3, unit: DEG })
       const { a, b, c } = t // eslint-disable-line no-shadow
       const { xl, xr, yt, yb } = t.viewbox
       const tWidth = max(a.x, b.x, c.x) - min(a.x, b.x, c.x)

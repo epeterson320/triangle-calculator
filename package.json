@@ -75,7 +75,8 @@
     "moduleNameMapper": {
       "\\.(scss)$": "identity-obj-proxy",
       "\\.(svg)$": "<rootDir>/__mocks__/fileMock.js"
-    }
+    },
+    "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js"
   },
   "standard": {
     "env": "jest"

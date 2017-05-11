@@ -76,7 +76,7 @@ Object.defineProperty(LineSegment.prototype, 'distance', {
 })
 
 LineSegment.PointPoint = function PointPoint (point1, point2) {
-  if (point1.equals(point2, 0)) throw new Error('Points are identical')
+  if (point1.equals(point2)) throw new Error('Points are identical')
   const line = Object.create(LineSegment.prototype)
   line.point1 = point1
   line.point2 = point2

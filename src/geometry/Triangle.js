@@ -1,8 +1,6 @@
 import { RectPoint, PolarPoint } from './Point'
 import Circle from './Circle'
-import { canInferAll, inferMeasurements } from './triangleInfo'
 import Line from './LineSegment'
-import { DEG } from './Metric'
 
 const { max, PI } = Math
 const ANG_90 = PI / 2
@@ -109,14 +107,12 @@ Triangle.FromPoints = function FromPoints (a, b, c) {
   return t
 }
 
-Triangle.FromMetrics = function FromMetrics (metrics) {
-  if (!canInferAll(metrics)) {
+Triangle.FromMetrics = function FromMetrics ({ a, b, c, A, B, C }) {
+  if (!a || !b || !c || !A || !B || !C) {
     throw new Error('Not enough metrics specified')
   }
-  const { b, c, A } = inferMeasurements(metrics)
-  const adjA = metrics.angleUnit === DEG ? A * PI / 180 : A
   const ptA = RectPoint(0, 0)
   const ptB = RectPoint(c, 0)
-  const ptC = PolarPoint(b, adjA)
+  const ptC = PolarPoint(b, A)
   return Triangle.FromPoints(ptA, ptB, ptC)
 }

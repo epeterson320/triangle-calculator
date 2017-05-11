@@ -26,6 +26,7 @@ describe('RectPoint', () => {
   it('Throws an error if constructed with non-number parameters', () => {
     expect(() => { RectPoint(0, undefined) }).toThrow()
     expect(() => { RectPoint('0', 4) }).toThrow()
+    expect(() => { RectPoint(5, Infinity) }).toThrow()
   })
 
   it('Has correct angle', () => {

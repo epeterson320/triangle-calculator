@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import LineSegment from '../geometry/LineSegment'
 import Triangle from '../geometry/Triangle'
 import styles from './TriangleDrawing.scss'
-import { getErrors, canInferAll } from '../geometry/triangleInfo'
+import solveTriangle from '../selectors/solveTriangle'
 
 const { PI, abs, min } = Math
 const rt = PI / 2
@@ -147,16 +147,17 @@ const TriangleDrawing = ({ triangle, labels, showCC, showIC, showOC, showCentroi
   )
 }
 
-function mapStateToProps (state) {
-  if (!getErrors(state) && canInferAll(state)) {
+function mapStateToProps ({ input, display, labels }) {
+  const solution = solveTriangle(input)
+  if (solution.isSolved) {
     return {
-      triangle: Triangle.FromMetrics(state),
-      labels: state.labels,
-      showCC: state.showCCenter,
-      showIC: state.showICenter,
-      showOC: state.showOCenter,
-      showCentroid: state.showCentroid,
-      showEuler: state.showEuler
+      triangle: Triangle.FromMetrics(solution.computed),
+      labels,
+      showCC: display.cCenter,
+      showIC: display.iCenter,
+      showOC: display.oCenter,
+      showCentroid: display.centroid,
+      showEuler: display.euler
     }
   } else {
     return {}
