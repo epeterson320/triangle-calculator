@@ -85,9 +85,9 @@ const TriangleDrawing = ({ triangle, labels, showCC, showIC, showOC, showCentroi
     }
   }
 
-  const aRt = abs(triangle.ac.angle - triangle.ab.angle - rt) < 0.000001
-  const bRt = abs(triangle.ba.angle - triangle.bc.angle - rt) < 0.000001
-  const cRt = abs(triangle.cb.angle - triangle.ca.angle - rt) < 0.000001
+  const aRt = abs(triangle.ac.angle - triangle.ab.angle - rt) < 0.00001
+  const bRt = abs(triangle.ba.angle - triangle.bc.angle - rt) < 0.00001
+  const cRt = abs(triangle.cb.angle - triangle.ca.angle - rt) < 0.00001
   const arcA = <circle className={styles.arc} cx={ax} cy={ay} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
   const arcB = <circle className={styles.arc} cx={bx} cy={by} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
   const arcC = <circle className={styles.arc} cx={cx} cy={cy} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
