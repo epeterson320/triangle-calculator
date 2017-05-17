@@ -38,7 +38,8 @@ describe('Triangle Solution selector', () => {
   describe('Computed measurements', () => {
     it('Can get 3rd angle from incomplete measurements', () => {
       expect(solve({ A, B }).computed.C).toBeCloseTo(parseFloat(C))
-      expect(solve({ A, B: '', C }).computed.B).toBeCloseTo(parseFloat(B))
+      expect(solve({ A, C }).computed.B).toBeCloseTo(parseFloat(B))
+      expect(solve({ B, C }).computed.A).toBeCloseTo(parseFloat(A))
     })
 
     it('Returns nothing given invalid input', () => {
@@ -93,32 +94,56 @@ describe('Triangle Solution selector', () => {
     })
 
     it('Flags invalid and unknown input', () => {
-      expect(solve({ a: 'Hello' }).errors).toEqual({ a: NonNumberInput })
+      expect(solve({ a: 'Hello', A: 'Hi', b: '13' }).errors)
+        .toEqual({ a: NonNumberInput, A: NonNumberInput })
+
+      expect(solve({ b: 'Q', B: 'Hi', c: 'zz', C: ':)' }).errors)
+        .toEqual({ b: NonNumberInput, B: NonNumberInput, c: NonNumberInput, C: NonNumberInput })
     })
 
     it('Flags sides that are too short (3 sides)', () => {
-      expect(solve({ a: '50', b: '7', c: '7' }).errors)
-        .toEqual({
-          a: SideTooLong,
-          b: SideTooShort,
-          c: SideTooShort
-        })
+      const long = '50'
+      const short = '7'
+      expect(solve({ a: long, b: short, c: short }).errors)
+        .toEqual({ a: SideTooLong, b: SideTooShort, c: SideTooShort })
+      expect(solve({ b: long, a: short, c: short }).errors)
+        .toEqual({ b: SideTooLong, a: SideTooShort, c: SideTooShort })
+      expect(solve({ c: long, b: short, a: short }).errors)
+        .toEqual({ c: SideTooLong, b: SideTooShort, a: SideTooShort })
     })
 
     it('Flags sides that are too short (2 sides 1 angle)', () => {
-      expect(solve({ A: '1.5708', b: '10', a: '1' }).errors)
-        .toEqual({ a: SideTooShort })
+      const shorter = '1'
+      const longer = '10'
+      const angle = '1.5708'
+      expect(solve({ A: angle, b: longer, a: shorter }).errors)
+        .toEqual({ a: SideTooShort, b: SideTooLong })
+      expect(solve({ B: angle, a: longer, b: shorter }).errors)
+        .toEqual({ b: SideTooShort, a: SideTooLong })
+      expect(solve({ A: angle, c: longer, a: shorter }).errors)
+        .toEqual({ a: SideTooShort, c: SideTooLong })
+      expect(solve({ C: angle, a: longer, c: shorter }).errors)
+        .toEqual({ c: SideTooShort, a: SideTooLong })
+      expect(solve({ B: angle, c: longer, b: shorter }).errors)
+        .toEqual({ b: SideTooShort, c: SideTooLong })
+      expect(solve({ C: angle, b: longer, c: shorter }).errors)
+        .toEqual({ c: SideTooShort, b: SideTooLong })
     })
 
     it('Flags angles that add up to 180 or more', () => {
-      expect(solve({ A: '1.5708', B: '1.5708' }).errors)
+      const obtuse = '1.5708'
+      expect(solve({ A: obtuse, B: obtuse }).errors)
         .toEqual({ A: AngleSumTooLarge, B: AngleSumTooLarge })
+      expect(solve({ A: obtuse, C: obtuse }).errors)
+        .toEqual({ A: AngleSumTooLarge, C: AngleSumTooLarge })
+      expect(solve({ B: obtuse, C: obtuse }).errors)
+        .toEqual({ B: AngleSumTooLarge, C: AngleSumTooLarge })
     })
 
     it('Flags angles that are not between 0 and 180, exclusive', () => {
       expect(solve({ A: '180', unit: DEG }).errors.A).toEqual(InvalidAngle)
-      expect(solve({ A: '3.15', unit: RAD }).errors.A).toEqual(InvalidAngle)
-      expect(solve({ A: '0', unit: RAD }).errors.A).toEqual(InvalidAngle)
+      expect(solve({ B: '3.15', unit: RAD }).errors.B).toEqual(InvalidAngle)
+      expect(solve({ C: '0', unit: RAD }).errors.C).toEqual(InvalidAngle)
       expect(solve({ A: '-0.2', unit: RAD }).errors.A).toEqual(InvalidAngle)
     })
   })
@@ -130,6 +155,27 @@ describe('Triangle Solution selector', () => {
 
     it('Returns null if the solution is not ambiguous', () => {
       expect(solve({ a, b, c }).alternate).toBeNull()
+    })
+
+    it('Returns an alternate when given an SSA', () => {
+      const shorter = 2
+      const longer = 3
+      const angle = PI / 8
+
+      const tests = [
+        { a: shorter, b: longer, A: angle },
+        { a: longer, b: shorter, B: angle },
+        { a: shorter, c: longer, A: angle },
+        { a: longer, c: shorter, C: angle },
+        { b: shorter, c: longer, B: angle },
+        { b: longer, c: shorter, C: angle }
+      ]
+
+      tests.forEach(input => {
+        const alternate = solve(input).alternate
+        expect(alternate).not.toBe(null)
+        expect(alternate).toBeValidTriangle()
+      })
     })
 
     it('Solves for the larger triangle in a SSA solution', () => {

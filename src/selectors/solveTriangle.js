@@ -2,11 +2,11 @@ import { DEG } from '../constants'
 
 const { sin, cos, asin, acos, sqrt, PI } = Math
 
-export const NonNumberInput = Symbol('Non-number input')
-export const SideTooShort = Symbol('Side too short')
-export const SideTooLong = Symbol('Side too long')
-export const AngleSumTooLarge = Symbol('Angle sum too large')
-export const InvalidAngle = Symbol('Invalid Angle')
+export const NonNumberInput = 'Enter a number'
+export const SideTooShort = 'Side too short'
+export const SideTooLong = 'Side too long'
+export const AngleSumTooLarge = 'Angles must add up to less than 180 degrees'
+export const InvalidAngle = 'Angles must be between 0 and 180 degrees'
 
 export default function solve (inputs) {
   const { numericInputs, parseErrors } = parseInputs(inputs)
@@ -74,13 +74,11 @@ function validateInputs ({ a, b, c, A, B, C }) {
       a = b = c = 0
       errors.a = errors.b = SideTooShort
       errors.c = SideTooLong
-    }
-    if (a + c <= b) {
+    } else if (a + c <= b) {
       a = b = c = 0
       errors.a = errors.c = SideTooShort
       errors.b = SideTooLong
-    }
-    if (b + c <= a) {
+    } else if (b + c <= a) {
       a = b = c = 0
       errors.b = errors.c = SideTooShort
       errors.a = SideTooLong
@@ -88,17 +86,30 @@ function validateInputs ({ a, b, c, A, B, C }) {
   }
 
   // Too-short sides (2 sides + uncommon angle)
-  if (sin(A) * b / a > 1 || sin(A) * c / a > 1) {
+  if (sin(A) * b / a > 1) {
     a = 0
     errors.a = SideTooShort
-  }
-  if (sin(B) * a / b > 1 || sin(B) * c / b > 1) {
+    errors.b = SideTooLong
+  } else if (sin(A) * c / a > 1) {
+    a = 0
+    errors.a = SideTooShort
+    errors.c = SideTooLong
+  } else if (sin(B) * a / b > 1) {
     b = 0
     errors.b = SideTooShort
-  }
-  if (sin(C) * a / c > 1 || sin(C) * b / c > 1) {
+    errors.a = SideTooLong
+  } else if (sin(B) * c / b > 1) {
+    b = 0
+    errors.b = SideTooShort
+    errors.c = SideTooLong
+  } else if (sin(C) * a / c > 1) {
     c = 0
     errors.c = SideTooShort
+    errors.a = SideTooLong
+  } else if (sin(C) * b / c > 1) {
+    c = 0
+    errors.c = SideTooShort
+    errors.b = SideTooLong
   }
 
   // 2-Angle combinations that add up to >= 180
@@ -121,7 +132,7 @@ function validateInputs ({ a, b, c, A, B, C }) {
   }
 }
 
-function computePossible ({ a = 0, b = 0, c = 0, A = 0, B = 0, C = 0 }) {
+function computePossible ({ a, b, c, A, B, C }) {
   let numAngles = !!A + !!B + !!C
   let alternate = null
   let a2, b2, c2, A2, B2, C2
