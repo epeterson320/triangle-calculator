@@ -1,4 +1,4 @@
-const { abs } = Math
+import { precision as δ } from '../constants'
 
 function Point () { /* abstract base prototype */ }
 
@@ -12,9 +12,9 @@ Point.prototype.movePolar = function movePolar (angle, d) {
   return this.moveXY(dx, dy)
 }
 
-Point.prototype.equals = function equals (that, precision = 0.01) {
-  const xEq = abs(this.x - that.x) < precision
-  const yEq = abs(this.y - that.y) < precision
+Point.prototype.equals = function equals (that) {
+  const xEq = -δ < this.x - that.x && this.x - that.x < δ
+  const yEq = -δ < this.y - that.y && this.y - that.y < δ
   return xEq && yEq
 }
 
@@ -28,6 +28,7 @@ function assertNumber (...args) {
     }
   })
 }
+
 /* Rectangular Points */
 function RectPoint (x, y) {
   assertNumber(x, y)

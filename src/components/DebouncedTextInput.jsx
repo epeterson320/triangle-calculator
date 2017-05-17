@@ -1,18 +1,16 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import classNames from 'classnames'
-import styles from './MeasurementInput.scss'
+import styles from './DebouncedTextInput.scss'
 import Clear from './icon_clear.svg'
 
 const DELAY = 600 // ms
 
-class MeasurementInput extends Component {
+export default class TextInput extends PureComponent {
   constructor (props) {
     super(props)
     this.state = { text: props.text || '' }
 
     this.onChange = this.onChange.bind(this)
-    this.onChangeLabel = this.onChangeLabel.bind(this)
-    this.onClickName = this.onClickName.bind(this)
     this.onClear = this.onClear.bind(this)
     this.requestNotify = this.requestNotify.bind(this)
     this.notify = this.notify.bind(this)
@@ -38,59 +36,26 @@ class MeasurementInput extends Component {
     this.setState({ text: '' }, this.notify)
   }
 
-  onClickName (e) {
-    if (this.props.onChangeLabel) {
-      e.target.focus()
-      e.target.select()
-    }
-  }
-
-  onChangeLabel (e) {
-    const newName = e.target.value.toUpperCase()
-    if (this.props.onChangeLabel && newName) {
-      this.props.onChangeLabel(newName[0])
-    }
-    e.target.blur()
-  }
-
   requestNotify () {
     clearTimeout(this.timeoutID)
     this.timeoutID = setTimeout(this.notify, DELAY)
   }
 
   notify () {
-    this.props.onChange(this.state.text)
+    if ('onChange' in this.props) this.props.onChange(this.props.id, this.state.text)
     clearTimeout(this.timeoutID)
     delete this.timeoutID
   }
 
   render () {
-    const { label, computed, error, disabled, onChangeLabel } = this.props
     const { text } = this.state
-    const hideButton = computed || !text
-    const hideError = !error
-    const canChangeLabel = onChangeLabel != null
+    const { label, disabled, computed, error, id } = this.props
 
     return (
       <fieldset className={styles.fieldset}>
-        <label className={styles.nameLabel} htmlFor={`n-${label}`}>
-          {canChangeLabel ? 'Point' : 'Side'}
-        </label>
+        <label className={styles.label} htmlFor={id}>{label}</label>
         <input
-          className={styles.name}
-          id={`n-${label}`}
-          value={label}
-          onChange={this.onChangeLabel}
-          onClick={this.onClickName}
-          readOnly={!canChangeLabel}
-          maxLength={1}
-          tabIndex={-1}
-        />
-        <label className={styles.label} htmlFor={label}>
-          {canChangeLabel ? 'Angle' : 'Length'}
-        </label>
-        <input
-          id={label}
+          id={id}
           className={classNames(styles.input, {
             [styles.computed]: computed,
             [styles.disabled]: disabled
@@ -102,7 +67,7 @@ class MeasurementInput extends Component {
         <button
           className={classNames(
             styles.button,
-            { [styles.hidden]: hideButton }
+            { [styles.hidden]: computed || !text }
           )}
           onClick={this.onClear}
           type='button'
@@ -110,22 +75,13 @@ class MeasurementInput extends Component {
         >
           <Clear />
         </button>
-        <label
-          className={classNames(styles.error, { [styles.hidden]: hideError })}
+        <div
+          className={classNames(styles.error, { [styles.hidden]: !error })}
           htmlFor={label}
         >
           {error}
-        </label>
+        </div>
       </fieldset>
     )
   }
 }
-
-MeasurementInput.defaultProps = {
-  onChange: () => {},
-  computed: false,
-  error: '',
-  disabled: false,
-  text: ''
-}
-export default MeasurementInput

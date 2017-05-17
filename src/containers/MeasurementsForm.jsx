@@ -1,82 +1,90 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import MeasurementInput from '../components/MeasurementInput'
+import { bindActionCreators } from 'redux'
+import SideInput from '../components/SideInput'
+import PointInput from '../components/PointInput'
 import RadioList from '../components/RadioList'
-import { setSide, setAngle, Side, Point, setAngleUnit, renamePoint } from '../modules/app'
-import { inferMeasurements, getErrors } from '../geometry/triangleInfo'
-import { DEG, RAD } from '../geometry/Metric'
+import * as action from '../modules/input'
+import * as labelAction from '../modules/labels'
+import solveTriangle from '../selectors/solveTriangle'
+import { DEG, RAD, Side, Point } from '../constants'
 import styles from './MeasurementsForm.scss'
+
+const { PI } = Math
 
 const radioOpts = [
   { label: 'Degrees', value: DEG, default: true },
   { label: 'Radians', value: RAD }
 ]
 
-const MeasurementsForm = (props) => (
-  <form className={styles.container}>
-    <RadioList opts={radioOpts} onChange={props.setUnit} />
-    {['A', 'B', 'C', 'c', 'b', 'a'].map(key => {
-      const measurement = props[key]
-      return (
-        <MeasurementInput
-          key={key}
-          label={measurement.name}
-          text={measurement.text}
-          onChange={measurement.set}
-          onChangeLabel={measurement.onChangeLabel}
-          computed={measurement.computed}
-          error={measurement.error}
-          disabled={measurement.disabled}
-        />
-      )
-    })}
-  </form>
-)
+export class MeasurementsForm extends Component {
+  render () {
+    const { a, b, c, A, B, C, dispatch } = this.props
+    const { setAngleUnit, setAngle, setSide } =
+      bindActionCreators(action, dispatch)
+    const { renamePoint } = bindActionCreators(labelAction, dispatch)
+
+    return (
+      <form className={styles.container}>
+        <RadioList opts={radioOpts} onChange={setAngleUnit} />
+        <PointInput {...A} onChange={setAngle} onChangeLabel={renamePoint} />
+        <PointInput {...B} onChange={setAngle} onChangeLabel={renamePoint} />
+        <PointInput {...C} onChange={setAngle} onChangeLabel={renamePoint} />
+        <SideInput {...a} onChange={setSide} />
+        <SideInput {...b} onChange={setSide} />
+        <SideInput {...c} onChange={setSide} />
+      </form>
+    )
+  }
+}
 
 const sides = Object.keys(Side)
 const points = Object.keys(Point)
+const inputs = sides.concat(points)
 
-const mergeProps = (state, { setSide, setAngle, setAngleUnit, renamePoint }) => {
-  const errors = getErrors(state) || {}
+const mapStateToProps = ({ input, labels }) => {
+  const { errors, computed } = solveTriangle(input)
   const hasErrors = Object.keys(errors).length > 0
-  const m = inferMeasurements(state)
-  const props = {}
+  const props = {
+    A: { id: 'A', text: input.A, error: errors.A, label: labels.A },
+    B: { id: 'B', text: input.B, error: errors.B, label: labels.B },
+    C: { id: 'C', text: input.C, error: errors.C, label: labels.C },
+    c: { id: 'c', text: input.c, error: errors.c, label: labels.A + labels.B },
+    b: { id: 'b', text: input.b, error: errors.b, label: labels.A + labels.C },
+    a: { id: 'a', text: input.a, error: errors.a, label: labels.B + labels.A }
+  }
 
-  sides.concat(points).forEach(field => {
-    const computed = !!m[field] && !state[field]
-    let text = state[field]
-    if (computed && m[field] >= 100) {
-      text = m[field].toFixed(1)
-    } else if (computed && m[field] < 100) {
-      text = m[field].toPrecision(4)
+  inputs.forEach(field => {
+    const isComputed = !!computed[field] && !input[field]
+    if (isComputed) {
+      props[field].text = computed[field]
+      props[field].computed = computed[field]
     }
-    const error = errors[field]
-    const disabled = hasErrors && !error
-    props[field] = { text, computed, error, disabled }
+    if (hasErrors && !errors[field]) props[field].disabled = true
   })
 
-  points.forEach(angle => {
-    props[angle].name = state.labels[angle]
-    props[angle].set = text => setAngle(angle, text)
-    props[angle].onChangeLabel = text => renamePoint(angle, text)
+  const computedPoints = points.filter(p => props[p].computed)
+  const computedSides = sides.filter(s => props[s].computed)
+
+  if (input.unit === DEG) {
+    computedPoints.forEach(point => {
+      props[point].text = (computed[point] * 180 / PI).toPrecision(2)
+    })
+  } else {
+    computedPoints.forEach(point => {
+      props[point].text = computed[point].toPrecision(4)
+    })
+  }
+
+  computedSides.forEach(side => {
+    if (computed[side] >= 100) {
+      props[side].text = computed[side].toFixed(1)
+    } else {
+      props[side].text = computed[side].toPrecision(4)
+    }
   })
 
-  sides.forEach(side => { props[side].set = text => setSide(side, text) })
-  props.a.name = state.labels.B + state.labels.C
-  props.b.name = state.labels.A + state.labels.C
-  props.c.name = state.labels.A + state.labels.B
-
-  props.setUnit = setAngleUnit
   return props
 }
 
-export default connect(
-  state => state,
-  dispatch => ({
-    setSide (s, l) { dispatch(setSide(s, l)) },
-    setAngle (p, l) { dispatch(setAngle(p, l)) },
-    setAngleUnit (u) { dispatch(setAngleUnit(u)) },
-    renamePoint (p, n) { dispatch(renamePoint(p, n)) }
-  }),
-  mergeProps
-)(MeasurementsForm)
+export default connect(mapStateToProps)(MeasurementsForm)

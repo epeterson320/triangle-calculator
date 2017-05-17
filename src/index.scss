@@ -2,21 +2,21 @@ $text: rgba(0, 0, 0, 0.87);
 $left-margin: 96px;
 $right-margin: 48px;
 $header-height: 48px;
+$footer-height: 0;
 $horiz-margins: $left-margin + $right-margin;
 $bg: #FFFDE7;
 $divider: #4CAF50;
 $gridline: transparentize($divider, 0.88);
 $cell: 24px;
 
-html {
-  // height: 100%;
-}
+@import '../node_modules/normalize-scss/sass/normalize';
 
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
   font-size: 14px;
+  min-height: 100vh;
 
   background:
     // top rule
@@ -61,6 +61,7 @@ header {
 }
 
 main {
+  min-height: calc(100% - 48px);
   background:
     // vertical gridlines
     linear-gradient(0deg,
@@ -112,7 +113,7 @@ main {
 }
 
 :global(#root) {
-  min-height: calc(100% - 48px);
+  min-height: calc(100vh - 48px);
 }
 
 :global(.title) {
