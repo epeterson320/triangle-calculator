@@ -20,6 +20,12 @@ describe('<Checkbox />', () => {
     expect(onChange).toBeCalledWith(true)
   })
 
+  it('Works without an onChange handler', () => {
+    const el = render()
+    el.find('input').simulate('change', { target: { checked: true } })
+    // Should not throw
+  })
+
   it('Has a label', () => {
     const el = render({ label: 'Foo' })
     expect(el.find('label').text()).toBe('Foo')

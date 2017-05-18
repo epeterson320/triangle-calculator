@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import styles from './RadioList.scss'
 
 class RadioList extends PureComponent {
   constructor (props) {
@@ -17,9 +16,9 @@ class RadioList extends PureComponent {
 
   render () {
     return (
-      <fieldset className={styles.fieldset}>
+      <fieldset className='RadioList__fieldset'>
         {this.props.opts.map(option => [
-          <label className={styles.label} htmlFor={option.label} key={`l${option.label}`}>
+          <label className='RadioList__label' htmlFor={option.label} key={`l${option.label}`}>
             {option.label}
           </label>,
           <input

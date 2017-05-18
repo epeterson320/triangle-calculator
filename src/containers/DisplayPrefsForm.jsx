@@ -1,51 +1,46 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Checkbox from '../components/Checkbox'
-import * as app from '../modules/app'
-import styles from './DisplayPrefsForm.scss'
+import * as action from '../modules/display'
 
-export class DisplayPrefsForm extends Component {
+export class DisplayPrefsForm extends PureComponent {
   render () {
-    return (<form className={styles.container}>
-      <h3>Show Triangle Features</h3>
+    const { showCC, showIC, showOC, showCentroid, showEuler, dispatch } = this.props
+    const actions = bindActionCreators(action, dispatch)
+
+    return (<form className='DisplayPrefsForm__container'>
+      <h3 className='DisplayPrefsForm__header'>Show Triangle Features</h3>
       <Checkbox
         label='Circumcenter'
-        onChange={this.props.showCC}
-        checked={this.props.isShowingCC} />
+        onChange={actions.showCCenter}
+        checked={showCC} />
       <Checkbox
         label='Incenter'
-        onChange={this.props.showIC}
-        checked={this.props.isShowingIC} />
+        onChange={actions.showICenter}
+        checked={showIC} />
       <Checkbox
         label='Orthocenter'
-        onChange={this.props.showOC}
-        checked={this.props.isShowingOC} />
+        onChange={actions.showOCenter}
+        checked={showOC} />
       <Checkbox
         label='Centroid'
-        onChange={this.props.showCentroid}
-        checked={this.props.isShowingCentroid} />
+        onChange={actions.showCentroid}
+        checked={showCentroid} />
       <Checkbox
         label='Euler Line'
-        onChange={this.props.showEuler}
-        checked={this.props.isShowingEuler} />
+        onChange={actions.showEuler}
+        checked={showEuler} />
     </form>)
   }
 }
 
-const mapStateToProps = state => ({
-  isShowingCC: state.showCCenter,
-  isShowingIC: state.showICenter,
-  isShowingOC: state.showOCenter,
-  isShowingCentroid: state.showCentroid,
-  isShowingEuler: state.showEuler
+const mapStateToProps = ({ display }) => ({
+  showCC: display.cCenter,
+  showIC: display.iCenter,
+  showOC: display.oCenter,
+  showCentroid: display.centroid,
+  showEuler: display.euler
 })
 
-const mapDispatchToProps = dispatch => ({
-  showCC (show) { dispatch(app.showCCenter(show)) },
-  showIC (show) { dispatch(app.showICenter(show)) },
-  showOC (show) { dispatch(app.showOCenter(show)) },
-  showCentroid (show) { dispatch(app.showCentroid(show)) },
-  showEuler (show) { dispatch(app.showEuler(show)) }
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(DisplayPrefsForm)
+export default connect(mapStateToProps)(DisplayPrefsForm)

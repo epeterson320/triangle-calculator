@@ -24,6 +24,10 @@ describe('Line', () => {
     expect(new Line.PointPoint(origin, unitX)).toBeInstanceOf(Line)
   })
 
+  it('Can\'t be constructed from two identical points', () => {
+    expect(() => Line.PointPoint(origin, origin)).toThrow()
+  })
+
   it('Has a PointAngleDistance constructor', () => {
     expect(Line.PointAngleDistance(origin, ANG_45, 4.2)).toBeInstanceOf(Line)
     expect(new Line.PointAngleDistance(origin, ANG_180, 4.2)).toBeInstanceOf(Line)
@@ -140,6 +144,7 @@ describe('Line', () => {
     expect(xEqY.contains(RectPoint(4, 4))).toBe(true)
     expect(xEqY.contains(RectPoint(0, 0))).toBe(true)
     expect(xEqY.contains(RectPoint(-1, -1))).toBe(false)
+    expect(xEqY.contains(RectPoint(5, 6))).toBe(false)
   })
 
   it('Contains points when extended', () => {

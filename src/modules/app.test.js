@@ -1,16 +1,8 @@
-import reduce, * as app from './app'
-
-import { DEG, RAD, NONE } from '../geometry/Metric'
-
-const { Side, Point } = app
-
-const { PI } = Math
-
-// Angles for use with tests.
-const A30 = (PI / 6).toFixed(3)
-const A45 = (PI / 4).toFixed(3)
-const A60 = (PI / 3).toFixed(3)
-const A90 = (PI / 2).toFixed(3)
+import reduce from './app'
+import reduceDisplay from './display'
+import reduceInput, { setSide } from './input'
+import reduceLabels from './labels'
+import { Side } from '../constants'
 
 describe('Reducer', () => {
   it('returns an initial state', () => {
@@ -18,142 +10,15 @@ describe('Reducer', () => {
     expect(state).toBeDefined()
   })
 
-  it('sets sides', () => {
-    const state1 = reduce(undefined, app.setSide(Side.a, '2.0'))
-    const state2 = reduce(state1, app.setSide(Side.b, '3.4'))
-    expect(state2.a).toBe('2.0')
-    expect(state2.b).toBe('3.4')
-  })
-
-  it('sets angles', () => {
-    const state1 = reduce(undefined, app.setAngle(Point.A, A45))
-    const state2 = reduce(state1, app.setAngle(Point.B, A30))
-    expect(state2.A).toBe(A45)
-    expect(state2.B).toBe(A30)
-  })
-
-  it('doesn\'t set a third side when one angle is set', () => {
-    const state0 = reduce(undefined, app.setSide(Side.a, '3'))
-    const state1 = reduce(state0, app.setSide(Side.b, '3'))
-    const state2 = reduce(state1, app.setAngle(Point.C, A60))
-    const state = reduce(state2, app.setSide(Side.c, '3'))
-    expect(state.c).toBe('')
-  })
-
-  it('doesn\'t set a second side when two angles are set', () => {
-    const state0 = reduce(undefined, app.setSide(Side.a, '3'))
-    const state1 = reduce(state0, app.setAngle(Point.B, A60))
-    const state2 = reduce(state1, app.setAngle(Point.C, A60))
-    const state = reduce(state2, app.setSide(Side.b, '3'))
-    expect(state.b).toBe('')
-  })
-
-  it('doesn\'t set an angle when three sides are set', () => {
-    const state0 = reduce(undefined, app.setSide(Side.a, '3'))
-    const state1 = reduce(state0, app.setSide(Side.b, '3'))
-    const state2 = reduce(state1, app.setSide(Side.c, '3'))
-    const state = reduce(state2, app.setAngle(Point.A, A60))
-    expect(state.A).toBe('')
-  })
-
-  it('doesn\'t set a second angle when two sides are set', () => {
-    const state0 = reduce(undefined, app.setSide(Side.a, '3'))
-    const state1 = reduce(state0, app.setSide(Side.b, '3'))
-    const state2 = reduce(state1, app.setAngle(Point.A, A45))
-    const state = reduce(state2, app.setAngle(Point.B, A45))
-    expect(state.B).toBe('')
-  })
-
-  it('never sets a third angle', () => {
-    const state0 = reduce(undefined, app.setAngle(Point.A, A60))
-    const state1 = reduce(state0, app.setAngle(Point.B, A60))
-    const state = reduce(state1, app.setAngle(Point.C, A60))
-    expect(state.C).toBe('')
-  })
-
-  it('overwrites sides', () => {
-    const state0 = reduce(undefined, app.setSide(Side.a, '3'))
-    const state1 = reduce(state0, app.setSide(Side.b, '3'))
-    const state2 = reduce(state1, app.setAngle(Point.A, A60))
-    const state = reduce(state2, app.setSide(Side.a, '2.5'))
-    expect(state.a).toBe('2.5')
-  })
-
-  it('overwrites angles', () => {
-    const state0 = reduce(undefined, app.setAngle(Point.A, A60))
-    const state1 = reduce(state0, app.setAngle(Point.B, A60))
-    const state2 = reduce(state1, app.setSide(Side.a, 4.0))
-    const state = reduce(state2, app.setAngle(Point.A, A45))
-    expect(state.A).toBe(A45)
-  })
-
-  it('sets impossible angles', () => {
-    // Try to make a triangle with two right angles
-    const state0 = reduce(undefined, app.setAngle(Point.A, A90))
-    const state = reduce(state0, app.setAngle(Point.B, A90))
-    // Ignore the invalid input
-    expect(state.B).toBe(A90)
-  })
-
-  it('sets impossible sides', () => {
-    const state1 = reduce(undefined, app.setSide(Side.a, '2'))
-    const state2 = reduce(state1, app.setSide(Side.b, '1'))
-    const state = reduce(state2, app.setSide(Side.c, '1'))
-    expect(state.c).toBe('1')
-  })
-
-  it('sets invalid input', () => {
+  it('Combines the smaller reducers\' states', () => {
     const state = reduce()
-    expect(reduce(state, app.setSide(Side.a, 'pickles')).a).toBe('pickles')
-    expect(reduce(state, app.setSide(Side.a, '-4.0')).a).toBe('-4.0')
+    expect(state.labels).toEqual(reduceLabels())
+    expect(state.input).toEqual(reduceInput())
+    expect(state.display).toEqual(reduceDisplay())
   })
 
-  it('sets the angle unit', () => {
-    expect(reduce(undefined, app.setAngleUnit(DEG)).angleUnit).toBe(DEG)
-    expect(reduce(undefined, app.setAngleUnit(RAD)).angleUnit).toBe(RAD)
-  })
-
-  it('converts text when switching angle units', () => {
-    const state1 = reduce(undefined, app.setAngleUnit(DEG))
-    const state2 = reduce(state1, app.setAngle(Point.A, '90'))
-    const state3 = reduce(state2, app.setAngleUnit(RAD))
-    expect(parseFloat(state3.A)).toBeCloseTo(PI / 2)
-  })
-
-  it('throws away non-angle units', () => {
-    const state0 = reduce()
-    const state1 = reduce(state0, app.setAngleUnit(NONE))
-    expect(state0.angleUnit).toBe(state1.angleUnit)
-  })
-
-  it('renames points', () => {
-    const state0 = reduce()
-    const state1 = reduce(state0, app.renamePoint(Point.B, 'P'))
-    expect(state1.labels.B).toBe('P')
-  })
-
-  it('toggles the display of the circumcenter', () => {
-    expect(reduce(undefined, app.showCCenter(true)).showCCenter).toBe(true)
-    expect(reduce(undefined, app.showCCenter(false)).showCCenter).toBe(false)
-  })
-
-  it('toggles the display of the incenter', () => {
-    expect(reduce(undefined, app.showICenter(true)).showICenter).toBe(true)
-    expect(reduce(undefined, app.showICenter(false)).showICenter).toBe(false)
-  })
-
-  it('toggles the display of the orthocenter', () => {
-    expect(reduce(undefined, app.showOCenter(true)).showOCenter).toBe(true)
-    expect(reduce(undefined, app.showOCenter(false)).showOCenter).toBe(false)
-  })
-
-  it('toggles the display of the centroid', () => {
-    expect(reduce(undefined, app.showCentroid(true)).showCentroid).toBe(true)
-    expect(reduce(undefined, app.showCentroid(false)).showCentroid).toBe(false)
-  })
-
-  it('toggles the display of the Euler line', () => {
-    expect(reduce(undefined, app.showEuler(true)).showEuler).toBe(true)
-    expect(reduce(undefined, app.showEuler(false)).showEuler).toBe(false)
+  it('Dispatches actions to the child reducers', () => {
+    const state = reduce(undefined, setSide(Side.a, '40'))
+    expect(state.input.a).toBe('40')
   })
 })
