@@ -1,50 +1,52 @@
-.container {
+.TriangleDrawing__container {
   font-family: serif;
   margin: 0;
   display: inline-block;
 }
 
-.cantShow {
+.TriangleDrawing__cantShow {
   position: absolute;
 }
 
-.hidden {
-  display: none;
+.TriangleDrawing__svg {
 }
 
-.svg {
-}
-
-.trianglePath {
+.TriangleDrawing__trianglePath {
   fill-opacity: 0.12;
   stroke-width: 0.5%;
   stroke: black;
 }
 
-.label {
+.TriangleDrawing__label {
   text-anchor: middle;
 }
 
-.side {
+.TriangleDrawing__side {
   text-decoration: overline;
 }
 
-.arc {
+.TriangleDrawing__arc {
   fill: transparent;
   stroke: rgba(0,0,200,0.54);
   stroke-width: 0.5%;
 }
 
-.circumcircle, .incircle, .euler {
+.TriangleDrawing__circumcircle,
+.TriangleDrawing__incircle,
+.TriangleDrawing__euler {
   stroke-width: 0.5%;
   stroke: rgba(200, 0, 0, 0.54);
   fill: transparent;
 }
-.circumcenter, .incenter, .orthocenter, .centroid {
+
+.TriangleDrawing__circumcenter,
+.TriangleDrawing__incenter,
+.TriangleDrawing__orthocenter,
+.TriangleDrawing__centroid {
   fill: rgba(200, 0, 0, 0.87);
 }
 
-.noEuler {
+.TriangleDrawing__noEuler {
   text-anchor: start;
   fill: rgba(200, 0, 0, 0.87)
 }

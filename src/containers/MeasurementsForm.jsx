@@ -8,7 +8,6 @@ import * as action from '../modules/input'
 import * as labelAction from '../modules/labels'
 import solveTriangle from '../selectors/solveTriangle'
 import { DEG, RAD, Side, Point } from '../constants'
-import styles from './MeasurementsForm.scss'
 
 const { PI } = Math
 
@@ -25,11 +24,14 @@ export class MeasurementsForm extends Component {
     const { renamePoint } = bindActionCreators(labelAction, dispatch)
 
     return (
-      <form className={styles.container}>
+      <form className='MeasurementsForm__container'>
+        <h3>Angle Unit</h3>
         <RadioList opts={radioOpts} onChange={setAngleUnit} />
+        <h3>Point names & Angles</h3>
         <PointInput {...A} onChange={setAngle} onChangeLabel={renamePoint} />
         <PointInput {...B} onChange={setAngle} onChangeLabel={renamePoint} />
         <PointInput {...C} onChange={setAngle} onChangeLabel={renamePoint} />
+        <h3>Side Lengths</h3>
         <SideInput {...a} onChange={setSide} />
         <SideInput {...b} onChange={setSide} />
         <SideInput {...c} onChange={setSide} />
@@ -68,11 +70,11 @@ const mapStateToProps = ({ input, labels }) => {
 
   if (input.unit === DEG) {
     computedPoints.forEach(point => {
-      props[point].text = (computed[point] * 180 / PI).toPrecision(2)
+      props[point].text = (computed[point] * 180 / PI).toFixed(2)
     })
   } else {
     computedPoints.forEach(point => {
-      props[point].text = computed[point].toPrecision(4)
+      props[point].text = computed[point].toFixed(4)
     })
   }
 

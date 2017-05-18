@@ -119,7 +119,11 @@ describe('<DebouncedTextInput>', () => {
     })
 
     it('Styles the input differently', () => {
-      expect(render({ computed: true }).find('input.computed').length).toBeGreaterThan(0)
+      expect(
+        render({ computed: true })
+          .find('input.DebouncedTextInput__input--computed')
+          .length
+      ).toBeGreaterThan(0)
     })
 
     it('Disables input if the value is computed', () => {
@@ -148,11 +152,11 @@ describe('<DebouncedTextInput>', () => {
 
   describe('error message', () => {
     it('Has an error message', () => {
-      expect(render({ error: 'Invalid' }).find('.error').text()).toMatch('Invalid')
+      expect(render({ error: 'Invalid' }).find('.DebouncedTextInput__error').text()).toMatch('Invalid')
     })
 
     it('Hides the error message when a falsy message is provided', () => {
-      expect(render({ error: '' }).find('.error').hasClass('hidden')).toBe(true)
+      expect(render({ error: '' }).find('.DebouncedTextInput__error').hasClass('hidden')).toBe(true)
     })
   })
 })

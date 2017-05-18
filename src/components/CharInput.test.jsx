@@ -22,8 +22,11 @@ describe('<CharInput />', () => {
   it('Publishes inputs, uppercase, to an onChange listener', () => {
     const onChange = jest.fn()
     const el = render({ char: 'B', onChange })
-    el.find('input').simulate('change', { target: { value: 'Bz' } })
-    expect(onChange).toBeCalledWith('ID', 'Z')
+    el.find('input').simulate('keyDown', { key: 'z' })
+    expect(onChange).toHaveBeenLastCalledWith('ID', 'Z')
+    el.find('input').simulate('keyDown', { keyCode: 122 })
+    expect(onChange).toHaveBeenLastCalledWith('ID', 'Z')
+    expect(onChange).toHaveBeenCalledTimes(2)
   })
 
   it('Blinks cursor when focused and stops blinking when it loses focus', () => {
@@ -32,26 +35,26 @@ describe('<CharInput />', () => {
     const el = render()
     const input = el.find('input')
     // When constructed, it's not blinking
-    expect(el.find('input').hasClass('cursor')).toBe(false)
+    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(false)
 
     // When it's not clicked, it stays not blinking
     jest.runTimersToTime(BLINK_RATE + 20)
-    expect(el.find('input').hasClass('cursor')).toBe(false)
+    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(false)
 
     // When it's clicked, it starts blinking
     input.simulate('focus')
-    expect(el.find('input').hasClass('cursor')).toBe(true)
+    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(true)
     jest.runTimersToTime('2')
-    expect(el.find('input').hasClass('cursor')).toBe(true)
+    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(true)
     jest.runTimersToTime(BLINK_RATE)
-    expect(el.find('input').hasClass('cursor')).toBe(false)
+    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(false)
     jest.runTimersToTime(BLINK_RATE)
-    expect(el.find('input').hasClass('cursor')).toBe(true)
+    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(true)
 
     // When it loses focus, it stops blinking
     el.find('input').simulate('blur')
-    expect(el.find('input').hasClass('cursor')).toBe(false)
+    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(false)
     jest.runTimersToTime(BLINK_RATE)
-    expect(el.find('input').hasClass('cursor')).toBe(false)
+    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(false)
   })
 })

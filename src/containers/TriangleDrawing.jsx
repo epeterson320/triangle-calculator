@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import classnames from 'classnames'
 import LineSegment from '../geometry/LineSegment'
 import Triangle from '../geometry/Triangle'
-import styles from './TriangleDrawing.scss'
 import solveTriangle from '../selectors/solveTriangle'
 
 const { PI, abs, min } = Math
@@ -14,12 +13,15 @@ export class TriangleDrawing extends Component {
     const { triangle, labels, showCC, showIC, showOC, showCentroid, showEuler } = this.props
     if (!triangle) {
       return (
-        <div className={styles.container}>
-          <p className={styles.cantShow}>Not enough measurements to complete triangle.</p>
+        <div className='TriangleDrawing__container'>
+          <h2>Triangle</h2>
+          <p className='TriangleDrawing__cantShow'>
+            Not enough measurements to complete triangle.
+          </p>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width={300} height={300} viewBox='0 0 100 100'
-            className={styles.svg}
+            className='TriangleDrawing__svg'
           />
         </div>
       )
@@ -90,19 +92,20 @@ export class TriangleDrawing extends Component {
     const aRt = abs(triangle.ac.angle - triangle.ab.angle - rt) < 0.00001
     const bRt = abs(triangle.ba.angle - triangle.bc.angle - rt) < 0.00001
     const cRt = abs(triangle.cb.angle - triangle.ca.angle - rt) < 0.00001
-    const arcA = <circle className={styles.arc} cx={ax} cy={ay} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
-    const arcB = <circle className={styles.arc} cx={bx} cy={by} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
-    const arcC = <circle className={styles.arc} cx={cx} cy={cy} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
-    const sqA = <rect className={styles.arc} x={ax} y={ay} width={fontSize * 0.7} height={fontSize * 0.7} transform={`rotate(${triangle.ab.angle * 180 / PI - 90} ${ax} ${ay})`} />
-    const sqB = <rect className={styles.arc} x={bx} y={by} width={fontSize * 0.7} height={fontSize * 0.7} transform={`rotate(${triangle.bc.angle * 180 / PI + 90} ${bx} ${by})`} />
-    const sqC = <rect className={styles.arc} x={cx} y={cy} width={fontSize * 0.7} height={fontSize * 0.7} transform={`rotate(${-triangle.cb.angle * 180 / PI} ${cx} ${cy})`} />
+    const arcA = <circle className='TriangleDrawing__arc' cx={ax} cy={ay} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
+    const arcB = <circle className='TriangleDrawing__arc' cx={bx} cy={by} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
+    const arcC = <circle className='TriangleDrawing__arc' cx={cx} cy={cy} r={fontSize * 0.7} clipPath='url(#triangleClip)' />
+    const sqA = <rect className='TriangleDrawing__arc' x={ax} y={ay} width={fontSize * 0.7} height={fontSize * 0.7} transform={`rotate(${triangle.ab.angle * 180 / PI - 90} ${ax} ${ay})`} />
+    const sqB = <rect className='TriangleDrawing__arc' x={bx} y={by} width={fontSize * 0.7} height={fontSize * 0.7} transform={`rotate(${triangle.bc.angle * 180 / PI + 90} ${bx} ${by})`} />
+    const sqC = <rect className='TriangleDrawing__arc' x={cx} y={cy} width={fontSize * 0.7} height={fontSize * 0.7} transform={`rotate(${-triangle.cb.angle * 180 / PI} ${cx} ${cy})`} />
     return (
-      <div className={styles.container}>
-        <p className={styles.cantShow} />
+      <div className='TriangleDrawing__container'>
+        <h2>Triangle</h2>
+        <p className='TriangleDrawing__cantShow' />
         <svg
           xmlns='http://www.w3.org/2000/svg'
           width={300} height={300} viewBox={svgViewbox}
-          className={styles.svg}
+          className='TriangleDrawing__svg'
         >
           <clipPath id='triangleClip'>
             <path d={`M ${ax},${ay} L ${bx},${by} L ${cx},${cy} Z`} />
@@ -112,32 +115,32 @@ export class TriangleDrawing extends Component {
           {cRt ? sqC : arcC}
           <path
             d={`M ${ax},${ay} L ${bx},${by} L ${cx},${cy} Z`}
-            className={styles.trianglePath}
+            className='TriangleDrawing__trianglePath'
           />
-          <text className={classnames(styles.label, styles.side)} fontSize={fontSize * 0.8} x={lax} y={lay} dy={dy}>{`${labels.B}${labels.C}`}</text>
-          <text className={classnames(styles.label, styles.side)} fontSize={fontSize * 0.8} x={lbx} y={lby} dy={dy}>{`${labels.A}${labels.C}`}</text>
-          <text className={classnames(styles.label, styles.side)} fontSize={fontSize * 0.8} x={lcx} y={lcy} dy={dy}>{`${labels.A}${labels.B}`}</text>
+          <text className={classnames('TriangleDrawing__label', 'TriangleDrawing__side')} fontSize={fontSize * 0.8} x={lax} y={lay} dy={dy}>{`${labels.B}${labels.C}`}</text>
+          <text className={classnames('TriangleDrawing__label', 'TriangleDrawing__side')} fontSize={fontSize * 0.8} x={lbx} y={lby} dy={dy}>{`${labels.A}${labels.C}`}</text>
+          <text className={classnames('TriangleDrawing__label', 'TriangleDrawing__side')} fontSize={fontSize * 0.8} x={lcx} y={lcy} dy={dy}>{`${labels.A}${labels.B}`}</text>
 
-          <text className={styles.label} fontSize={fontSize} x={lAx} y={lAy} dy={dy}>{labels.A}</text>
-          <text className={styles.label} fontSize={fontSize} x={lBx} y={lBy} dy={dy}>{labels.B}</text>
-          <text className={styles.label} fontSize={fontSize} x={lCx} y={lCy} dy={dy}>{labels.C}</text>
-          <circle className={classnames(styles.circumcircle, { [styles.hidden]: !showCC })} cx={ux} cy={uy} r={ur} />
-          <circle className={classnames(styles.circumcenter, { [styles.hidden]: !showCC })} cx={ux} cy={uy} r={fontSize * 0.1} />
-          <circle className={classnames(styles.incircle, { [styles.hidden]: !showIC })} cx={ix} cy={iy} r={ir} />
-          <circle className={classnames(styles.incenter, { [styles.hidden]: !showIC })} cx={ix} cy={iy} r={fontSize * 0.1} />
-          <circle className={classnames(styles.orthocenter, { [styles.hidden]: !showOC })} cx={ox} cy={oy} r={fontSize * 0.1} />
-          <circle className={classnames(styles.centroid, { [styles.hidden]: !showCentroid })} cx={gx} cy={gy} r={fontSize * 0.1} />
+          <text className='TriangleDrawing__label' fontSize={fontSize} x={lAx} y={lAy} dy={dy}>{labels.A}</text>
+          <text className='TriangleDrawing__label' fontSize={fontSize} x={lBx} y={lBy} dy={dy}>{labels.B}</text>
+          <text className='TriangleDrawing__label' fontSize={fontSize} x={lCx} y={lCy} dy={dy}>{labels.C}</text>
+          <circle className={classnames('TriangleDrawing__circumcircle', { hidden: !showCC })} cx={ux} cy={uy} r={ur} />
+          <circle className={classnames('TriangleDrawing__circumcenter', { hidden: !showCC })} cx={ux} cy={uy} r={fontSize * 0.1} />
+          <circle className={classnames('TriangleDrawing__incircle', { hidden: !showIC })} cx={ix} cy={iy} r={ir} />
+          <circle className={classnames('TriangleDrawing__incenter', { hidden: !showIC })} cx={ix} cy={iy} r={fontSize * 0.1} />
+          <circle className={classnames('TriangleDrawing__orthocenter', { hidden: !showOC })} cx={ox} cy={oy} r={fontSize * 0.1} />
+          <circle className={classnames('TriangleDrawing__centroid', { hidden: !showCentroid })} cx={gx} cy={gy} r={fontSize * 0.1} />
           {(euler != null)
             ? <line
-              className={classnames(styles.euler, { [styles.hidden]: !showEuler })}
+              className={classnames('TriangleDrawing__euler', { hidden: !showEuler })}
               x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
               />
             : null
           }
           <text
             className={classnames(
-            styles.noEuler,
-            { [styles.hidden]: euler != null || !showEuler }
+            'TriangleDrawing__noEuler',
+            { hidden: euler != null || !showEuler }
             )}
             fontSize={fontSize * 0.5}
             x={xl + (xr - xl) * 0.3} y={yt + (yt - yb) * 0.2}

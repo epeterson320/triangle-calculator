@@ -3,15 +3,14 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Checkbox from '../components/Checkbox'
 import * as action from '../modules/display'
-import styles from './DisplayPrefsForm.scss'
 
 export class DisplayPrefsForm extends PureComponent {
   render () {
     const { showCC, showIC, showOC, showCentroid, showEuler, dispatch } = this.props
     const actions = bindActionCreators(action, dispatch)
 
-    return (<form className={styles.container}>
-      <h3 className={styles.header}>Show Triangle Features</h3>
+    return (<form className='DisplayPrefsForm__container'>
+      <h3 className='DisplayPrefsForm__header'>Show Triangle Features</h3>
       <Checkbox
         label='Circumcenter'
         onChange={actions.showCCenter}

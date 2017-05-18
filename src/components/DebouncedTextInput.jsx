@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react'
 import classNames from 'classnames'
-import styles from './DebouncedTextInput.scss'
-import Clear from './icon_clear.svg'
 
 const DELAY = 600 // ms
 
@@ -52,36 +50,44 @@ export default class TextInput extends PureComponent {
     const { label, disabled, computed, error, id } = this.props
 
     return (
-      <fieldset className={styles.fieldset}>
-        <label className={styles.label} htmlFor={id}>{label}</label>
+      <div className='DebouncedTextInput__container'>
+        <label className='DebouncedTextInput__label' htmlFor={id}>{label}</label>
         <input
           id={id}
-          className={classNames(styles.input, {
-            [styles.computed]: computed,
-            [styles.disabled]: disabled
+          type='number'
+          className={classNames('DebouncedTextInput__input', {
+            'DebouncedTextInput__input--computed': computed,
+            'DebouncedTextInput__input--disabled': disabled
           })}
+          tabIndex={(disabled || computed) ? -1 : 0}
           onChange={this.onChange}
           value={text}
           readOnly={computed || disabled}
         />
         <button
           className={classNames(
-            styles.button,
-            { [styles.hidden]: computed || !text }
+            'DebouncedTextInput__clear',
+            { hidden: computed || !text }
           )}
           onClick={this.onClear}
           type='button'
           tabIndex={-1}
         >
-          <Clear />
+          <svg fill='#000000' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'>
+            <path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z' />
+            <path d='M0 0h24v24H0z' fill='none' />
+          </svg>
         </button>
         <div
-          className={classNames(styles.error, { [styles.hidden]: !error })}
+          className={classNames(
+            'DebouncedTextInput__error',
+            { hidden: !error }
+          )}
           htmlFor={label}
         >
           {error}
         </div>
-      </fieldset>
+      </div>
     )
   }
 }
