@@ -28,12 +28,24 @@
 
 .DebouncedTextInput__clear {
   position: absolute;
-  height: 48px;
-  width: 48px;
-  padding: 12px;
+  height: 24px;
+  width: 24px;
+  padding: 0;
   margin: 0;
-  right: -12px;
-  top: 4px;
+  right: 0;
+  top: 12px;
+  background-clip: content-box;
+  border-radius: 12px;
+  &:focus {
+    outline: none;
+  }
+  &:focus, &:hover {
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+  &:active {
+    background-color: rgba(0, 0, 0, 0.30);
+  }
+
 }
 
 .DebouncedTextInput__error {

@@ -58,6 +58,7 @@ export default class TextInput extends PureComponent {
             'DebouncedTextInput__input--computed': computed,
             'DebouncedTextInput__input--disabled': disabled
           })}
+          tabIndex={(disabled || computed) ? -1 : 0}
           onChange={this.onChange}
           value={text}
           readOnly={computed || disabled}

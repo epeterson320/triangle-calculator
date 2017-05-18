@@ -56,6 +56,7 @@ export default class CharInput extends Component {
           onChange={this.onChange}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
+          tabIndex={-1}
           className={classnames({
             'CharInput__input': true,
             // 'CharInput__input--focus': this.state.focused,

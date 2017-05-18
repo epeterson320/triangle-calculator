@@ -67,11 +67,11 @@ const mapStateToProps = ({ input, labels }) => {
 
   if (input.unit === DEG) {
     computedPoints.forEach(point => {
-      props[point].text = (computed[point] * 180 / PI).toPrecision(2)
+      props[point].text = (computed[point] * 180 / PI).toFixed(2)
     })
   } else {
     computedPoints.forEach(point => {
-      props[point].text = computed[point].toPrecision(4)
+      props[point].text = computed[point].toFixed(4)
     })
   }
 
