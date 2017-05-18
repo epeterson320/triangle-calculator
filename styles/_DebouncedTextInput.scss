@@ -1,0 +1,43 @@
+.DebouncedTextInput__container {
+  display: inline-block;
+  vertical-align: top;
+  width: 144px;
+  height: 48px;
+  position: relative;
+}
+.DebouncedTextInput__label {
+  width: 144px;
+  height: 12px;
+  font-size: 12px;
+}
+
+.DebouncedTextInput__input {
+  width: 144px;
+  height: 24px;
+  font-size: 16px;
+}
+
+.DebouncedTextInput__input--computed {
+  background: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 255, 0.87);
+}
+
+.DebouncedTextInput__input--disabled {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.DebouncedTextInput__clear {
+  position: absolute;
+  height: 48px;
+  width: 48px;
+  padding: 12px;
+  margin: 0;
+  right: -12px;
+  top: 4px;
+}
+
+.DebouncedTextInput__error {
+  white-space: nowrap;
+  font-size: 12px;
+  color: rgba(255, 0, 0, 0.87);
+}

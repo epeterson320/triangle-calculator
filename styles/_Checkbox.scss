@@ -1,0 +1,18 @@
+.Checkbox__container {
+  position: relative;
+  height: 48px;
+  width: 192px;
+  border-width: 0;
+}
+.Checkbox__input {
+  position: absolute;
+  padding: 12px;
+  height: 24px;
+  width: 48px;
+}
+.Checkbox__label {
+  position: absolute;
+  left: 48px;
+  height: 24px;
+  padding: 12px;
+}

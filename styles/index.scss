@@ -1,3 +1,15 @@
+@import '../node_modules/normalize-scss/sass/normalize/import-now';
+@import 'App';
+@import 'CharInput';
+@import 'Checkbox';
+@import 'DebouncedTextInput';
+@import 'DisplayPrefsForm';
+@import 'MeasurementsForm';
+@import 'PointInput';
+@import 'RadioList';
+@import 'SideInput';
+@import 'TriangleDrawing';
+
 $text: rgba(0, 0, 0, 0.87);
 $left-margin: 96px;
 $right-margin: 48px;
@@ -8,8 +20,6 @@ $bg: #FFFDE7;
 $divider: #4CAF50;
 $gridline: transparentize($divider, 0.88);
 $cell: 24px;
-
-@import '../node_modules/normalize-scss/sass/normalize';
 
 body {
   margin: 0;
@@ -61,7 +71,7 @@ header {
 }
 
 main {
-  min-height: calc(100% - 48px);
+  min-height: calc(100vh - 48px);
   background:
     // vertical gridlines
     linear-gradient(0deg,
@@ -112,13 +122,26 @@ main {
   border-bottom: 1px solid $gridline;
 }
 
-:global(#root) {
-  min-height: calc(100vh - 48px);
-}
-
-:global(.title) {
+.title {
   font-size: 32px;
   font-family: sans-serif;
   margin: 0;
   padding: 0 4px;
+}
+
+.hidden {
+  display: none;
+}
+
+input {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid $text;
+  background: transparent;
+}
+
+button {
+  background: none;
+  border: 0;
 }
