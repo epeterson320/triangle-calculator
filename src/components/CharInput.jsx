@@ -10,21 +10,16 @@ export default class CharInput extends Component {
       focused: false,
       blinking: false
     }
-    this.onChange = this.onChange.bind(this)
+    this.onKeyDown = this.onKeyDown.bind(this)
     this.onFocus = this.onFocus.bind(this)
     this.onBlur = this.onBlur.bind(this)
     this.toggleBlink = this.toggleBlink.bind(this)
   }
 
-  onChange (e) {
-    const char = e.target.value.substr(-1).toUpperCase()
-    if (!char) return
-    if ('onChange' in this.props) {
-      this.props.onChange(this.props.id, char)
-    }
-    if (typeof document !== 'undefined') {
-      const el = document.getElementById(this.props.id)
-      if (el) el.focus()
+  onKeyDown (e) {
+    const char = e.key || String.fromCharCode(e.keyCode)
+    if (char && 'onChange' in this.props) {
+      this.props.onChange(this.props.id, char.toUpperCase())
     }
   }
 
@@ -53,9 +48,10 @@ export default class CharInput extends Component {
           id={`c${id}`}
           type='text'
           value={char}
-          onChange={this.onChange}
+          onKeyDown={this.onKeyDown}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
+          maxLength={1}
           tabIndex={-1}
           className={classnames({
             'CharInput__input': true,

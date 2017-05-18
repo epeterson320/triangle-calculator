@@ -25,10 +25,13 @@ export class MeasurementsForm extends Component {
 
     return (
       <form className='MeasurementsForm__container'>
+        <h3>Angle Unit</h3>
         <RadioList opts={radioOpts} onChange={setAngleUnit} />
+        <h3>Point names & Angles</h3>
         <PointInput {...A} onChange={setAngle} onChangeLabel={renamePoint} />
         <PointInput {...B} onChange={setAngle} onChangeLabel={renamePoint} />
         <PointInput {...C} onChange={setAngle} onChangeLabel={renamePoint} />
+        <h3>Side Lengths</h3>
         <SideInput {...a} onChange={setSide} />
         <SideInput {...b} onChange={setSide} />
         <SideInput {...c} onChange={setSide} />

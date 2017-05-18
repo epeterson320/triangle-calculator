@@ -54,6 +54,7 @@ export default class TextInput extends PureComponent {
         <label className='DebouncedTextInput__label' htmlFor={id}>{label}</label>
         <input
           id={id}
+          type='number'
           className={classNames('DebouncedTextInput__input', {
             'DebouncedTextInput__input--computed': computed,
             'DebouncedTextInput__input--disabled': disabled

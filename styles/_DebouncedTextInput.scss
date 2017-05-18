@@ -5,6 +5,7 @@
   height: 48px;
   position: relative;
 }
+
 .DebouncedTextInput__label {
   width: 144px;
   height: 12px;
@@ -15,6 +16,7 @@
   width: 144px;
   height: 24px;
   font-size: 16px;
+  outline: none;
 }
 
 .DebouncedTextInput__input--computed {
