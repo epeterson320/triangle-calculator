@@ -1,5 +1,6 @@
 const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const baseConfig = require('./base')
 
@@ -21,6 +22,10 @@ const config = {
   },
 
   plugins: [
+    new HtmlWebpackPlugin({
+      template: './index.ejs',
+      inject: false
+    }),
     new ExtractTextPlugin('style.css'),
     new webpack.DefinePlugin({
       'process.env': {
