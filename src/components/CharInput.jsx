@@ -49,6 +49,7 @@ export default class CharInput extends Component {
           type='text'
           value={char}
           onKeyDown={this.onKeyDown}
+          readOnly
           onFocus={this.onFocus}
           onBlur={this.onBlur}
           maxLength={1}
