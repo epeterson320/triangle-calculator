@@ -10,11 +10,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: proj-{{ checksum "yarn.lock" }}
+          key: trig-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
       - run: yarn install
       - run: yarn lint
       - run: yarn test
-      - run: npm rebuild node-sass
       - run: yarn build
       - add_ssh_keys
       - deploy:
@@ -25,7 +24,7 @@ jobs:
               npm run deploy
             fi
       - save_cache:
-          key: proj-{{ checksum "yarn.lock" }}
+          key: trig-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
           paths:
             - ~/trig/node_modules
             - ~/.cache/yarn/
