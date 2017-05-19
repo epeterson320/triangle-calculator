@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
-
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const baseConfig = require('./base')
 
 const config = {
@@ -36,6 +36,10 @@ const config = {
   },
 
   plugins: [
+    new HtmlWebpackPlugin({
+      template: 'index-hot.ejs',
+      inject: false
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin()
   ]
