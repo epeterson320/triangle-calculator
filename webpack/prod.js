@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 const baseConfig = require('./base')
 
 const config = {
@@ -26,7 +27,10 @@ const config = {
       template: './index.ejs',
       inject: false
     }),
-    new ExtractTextPlugin('style.css'),
+    new ExtractTextPlugin('styles.css'),
+    new StyleExtHtmlWebpackPlugin({
+      position: 'head-bottom'
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production')
