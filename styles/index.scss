@@ -1,4 +1,13 @@
+// normalize.css
 @import '../node_modules/normalize-scss/sass/normalize/import-now';
+// Define Mixins
+@import 'breakpoints';
+@import 'gridlines';
+// Apply styles to tags
+@import 'globals';
+// Style the page and grid
+@import 'layout';
+// Style the components
 @import 'App';
 @import 'CharInput';
 @import 'Checkbox';
@@ -9,15 +18,3 @@
 @import 'RadioList';
 @import 'SideInput';
 @import 'TriangleDrawing';
-@import 'breakpoints';
-@import 'gridlines';
-
-$text: rgba(0, 0, 0, 0.87);
-$shadow: rgba(0, 0, 0, 0.2);
-$left-margin: 96px;
-$right-margin: 48px;
-$header-height: 48px;
-$footer-height: 0;
-$horiz-margins: $left-margin + $right-margin;
-$bg: #FFFDE7;
-$cell: 24px;

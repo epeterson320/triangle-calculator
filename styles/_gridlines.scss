@@ -1,32 +1,26 @@
 $divider: #4CAF50;
 $gridline: transparentize($divider, 0.88);
 
-@mixin top-rule($height) {
+@mixin top-rule {
   background:
     linear-gradient($divider, $divider)
-    0 #{$height} / 100% 1px no-repeat;
+    0 48px / 100% 2px no-repeat;
 }
 
-@mixin left-rule($margin) {
+@mixin border-rules {
   background:
+    // top rule
     linear-gradient($divider, $divider)
-    $margin 0 / 1px 100% no-repeat,
-}
-
-@mixin right-rule($margin) {
-  background:
+    0 48px / 100% 2px no-repeat,
+    // left rule
     linear-gradient($divider, $divider)
-    top right #{$right-margin} / 1px 100% no-repeat,
-}
-
-@mixin holePunchSide {
-  background:
-    radial-gradient(circle,
-      rgba(0, 0, 0, 0.6) 0,
-      rgba(0, 0, 0, 0.7) 12px,
-      transparent 12px,
-      transparent)
-    24px -104px / 24px 384px repeat-y $bg;
+    96px 0 / 2px 100% no-repeat,
+    // right rule
+    linear-gradient($divider, $divider)
+    top right 48px / 2px 100% no-repeat,
+    // 3-hole punch on the side
+    radial-gradient(circle, #eee 0, #ddd 12px, transparent 12px, transparent)
+    24px -104px / 24px 384px repeat-y;
 }
 
 @mixin grid {
@@ -53,7 +47,7 @@ $gridline: transparentize($divider, 0.88);
       $gridline calc(80% + 1px),
       transparent calc(80% + 1px),
       transparent)
-    0 0 / 100% 120px repeat-y,
+    0 -2px / 100% 120px repeat-y,
     // horizontal gridlines
     linear-gradient(90deg,
       $gridline 0,
@@ -76,5 +70,5 @@ $gridline: transparentize($divider, 0.88);
       $gridline calc(80% + 1px),
       transparent calc(80% + 1px),
       transparent)
-     0 0 / 120px 100% repeat-x;
+     -1px 0 / 120px 100% repeat-x;
 }

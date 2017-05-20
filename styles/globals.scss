@@ -1,0 +1,38 @@
+// This does not include layout and spacing stuff, just global colors and
+// resets to extend normalize in ways that make sense to this project.
+$text: rgba(0, 0, 0, 0.87);
+$shadow: rgba(0, 0, 0, 0.2);
+$fadedYellow: #FFFDE7;
+$cell: 24px;
+
+body {
+  background-color: #eee;
+  font-size: 14px;
+  color: $text;
+  font-family: sans-serif;
+}
+
+input {
+  border: 0;
+  background-color: transparent;
+  border-bottom: 2px solid $text;
+}
+
+h1, h2, h3 {
+  margin: 0;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 400;
+  height: 48px;
+  padding-top: 20px;
+}
+button {
+  border: 0;
+  padding: 0;
+}
+
+.hidden {
+  visibility: hidden;
+}
