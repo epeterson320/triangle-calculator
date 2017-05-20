@@ -9,139 +9,15 @@
 @import 'RadioList';
 @import 'SideInput';
 @import 'TriangleDrawing';
+@import 'breakpoints';
+@import 'gridlines';
 
 $text: rgba(0, 0, 0, 0.87);
+$shadow: rgba(0, 0, 0, 0.2);
 $left-margin: 96px;
 $right-margin: 48px;
 $header-height: 48px;
 $footer-height: 0;
 $horiz-margins: $left-margin + $right-margin;
 $bg: #FFFDE7;
-$divider: #4CAF50;
-$gridline: transparentize($divider, 0.88);
 $cell: 24px;
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  font-size: 14px;
-  min-height: 100vh;
-
-  background:
-    // top rule
-    linear-gradient($divider, $divider)
-    0 #{$header-height} / 100% 1px no-repeat $bg;
-
-  @media screen and (min-width: 600px) {
-    padding-left: $left-margin;
-    padding-right: $right-margin;
-    background:
-      // top rule
-      linear-gradient($divider, $divider)
-      0 #{$header-height} / 100% 1px no-repeat,
-      // left rule
-      linear-gradient($divider, $divider)
-      $left-margin 0 / 1px 100% no-repeat,
-      // right rule
-      linear-gradient($divider, $divider)
-      top right #{$right-margin} / 1px 100% no-repeat,
-      // holes on the side
-      radial-gradient(circle,
-        rgba(0, 0, 0, 0.6) 0,
-        rgba(0, 0, 0, 0.7) 12px,
-        transparent 12px,
-        transparent)
-      24px -104px / 24px 384px repeat-y $bg;
-  }
-}
-
-header {
-  height: $header-height;
-  @media screen and (min-width: 600px) {
-    // top section divider lines
-    background:
-      linear-gradient(90deg,
-        $divider 0,
-        $divider 1px,
-        transparent 1px,
-        transparent)
-      0 / calc(101% / 3) $header-height repeat-x;
-  }
-}
-
-main {
-  min-height: calc(100vh - 48px);
-  background:
-    // vertical gridlines
-    linear-gradient(0deg,
-      $gridline 0,
-      $gridline 2px,
-      transparent 2px,
-      transparent 20%,
-      $gridline 20%,
-      $gridline calc(20% + 1px),
-      transparent calc(20% + 1px),
-      transparent 40%,
-      $gridline 40%,
-      $gridline calc(40% + 1px),
-      transparent calc(40% + 1px),
-      transparent 60%,
-      $gridline 60%,
-      $gridline calc(60% + 1px),
-      transparent calc(60% + 1px),
-      transparent 80%,
-      $gridline 80%,
-      $gridline calc(80% + 1px),
-      transparent calc(80% + 1px),
-      transparent)
-    0 0 / 100% 120px repeat-y,
-    // horizontal gridlines
-    linear-gradient(90deg,
-      $gridline 0,
-      $gridline 2px,
-      transparent 2px,
-      transparent 20%,
-      $gridline 20%,
-      $gridline calc(20% + 1px),
-      transparent calc(20% + 1px),
-      transparent 40%,
-      $gridline 40%,
-      $gridline calc(40% + 1px),
-      transparent calc(40% + 1px),
-      transparent 60%,
-      $gridline 60%,
-      $gridline calc(60% + 1px),
-      transparent calc(60% + 1px),
-      transparent 80%,
-      $gridline 80%,
-      $gridline calc(80% + 1px),
-      transparent calc(80% + 1px),
-      transparent)
-     0 0 / 120px 100% repeat-x;
-  border-bottom: 1px solid $gridline;
-}
-
-.title {
-  font-size: 32px;
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0 4px;
-}
-
-.hidden {
-  display: none;
-}
-
-input {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-bottom: 1px solid $text;
-  background: transparent;
-}
-
-button {
-  background: none;
-  border: 0;
-}

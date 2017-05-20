@@ -1,52 +1,34 @@
 .TriangleDrawing__container {
-  font-family: serif;
-  margin: 0;
-  display: inline-block;
 }
 
 .TriangleDrawing__cantShow {
-  position: absolute;
 }
 
 .TriangleDrawing__svg {
 }
 
 .TriangleDrawing__trianglePath {
-  fill-opacity: 0.12;
-  stroke-width: 0.5%;
-  stroke: black;
 }
 
 .TriangleDrawing__label {
-  text-anchor: middle;
 }
 
 .TriangleDrawing__side {
-  text-decoration: overline;
 }
 
 .TriangleDrawing__arc {
-  fill: transparent;
-  stroke: rgba(0,0,200,0.54);
-  stroke-width: 0.5%;
 }
 
 .TriangleDrawing__circumcircle,
 .TriangleDrawing__incircle,
 .TriangleDrawing__euler {
-  stroke-width: 0.5%;
-  stroke: rgba(200, 0, 0, 0.54);
-  fill: transparent;
 }
 
 .TriangleDrawing__circumcenter,
 .TriangleDrawing__incenter,
 .TriangleDrawing__orthocenter,
 .TriangleDrawing__centroid {
-  fill: rgba(200, 0, 0, 0.87);
 }
 
 .TriangleDrawing__noEuler {
-  text-anchor: start;
-  fill: rgba(200, 0, 0, 0.87)
 }

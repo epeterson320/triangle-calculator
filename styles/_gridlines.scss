@@ -1,0 +1,80 @@
+$divider: #4CAF50;
+$gridline: transparentize($divider, 0.88);
+
+@mixin top-rule($height) {
+  background:
+    linear-gradient($divider, $divider)
+    0 #{$height} / 100% 1px no-repeat;
+}
+
+@mixin left-rule($margin) {
+  background:
+    linear-gradient($divider, $divider)
+    $margin 0 / 1px 100% no-repeat,
+}
+
+@mixin right-rule($margin) {
+  background:
+    linear-gradient($divider, $divider)
+    top right #{$right-margin} / 1px 100% no-repeat,
+}
+
+@mixin holePunchSide {
+  background:
+    radial-gradient(circle,
+      rgba(0, 0, 0, 0.6) 0,
+      rgba(0, 0, 0, 0.7) 12px,
+      transparent 12px,
+      transparent)
+    24px -104px / 24px 384px repeat-y $bg;
+}
+
+@mixin grid {
+  background:
+    // vertical gridlines
+    linear-gradient(0deg,
+      $gridline 0,
+      $gridline 2px,
+      transparent 2px,
+      transparent 20%,
+      $gridline 20%,
+      $gridline calc(20% + 1px),
+      transparent calc(20% + 1px),
+      transparent 40%,
+      $gridline 40%,
+      $gridline calc(40% + 1px),
+      transparent calc(40% + 1px),
+      transparent 60%,
+      $gridline 60%,
+      $gridline calc(60% + 1px),
+      transparent calc(60% + 1px),
+      transparent 80%,
+      $gridline 80%,
+      $gridline calc(80% + 1px),
+      transparent calc(80% + 1px),
+      transparent)
+    0 0 / 100% 120px repeat-y,
+    // horizontal gridlines
+    linear-gradient(90deg,
+      $gridline 0,
+      $gridline 2px,
+      transparent 2px,
+      transparent 20%,
+      $gridline 20%,
+      $gridline calc(20% + 1px),
+      transparent calc(20% + 1px),
+      transparent 40%,
+      $gridline 40%,
+      $gridline calc(40% + 1px),
+      transparent calc(40% + 1px),
+      transparent 60%,
+      $gridline 60%,
+      $gridline calc(60% + 1px),
+      transparent calc(60% + 1px),
+      transparent 80%,
+      $gridline 80%,
+      $gridline calc(80% + 1px),
+      transparent calc(80% + 1px),
+      transparent)
+     0 0 / 120px 100% repeat-x;
+}
