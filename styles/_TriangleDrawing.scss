@@ -1,4 +1,5 @@
 .TriangleDrawing__container {
+  display: inline-block;
 }
 
 .TriangleDrawing__cantShow {
@@ -8,27 +9,40 @@
 }
 
 .TriangleDrawing__trianglePath {
+  fill: $shadow;
+  stroke: $text;
+  stroke-width: 0.5%;
 }
 
 .TriangleDrawing__label {
+  font-family: serif;
 }
 
 .TriangleDrawing__side {
+  text-decoration: overline;
 }
 
 .TriangleDrawing__arc {
+  fill: transparent;
+  stroke: rgba(0, 0, 255, 0.87);
+  stroke-width: 0.5%;
 }
 
 .TriangleDrawing__circumcircle,
 .TriangleDrawing__incircle,
 .TriangleDrawing__euler {
+  stroke-width: 0.5%;
+  fill: transparent;
+  stroke: rgba(200, 0, 0, 0.87);
 }
 
 .TriangleDrawing__circumcenter,
 .TriangleDrawing__incenter,
 .TriangleDrawing__orthocenter,
 .TriangleDrawing__centroid {
+  fill: rgba(128, 0, 0, 0.87);
 }
 
 .TriangleDrawing__noEuler {
+  fill: rgba(128, 0, 0, 0.87);
 }

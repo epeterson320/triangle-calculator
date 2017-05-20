@@ -12,10 +12,10 @@ export const setAngleUnit = (unit) => ({ type: SET_ANGLE_UNIT, unit })
 const { PI } = Math
 
 const init = {
-  a: '',
+  a: '2',
   b: '',
-  c: '',
-  A: '',
+  c: '1',
+  A: '90',
   B: '',
   C: '',
   unit: DEG
