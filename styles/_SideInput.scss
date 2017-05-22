@@ -2,6 +2,9 @@
   position: relative;
   height: 48px;
   padding-left: 48px;
+  &:first-child {
+    margin-top: 16px;
+  }
 }
 
 .SideInput__label {

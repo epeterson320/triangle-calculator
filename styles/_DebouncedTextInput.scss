@@ -19,9 +19,11 @@
 }
 
 .DebouncedTextInput__input--computed {
+  color: rgba(0, 0, 200, 0.87);
 }
 
 .DebouncedTextInput__input--disabled {
+  background-color: rgba(0, 0, 0, 0.12);
 }
 
 .DebouncedTextInput__clear {

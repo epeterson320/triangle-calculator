@@ -11,13 +11,16 @@ export const InvalidAngle = 'Angles must be between 0 and 180 degrees'
 export default function solve (inputs) {
   const { numericInputs, parseErrors } = parseInputs(inputs)
   const { validInputs, numericErrors } = validateInputs(numericInputs)
-  const { computed, alternate } = computePossible(validInputs)
+
+  const errors = Object.assign({}, numericErrors, parseErrors)
+
+  const { computed, alternate } = (Object.keys(errors).length === 0)
+    ? computePossible(validInputs)
+    : { computed: {}, alternate: {} }
 
   const isSolved =
     !!(computed.A && computed.B && computed.C &&
     computed.a && computed.b && computed.c)
-
-  const errors = Object.assign({}, numericErrors, parseErrors)
 
   return { isSolved, computed, alternate, errors }
 }
