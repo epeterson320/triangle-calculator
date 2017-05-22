@@ -16,7 +16,7 @@ class RadioList extends PureComponent {
 
   render () {
     return (
-      <fieldset className='RadioList__fieldset'>
+      <div className='RadioList__container'>
         {this.props.opts.map(option => [
           <label className='RadioList__label' htmlFor={option.label} key={`l${option.label}`}>
             {option.label}
@@ -26,11 +26,12 @@ class RadioList extends PureComponent {
             key={option.label}
             type='radio'
             name='name'
+            className='RadioList__input'
             checked={option.value === this.state.selected}
             onChange={() => this.onChange(option.value)}
           />
         ])}
-      </fieldset>
+      </div>
     )
   }
 }

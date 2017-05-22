@@ -6,10 +6,11 @@
   <title>Triangle Calculator</title>
 </head>
 <body>
-  <header><h1 class="title">Triangle Calculator</h1></header>
-  <main id="root">
-    <%= require('./prerender').default() %>
-  </main>
+  <div class="Page__container">
+    <header><h1 class="title">Triangle Calculator</h1></header>
+    <main id="root"><%= require('./prerender').default() %></main>
+    <footer>Copyright 2017 Eric Peterson</footer>
+  </div>
   <script src="bundle.js" async></script>
 </body>
 </html>

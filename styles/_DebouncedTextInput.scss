@@ -1,57 +1,55 @@
 .DebouncedTextInput__container {
+  position: relative;
+  height: 48px;
+  width: 144px;
   display: inline-block;
   vertical-align: top;
-  width: 144px;
-  height: 48px;
-  position: relative;
 }
 
 .DebouncedTextInput__label {
-  width: 144px;
-  height: 12px;
+  position: absolute;
   font-size: 12px;
 }
 
 .DebouncedTextInput__input {
-  width: 144px;
-  height: 24px;
+  position: absolute;
+  top: 16px;
   font-size: 16px;
-  outline: none;
+  width: 144px;
 }
 
 .DebouncedTextInput__input--computed {
-  background: rgba(0, 0, 0, 0.12);
-  color: rgba(0, 0, 255, 0.87);
+  color: rgba(0, 0, 200, 0.87);
 }
 
 .DebouncedTextInput__input--disabled {
-  background: rgba(0, 0, 0, 0.12);
+  background-color: rgba(0, 0, 0, 0.12);
 }
 
 .DebouncedTextInput__clear {
   position: absolute;
   height: 24px;
   width: 24px;
-  padding: 0;
-  margin: 0;
   right: 0;
-  top: 12px;
-  background-clip: content-box;
-  border-radius: 12px;
-  &:focus {
-    outline: none;
-  }
-  &:focus, &:hover {
+  top: 16px;
+  background-color: transparent;
+  border-radius: 16px;
+  outline: none;
+  &:hover {
     background-color: rgba(0, 0, 0, 0.12);
   }
   &:active {
     background-color: rgba(0, 0, 0, 0.30);
   }
-
+  svg {
+    fill: $text2;
+  }
 }
 
 .DebouncedTextInput__error {
-  white-space: nowrap;
+  position: absolute;
+  bottom: -4px;
+  color: red;
   font-size: 12px;
-  color: rgba(255, 0, 0, 0.87);
+  white-space: nowrap;
 }

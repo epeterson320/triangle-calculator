@@ -25,16 +25,16 @@ export class MeasurementsForm extends Component {
 
     return (
       <form className='MeasurementsForm__container'>
-        <h3>Angle Unit</h3>
+        <h3 className='MeasurementsForm__header'>Angle Unit</h3>
         <RadioList opts={radioOpts} onChange={setAngleUnit} />
-        <h3>Point names & Angles</h3>
+        <h3 className='MeasurementsForm__header'>Point names & Angles</h3>
         <PointInput {...A} onChange={setAngle} onChangeLabel={renamePoint} />
         <PointInput {...B} onChange={setAngle} onChangeLabel={renamePoint} />
         <PointInput {...C} onChange={setAngle} onChangeLabel={renamePoint} />
-        <h3>Side Lengths</h3>
-        <SideInput {...a} onChange={setSide} />
-        <SideInput {...b} onChange={setSide} />
+        <h3 className='MeasurementsForm__header'>Side Lengths</h3>
         <SideInput {...c} onChange={setSide} />
+        <SideInput {...b} onChange={setSide} />
+        <SideInput {...a} onChange={setSide} />
       </form>
     )
   }
@@ -53,7 +53,7 @@ const mapStateToProps = ({ input, labels }) => {
     C: { id: 'C', text: input.C, error: errors.C, label: labels.C },
     c: { id: 'c', text: input.c, error: errors.c, label: labels.A + labels.B },
     b: { id: 'b', text: input.b, error: errors.b, label: labels.A + labels.C },
-    a: { id: 'a', text: input.a, error: errors.a, label: labels.B + labels.A }
+    a: { id: 'a', text: input.a, error: errors.a, label: labels.B + labels.C }
   }
 
   inputs.forEach(field => {
