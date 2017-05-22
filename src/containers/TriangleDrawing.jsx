@@ -14,7 +14,7 @@ export class TriangleDrawing extends Component {
     if (!triangle) {
       return (
         <div className='TriangleDrawing__container'>
-          <h2>Triangle</h2>
+          <h2 className='TriangleDrawing__header'>Triangle</h2>
           <p className='TriangleDrawing__cantShow'>
             Not enough measurements to complete triangle.
           </p>
@@ -100,7 +100,7 @@ export class TriangleDrawing extends Component {
     const sqC = <rect className='TriangleDrawing__arc' x={cx} y={cy} width={fontSize * 0.7} height={fontSize * 0.7} transform={`rotate(${-triangle.cb.angle * 180 / PI} ${cx} ${cy})`} />
     return (
       <div className='TriangleDrawing__container'>
-        <h2>Triangle</h2>
+        <h2 className='TriangleDrawing__header'>Triangle</h2>
         <p className='TriangleDrawing__cantShow' />
         <svg
           xmlns='http://www.w3.org/2000/svg'

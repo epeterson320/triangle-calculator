@@ -36,7 +36,7 @@ main {
   border-bottom: 2px solid $gridline;
   min-height: calc(100vh - 96px);
   padding: 24px;
-  @include for-desktop-up {
+  @include for-tablet-landscape-up {
     min-height: calc(100vh - 176px);
   }
 }

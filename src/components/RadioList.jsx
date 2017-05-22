@@ -26,6 +26,7 @@ class RadioList extends PureComponent {
             key={option.label}
             type='radio'
             name='name'
+            className='RadioList__input'
             checked={option.value === this.state.selected}
             onChange={() => this.onChange(option.value)}
           />

@@ -1,6 +1,7 @@
 // This does not include layout and spacing stuff, just global colors and
 // resets to extend normalize in ways that make sense to this project.
 $text: rgba(0, 0, 0, 0.87);
+$text2: rgba(0, 0, 0, 0.54);
 $shadow: rgba(0, 0, 0, 0.2);
 $fadedYellow: #FFFDE7;
 $cell: 24px;
@@ -15,7 +16,7 @@ body {
 input {
   border: 0;
   background-color: transparent;
-  border-bottom: 2px solid $text;
+  border-bottom: 2px solid $text2;
 }
 
 h1, h2, h3 {
