@@ -16,7 +16,7 @@ export default function solve (inputs) {
 
   const { computed, alternate } = (Object.keys(errors).length === 0)
     ? computePossible(validInputs)
-    : { computed: {}, alternate: {} }
+    : { computed: { A: 0, B: 0, C: 0, a: 0, b: 0, c: 0 }, alternate: null }
 
   const isSolved =
     !!(computed.A && computed.B && computed.C &&
