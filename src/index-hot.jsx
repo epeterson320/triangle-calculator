@@ -5,8 +5,9 @@ import { Provider } from 'react-redux'
 import { AppContainer } from 'react-hot-loader'
 
 import app from './modules/app'
-import '../styles/index.scss'
+import init from './modules/init'
 import App from './containers/App'
+import '../styles/index.scss'
 
 // eslint-disable-next-line no-underscore-dangle
 const devExt = window.__REDUX_DEVTOOLS_EXTENSION__
@@ -29,3 +30,5 @@ render(App)
 
 // Hot Module Replacement API
 if (module.hot) module.hot.accept('./containers/App', () => { render(App) })
+
+store.dispatch(init(window.location))

@@ -4,8 +4,9 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 
 import app from './modules/app'
-import '../styles/index.scss'
+import init from './modules/init'
 import App from './containers/App'
+import '../styles/index.scss'
 
 const store = createStore(app)
 const rootEl = document.getElementById('root')
@@ -16,3 +17,5 @@ ReactDOM.render(
   </Provider>,
   rootEl
 )
+
+store.dispatch(init(window.location))
