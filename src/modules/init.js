@@ -10,7 +10,6 @@ const init = (location) => {
   const sidesByLabel = {}
 
   if (points) {
-    console.log(points)
     if (points[1]) {
       labels.A = points[1]
     }

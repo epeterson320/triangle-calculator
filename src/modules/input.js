@@ -69,6 +69,9 @@ export default function reduce (state = init, action = {}) {
       }
       return state // invalid input
     }
+    case 'init/INIT': {
+      return Object.assign({}, state, action.payload.input)
+    }
     default: {
       return state
     }
