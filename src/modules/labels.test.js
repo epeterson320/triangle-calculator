@@ -1,4 +1,5 @@
 import reduce, * as labels from './labels'
+import init from './init'
 import { Point } from '../constants'
 
 describe('Label reducer', () => {
@@ -11,5 +12,11 @@ describe('Label reducer', () => {
     const state0 = reduce()
     const state1 = reduce(state0, labels.renamePoint(Point.B, 'P'))
     expect(state1.B).toBe('P')
+  })
+
+  it('initializes labels', () => {
+    const location = { search: '?points=[P,Q,R]' }
+    const state = reduce(undefined, init(location))
+    expect(state).toEqual({ A: 'P', B: 'Q', C: 'R' })
   })
 })

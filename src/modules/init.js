@@ -1,6 +1,5 @@
 const init = (location) => {
   const query = location.search.slice(1) || '' // slice(1) to remove leading '?'
-  console.log('Query:', query)
 
   const labelsRe = /points=\[(\w),(\w),(\w)\]/g
   const points = labelsRe.exec(query)
