@@ -1,6 +1,7 @@
 import reduce, * as app from './input'
 
 import { DEG, RAD, Side, Point } from '../constants'
+import { init } from './query'
 
 const { PI } = Math
 const { a, b, c } = Side
@@ -125,5 +126,15 @@ describe('Reducer', () => {
     const state2 = reduce(state1, app.setAngle(A, '90'))
     const state3 = reduce(state2, app.setAngleUnit(RAD))
     expect(parseFloat(state3.A)).toBeCloseTo(PI / 2)
+  })
+
+  it('sets inputs when initialized', () => {
+    const location = { search: '?points=[P,Q,R]&P=90&PQ=12&PR=5' }
+    const state = reduce(undefined, init(location))
+    expect(state).toMatchObject({
+      A: '90',
+      b: '5',
+      c: '12'
+    })
   })
 })

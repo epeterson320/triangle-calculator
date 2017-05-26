@@ -18,6 +18,9 @@ export default function reduce (state = init, action = {}) {
       const { point, name } = action
       return Object.assign({}, state, { [point]: name })
     }
+    case 'init/INIT': {
+      return Object.assign({}, state, action.payload.labels)
+    }
     default: {
       return state
     }
