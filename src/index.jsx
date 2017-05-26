@@ -4,7 +4,7 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 
 import app from './modules/app'
-import init from './modules/init'
+import { init, pushStateToHistory } from './modules/query'
 import App from './containers/App'
 import '../styles/index.scss'
 
@@ -19,3 +19,7 @@ ReactDOM.render(
 )
 
 store.dispatch(init(window.location))
+
+store.subscribe(() => {
+  pushStateToHistory(window)(store.getState())
+})

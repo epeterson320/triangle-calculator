@@ -1,7 +1,7 @@
 import reduce, * as app from './input'
 
 import { DEG, RAD, Side, Point } from '../constants'
-import init from './init'
+import { init } from './query'
 
 const { PI } = Math
 const { a, b, c } = Side

@@ -1,5 +1,5 @@
 import reduce, * as labels from './labels'
-import init from './init'
+import { init } from './query'
 import { Point } from '../constants'
 
 describe('Label reducer', () => {

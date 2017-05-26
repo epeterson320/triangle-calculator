@@ -1,4 +1,4 @@
-const init = (location) => {
+export const init = (location) => {
   const query = location.search.slice(1) || '' // slice(1) to remove leading '?'
 
   const labelsRe = /points=\[(\w),(\w),(\w)\]/g
@@ -44,4 +44,30 @@ const init = (location) => {
   return { type: 'init/INIT', payload: { input, labels } }
 }
 
-export default init
+export const pushStateToHistory = ({ history, location }) => state => {
+  const query = stateToQueryString(state)
+  const url = location.origin + location.pathname + '?' + query
+  history.replaceState(null, '', url)
+}
+
+const stateToQueryString = ({ input, labels }) => {
+  const params = []
+  if (labels.A !== 'A' || labels.B !== 'B' || labels.C !== 'C') {
+    params.push({
+      key: 'points',
+      value: `[${labels.A},${labels.B},${labels.C}]`
+    })
+  }
+
+  const { A, B, C, a, b, c } = input
+  if (A) params.push({ key: labels.A, value: A })
+  if (B) params.push({ key: labels.B, value: B })
+  if (C) params.push({ key: labels.C, value: C })
+  if (c) params.push({ key: labels.A + labels.B, value: c })
+  if (b) params.push({ key: labels.A + labels.C, value: b })
+  if (a) params.push({ key: labels.B + labels.C, value: a })
+
+  return params
+    .map(({ key, value }) => `${key}=${value}`)
+    .join('&')
+}

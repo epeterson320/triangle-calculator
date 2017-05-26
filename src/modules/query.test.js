@@ -1,4 +1,4 @@
-import init from './init'
+import { init, pushStateToHistory } from './query'
 
 describe('initialize', () => {
   it('Gets the url params and parses them into an action', () => {
@@ -79,5 +79,43 @@ describe('initialize', () => {
         }
       }
     })
+  })
+})
+
+describe('pushStateToHistory', () => {
+  it('Stringifies the state correctly and pushes it to the browser history', () => {
+    const history = { replaceState: jest.fn() }
+    const location = {
+      origin: 'http://example.com',
+      pathname: '/route'
+    }
+    const state = {
+      input: { A: '30', B: '60' },
+      labels: { A: 'P', B: 'Q', C: 'R' }
+    }
+    pushStateToHistory({ history, location })(state)
+    expect(history.replaceState).toHaveBeenCalledWith(
+      null,
+      '',
+      'http://example.com/route?points=[P,Q,R]&P=30&Q=60'
+    )
+  })
+
+  it('Omits the labels when they are the defaults', () => {
+    const history = { replaceState: jest.fn() }
+    const location = {
+      origin: 'http://example.com',
+      pathname: '/route'
+    }
+    const state = {
+      input: { A: '30', b: '10', c: '10' },
+      labels: { A: 'A', B: 'B', C: 'C' }
+    }
+    pushStateToHistory({ history, location })(state)
+    expect(history.replaceState).toHaveBeenCalledWith(
+      null,
+      '',
+      'http://example.com/route?A=30&AB=10&AC=10'
+    )
   })
 })
