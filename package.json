@@ -71,12 +71,13 @@
     "webpack-dev-server": "^2.3.0",
     "webpack-merge": "^4.1.0"
   },
-  "engines": {
-    "node": "^6.0.0"
-  },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js",
-    "collectCoverageFrom" : ["src/**/*.{js,jsx}", "!src/index-hot.jsx", "!src/prerender.jsx"]
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index-hot.jsx",
+      "!src/prerender.jsx"
+    ]
   },
   "standard": {
     "env": "jest"
