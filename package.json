@@ -6,14 +6,12 @@
     "clean": "rm -rf dist",
     "prebuild": "npm run clean",
     "build": "webpack -p --progress --color",
+    "postbuild": "cp src/icon.png dist/icon.png",
     "start": "webpack-dev-server --env=dev",
-    "stop": "pkill -f webpack-dev-server || true",
     "test": "jest",
     "presize": "if [ ! -e dist/bundle.js ]; then >&2 echo \"Build project first\"; exit 1; fi",
     "size": "echo Minifed and gzipped:\necho bundle.js: $((`gzip -9 -c dist/bundle.js | wc -c`/1000))KB\necho index.html: $((`gzip -9 -c dist/index.html | wc -c`/1000))KB",
-    "lint": "standard --verbose | snazzy",
-    "predeploy": "cp -R .circleci dist",
-    "deploy": "gh-pages -d dist --dotfiles"
+    "lint": "standard --verbose | snazzy"
   },
   "repository": {
     "type": "git",
