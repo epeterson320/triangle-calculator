@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import TextInput from './DebouncedTextInput';
+import styles from './DebouncedTextInput.module.scss';
 
 jest.useFakeTimers();
 
@@ -131,9 +132,7 @@ describe('<DebouncedTextInput>', () => {
 
     it('Styles the input differently', () => {
       expect(
-        render({ computed: true }).find(
-          'input.DebouncedTextInput__input--computed',
-        ).length,
+        render({ computed: true }).find(`input.${styles.computed}`).length,
       ).toBeGreaterThan(0);
     });
 
@@ -173,7 +172,7 @@ describe('<DebouncedTextInput>', () => {
     it('Has an error message', () => {
       expect(
         render({ error: 'Invalid' })
-          .find('.DebouncedTextInput__error')
+          .find(`.${styles.error}`)
           .text(),
       ).toMatch('Invalid');
     });
@@ -181,7 +180,7 @@ describe('<DebouncedTextInput>', () => {
     it('Hides the error message when a falsy message is provided', () => {
       expect(
         render({ error: '' })
-          .find('.DebouncedTextInput__error')
+          .find(`.${styles.error}`)
           .hasClass('hidden'),
       ).toBe(true);
     });

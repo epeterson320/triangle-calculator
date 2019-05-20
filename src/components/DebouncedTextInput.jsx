@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
+import styles from './DebouncedTextInput.module.scss';
 
 const DELAY = 600; // ms
 
@@ -51,16 +52,17 @@ export default class TextInput extends PureComponent {
     const { label, disabled, computed, error, id } = this.props;
 
     return (
-      <div className="DebouncedTextInput__container">
-        <label className="DebouncedTextInput__label" htmlFor={id}>
+      <div className={styles.container}>
+        <label className={styles.label} htmlFor={id}>
           {label}
         </label>
         <input
           id={id}
           type="number"
-          className={classNames('DebouncedTextInput__input', {
-            'DebouncedTextInput__input--computed': computed,
-            'DebouncedTextInput__input--disabled': disabled,
+          className={classNames({
+            [styles.input]: true,
+            [styles.computed]: computed,
+            [styles.disabled]: disabled,
           })}
           tabIndex={disabled || computed ? -1 : 0}
           onChange={this.onChange}
@@ -68,7 +70,8 @@ export default class TextInput extends PureComponent {
           readOnly={computed || disabled}
         />
         <button
-          className={classNames('DebouncedTextInput__clear', {
+          className={classNames({
+            [styles.clear]: true,
             hidden: computed || !text,
           })}
           onClick={this.onClear}
@@ -87,7 +90,8 @@ export default class TextInput extends PureComponent {
           </svg>
         </button>
         <div
-          className={classNames('DebouncedTextInput__error', {
+          className={classNames({
+            [styles.error]: true,
             hidden: !error,
           })}
           htmlFor={label}

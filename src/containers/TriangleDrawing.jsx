@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import LineSegment from '../geometry/LineSegment';
 import Triangle from '../geometry/Triangle';
 import solveTriangle from '../selectors/solveTriangle';
+import styles from './TriangleDrawing.module.scss';
 
 const { PI, abs, min } = Math;
 const rt = PI / 2;
@@ -21,17 +22,14 @@ export class TriangleDrawing extends Component {
     } = this.props;
     if (!triangle) {
       return (
-        <div className="TriangleDrawing__container">
-          <h2 className="TriangleDrawing__header">Triangle</h2>
-          <p className="TriangleDrawing__cantShow">
-            Not enough measurements to complete triangle.
-          </p>
+        <div className={styles.container}>
+          <h2 className={styles.header}>Triangle</h2>
+          <p>Not enough measurements to complete triangle.</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width={300}
             height={300}
             viewBox="0 0 100 100"
-            className="TriangleDrawing__svg"
           />
         </div>
       );
@@ -104,7 +102,7 @@ export class TriangleDrawing extends Component {
     const cRt = abs(triangle.cb.angle - triangle.ca.angle - rt) < 0.00001;
     const arcA = (
       <circle
-        className="TriangleDrawing__arc"
+        className={styles.arc}
         cx={ax}
         cy={ay}
         r={fontSize * 0.7}
@@ -113,7 +111,7 @@ export class TriangleDrawing extends Component {
     );
     const arcB = (
       <circle
-        className="TriangleDrawing__arc"
+        className={styles.arc}
         cx={bx}
         cy={by}
         r={fontSize * 0.7}
@@ -122,7 +120,7 @@ export class TriangleDrawing extends Component {
     );
     const arcC = (
       <circle
-        className="TriangleDrawing__arc"
+        className={styles.arc}
         cx={cx}
         cy={cy}
         r={fontSize * 0.7}
@@ -131,7 +129,7 @@ export class TriangleDrawing extends Component {
     );
     const sqA = (
       <rect
-        className="TriangleDrawing__arc"
+        className={styles.arc}
         x={ax}
         y={ay}
         width={fontSize * 0.7}
@@ -141,7 +139,7 @@ export class TriangleDrawing extends Component {
     );
     const sqB = (
       <rect
-        className="TriangleDrawing__arc"
+        className={styles.arc}
         x={bx}
         y={by}
         width={fontSize * 0.7}
@@ -151,7 +149,7 @@ export class TriangleDrawing extends Component {
     );
     const sqC = (
       <rect
-        className="TriangleDrawing__arc"
+        className={styles.arc}
         x={cx}
         y={cy}
         width={fontSize * 0.7}
@@ -160,15 +158,14 @@ export class TriangleDrawing extends Component {
       />
     );
     return (
-      <div className="TriangleDrawing__container">
-        <h2 className="TriangleDrawing__header">Triangle</h2>
-        <p className="TriangleDrawing__cantShow" />
+      <div className={styles.container}>
+        <h2 className={styles.header}>Triangle</h2>
+        <p className={styles.cantShow} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width={300}
           height={300}
           viewBox={svgViewbox}
-          className="TriangleDrawing__svg"
         >
           <clipPath id="triangleClip">
             <path d={`M ${ax},${ay} L ${bx},${by} L ${cx},${cy} Z`} />
@@ -178,33 +175,24 @@ export class TriangleDrawing extends Component {
           {cRt ? sqC : arcC}
           <path
             d={`M ${ax},${ay} L ${bx},${by} L ${cx},${cy} Z`}
-            className="TriangleDrawing__trianglePath"
+            className={styles.trianglePath}
           />
           <text
-            className={classnames(
-              'TriangleDrawing__label',
-              'TriangleDrawing__side',
-            )}
+            className={classnames(styles.label, styles.side)}
             fontSize={fontSize * 0.8}
             x={lax}
             y={lay}
             dy={dy}
           >{`${labels.B}${labels.C}`}</text>
           <text
-            className={classnames(
-              'TriangleDrawing__label',
-              'TriangleDrawing__side',
-            )}
+            className={classnames(styles.label, styles.side)}
             fontSize={fontSize * 0.8}
             x={lbx}
             y={lby}
             dy={dy}
           >{`${labels.A}${labels.C}`}</text>
           <text
-            className={classnames(
-              'TriangleDrawing__label',
-              'TriangleDrawing__side',
-            )}
+            className={classnames(styles.label, styles.side)}
             fontSize={fontSize * 0.8}
             x={lcx}
             y={lcy}
@@ -212,7 +200,7 @@ export class TriangleDrawing extends Component {
           >{`${labels.A}${labels.B}`}</text>
 
           <text
-            className="TriangleDrawing__label"
+            className={styles.label}
             fontSize={fontSize}
             x={lAx}
             y={lAy}
@@ -221,7 +209,7 @@ export class TriangleDrawing extends Component {
             {labels.A}
           </text>
           <text
-            className="TriangleDrawing__label"
+            className={styles.label}
             fontSize={fontSize}
             x={lBx}
             y={lBy}
@@ -230,7 +218,7 @@ export class TriangleDrawing extends Component {
             {labels.B}
           </text>
           <text
-            className="TriangleDrawing__label"
+            className={styles.label}
             fontSize={fontSize}
             x={lCx}
             y={lCy}
@@ -239,7 +227,8 @@ export class TriangleDrawing extends Component {
             {labels.C}
           </text>
           <circle
-            className={classnames('TriangleDrawing__circumcircle', {
+            className={classnames({
+              [styles.circumcircle]: true,
               hidden: !showCC,
             })}
             cx={ux}
@@ -247,7 +236,8 @@ export class TriangleDrawing extends Component {
             r={ur}
           />
           <circle
-            className={classnames('TriangleDrawing__circumcenter', {
+            className={classnames({
+              [styles.circumcenter]: true,
               hidden: !showCC,
             })}
             cx={ux}
@@ -255,7 +245,8 @@ export class TriangleDrawing extends Component {
             r={fontSize * 0.1}
           />
           <circle
-            className={classnames('TriangleDrawing__incircle', {
+            className={classnames({
+              [styles.incircle]: true,
               hidden: !showIC,
             })}
             cx={ix}
@@ -263,7 +254,8 @@ export class TriangleDrawing extends Component {
             r={ir}
           />
           <circle
-            className={classnames('TriangleDrawing__incenter', {
+            className={classnames({
+              [styles.incenter]: true,
               hidden: !showIC,
             })}
             cx={ix}
@@ -279,7 +271,8 @@ export class TriangleDrawing extends Component {
             r={fontSize * 0.1}
           />
           <circle
-            className={classnames('TriangleDrawing__centroid', {
+            className={classnames({
+              [styles.centroid]: triangle,
               hidden: !showCentroid,
             })}
             cx={gx}
@@ -288,7 +281,8 @@ export class TriangleDrawing extends Component {
           />
           {euler != null ? (
             <line
-              className={classnames('TriangleDrawing__euler', {
+              className={classnames({
+                [styles.euler]: true,
                 hidden: !showEuler,
               })}
               x1={e.x1}
@@ -298,7 +292,8 @@ export class TriangleDrawing extends Component {
             />
           ) : null}
           <text
-            className={classnames('TriangleDrawing__noEuler', {
+            className={classnames({
+              [styles.noEuler]: true,
               hidden: euler != null || !showEuler,
             })}
             fontSize={fontSize * 0.5}

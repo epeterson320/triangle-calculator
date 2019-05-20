@@ -1,14 +1,14 @@
-.Checkbox__container {
+.container {
   height: 24px;
   position: relative;
 }
-.Checkbox__input {
+.input {
   position: absolute;
   height: 16px;
   width: 16px;
   bottom: -2px;
 }
-.Checkbox__label {
+.label {
   position: absolute;
   left: 24px;
   bottom: -2px;

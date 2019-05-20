@@ -1,16 +1,16 @@
-.CharInput__container {
+.container {
   position: relative;
   width: 48px;
   height: 48px;
   display: inline-block;
 }
 
-.CharInput__label {
+.label {
   font-size: 12px;
   position: absolute;
 }
 
-.CharInput__input {
+.input {
   position: absolute;
   top: 16px;
   font-size: 16px;
@@ -18,10 +18,6 @@
   text-align: center;
 }
 
-.CharInput__input--cursor {
+.cursor {
   background-color: rgba(0, 0, 0, 0.12);
 }
-
-/*.CharInput__input--focus {
-  border: 1px solid brown;
-}*/

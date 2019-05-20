@@ -8,6 +8,7 @@ import * as action from '../modules/input';
 import * as labelAction from '../modules/labels';
 import solveTriangle from '../selectors/solveTriangle';
 import { DEG, RAD, Side, Point } from '../constants';
+import styles from './MeasurementsForm.module.css';
 
 const { PI } = Math;
 
@@ -26,14 +27,14 @@ export class MeasurementsForm extends Component {
     const { renamePoint } = bindActionCreators(labelAction, dispatch);
 
     return (
-      <form className="MeasurementsForm__container">
-        <h3 className="MeasurementsForm__header">Angle Unit</h3>
+      <form className={styles.form}>
+        <h3 className={styles.header}>Angle Unit</h3>
         <RadioList opts={radioOpts} onChange={setAngleUnit} />
-        <h3 className="MeasurementsForm__header">Point names & Angles</h3>
+        <h3 className={styles.header}>Point names & Angles</h3>
         <PointInput {...A} onChange={setAngle} onChangeLabel={renamePoint} />
         <PointInput {...B} onChange={setAngle} onChangeLabel={renamePoint} />
         <PointInput {...C} onChange={setAngle} onChangeLabel={renamePoint} />
-        <h3 className="MeasurementsForm__header">Side Lengths</h3>
+        <h3 className={styles.header}>Side Lengths</h3>
         <SideInput {...c} onChange={setSide} />
         <SideInput {...b} onChange={setSide} />
         <SideInput {...a} onChange={setSide} />

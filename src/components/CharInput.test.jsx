@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import CharInput from './CharInput';
+import styles from './CharInput.module.css';
 
 function render(props) {
   return shallow(<CharInput id="ID" char="A" {...props} />);
@@ -34,26 +35,26 @@ describe('<CharInput />', () => {
     const el = render();
     const input = el.find('input');
     // When constructed, it's not blinking
-    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(false);
+    expect(el.find('input').hasClass(styles.cursor)).toBe(false);
 
     // When it's not clicked, it stays not blinking
     jest.runTimersToTime(BLINK_RATE + 20);
-    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(false);
+    expect(el.find('input').hasClass(styles.cursor)).toBe(false);
 
     // When it's clicked, it starts blinking
     input.simulate('focus');
-    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(true);
+    expect(el.find('input').hasClass(styles.cursor)).toBe(true);
     jest.runTimersToTime('2');
-    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(true);
+    expect(el.find('input').hasClass(styles.cursor)).toBe(true);
     jest.runTimersToTime(BLINK_RATE);
-    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(false);
+    expect(el.find('input').hasClass(styles.cursor)).toBe(false);
     jest.runTimersToTime(BLINK_RATE);
-    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(true);
+    expect(el.find('input').hasClass(styles.cursor)).toBe(true);
 
     // When it loses focus, it stops blinking
     el.find('input').simulate('blur');
-    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(false);
+    expect(el.find('input').hasClass(styles.cursor)).toBe(false);
     jest.runTimersToTime(BLINK_RATE);
-    expect(el.find('input').hasClass('CharInput__input--cursor')).toBe(false);
+    expect(el.find('input').hasClass(styles.cursor)).toBe(false);
   });
 });

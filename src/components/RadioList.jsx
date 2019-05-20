@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import styles from './RadioList.module.css';
 
 class RadioList extends PureComponent {
   constructor(props) {
@@ -16,10 +17,10 @@ class RadioList extends PureComponent {
 
   render() {
     return (
-      <div className="RadioList__container">
+      <div className={styles.container}>
         {this.props.opts.map(option => [
           <label
-            className="RadioList__label"
+            className={styles.label}
             htmlFor={option.label}
             key={`l${option.label}`}
           >
@@ -30,7 +31,7 @@ class RadioList extends PureComponent {
             key={option.label}
             type="radio"
             name="name"
-            className="RadioList__input"
+            className={styles.input}
             checked={option.value === this.state.selected}
             onChange={() => this.onChange(option.value)}
           />,

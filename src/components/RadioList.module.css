@@ -1,0 +1,9 @@
+.container {
+  height: 24px;
+}
+
+.input,
+.label {
+  margin-top: 6px;
+  margin-right: 8px;
+}

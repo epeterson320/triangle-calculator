@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import styles from './CharInput.module.css';
 
 const BLINK_RATE = 500; // ms
 
@@ -40,8 +41,8 @@ export default class CharInput extends Component {
   render() {
     const { id, char } = this.props;
     return (
-      <div className="CharInput__container">
-        <label className="CharInput__label" htmlFor={`c${id}`}>
+      <div className={styles.container}>
+        <label className={styles.label} htmlFor={`c${id}`}>
           Point
         </label>
         <input
@@ -55,9 +56,8 @@ export default class CharInput extends Component {
           maxLength={1}
           tabIndex={-1}
           className={classnames({
-            CharInput__input: true,
-            // 'CharInput__input--focus': this.state.focused,
-            'CharInput__input--cursor': this.state.blinking,
+            [styles.input]: true,
+            [styles.cursor]: this.state.blinking,
           })}
         />
       </div>

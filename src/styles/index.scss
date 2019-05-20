@@ -1,20 +1,5 @@
 @import-normalize;
-
-// Define Mixins
-@import 'breakpoints';
-@import 'gridlines';
 // Apply styles to tags
 @import 'globals';
 // Style the page and grid
-@import 'layout';
-// Style the components
-@import 'App';
-@import 'CharInput';
-@import 'Checkbox';
-@import 'DebouncedTextInput';
-@import 'DisplayPrefsForm';
-@import 'MeasurementsForm';
-@import 'PointInput';
-@import 'RadioList';
-@import 'SideInput';
-@import 'TriangleDrawing';
+@import 'graph-paper';

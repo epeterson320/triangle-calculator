@@ -1,23 +1,65 @@
 $divider: #4caf50;
 $gridline: transparentize($divider, 0.88);
 
-@mixin top-rule {
-  background: linear-gradient($divider, $divider) 0 48px / 100% 2px no-repeat;
+@mixin for-md-up {
+  @media (min-width: 900px) {
+    @content;
+  }
 }
 
-@mixin border-rules {
-  background: linear-gradient($divider, $divider) 0 48px / 100% 2px no-repeat,
-    // top rule
-      linear-gradient($divider, $divider) 96px 0 / 2px 100% no-repeat,
-    // left rule
-      linear-gradient($divider, $divider) top right 48px / 2px 100% no-repeat,
-    // right rule
-      radial-gradient(circle, #eee 0, #ddd 12px, transparent 12px, transparent)
-      24px -104px / 24px 384px repeat-y; // 3-hole punch on the side
+.graph-paper {
+  max-width: 900px;
+  margin: 0 auto;
+  background: linear-gradient($divider, $divider) 0 48px / 100% 2px no-repeat;
+  background-color: $fadedYellow;
+
+  @include for-md-up {
+    background: linear-gradient($divider, $divider) 0 48px / 100% 2px no-repeat,
+      // top rule
+        linear-gradient($divider, $divider) 96px 0 / 2px 100% no-repeat,
+      // left rule
+        linear-gradient($divider, $divider) top right 48px / 2px 100% no-repeat,
+      // right rule
+        radial-gradient(
+          circle,
+          #eee 0,
+          #ddd 12px,
+          transparent 12px,
+          transparent
+        )
+        24px -104px / 24px 384px repeat-y; // 3-hole punch on the side
+    margin: 16px auto;
+    border-radius: 2px;
+    box-shadow: 0 4px 4px $shadow;
+    padding-left: 96px;
+    padding-right: 48px;
+    max-width: 756px;
+    background-color: $fadedYellow;
+  }
+}
+
+.graph-paper header {
+  height: 48px;
+  padding: 0 8px;
+
+  @include for-md-up {
+    background: linear-gradient(
+        90deg,
+        $divider 0,
+        $divider 2px,
+        transparent 2px,
+        transparent 100%,
+        $divider 100%
+      )
+      0 0 / 33.4% 100% repeat-x;
+  }
 }
 
 // vertical and horizontal gridlines
-@mixin grid {
+.graph-paper main {
+  border-bottom: 2px solid $gridline;
+  min-height: calc(100vh - 96px);
+  padding: 24px;
   background: linear-gradient(
         0deg,
         $gridline 0,
@@ -65,4 +107,13 @@ $gridline: transparentize($divider, 0.88);
         transparent calc(80% + 1px),
         transparent
       ) -1px 0 / 120px 100% repeat-x;
+  @include for-md-up {
+    min-height: calc(100vh - 176px);
+  }
+}
+
+.graph-paper footer {
+  height: 32px;
+  padding: 8px;
+  font-size: 12px;
 }

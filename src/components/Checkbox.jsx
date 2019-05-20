@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styles from './Checkbox.module.css';
 
 export default class Checkbox extends Component {
   constructor(props) {
@@ -14,11 +15,11 @@ export default class Checkbox extends Component {
 
   render() {
     return (
-      <div className="Checkbox__container">
-        <label className="Checkbox__label">{this.props.label}</label>
+      <div className={styles.container}>
+        <label className={styles.label}>{this.props.label}</label>
         <input
           type="checkbox"
-          className="Checkbox__input"
+          className={styles.input}
           onChange={this.onChange}
         />
       </div>

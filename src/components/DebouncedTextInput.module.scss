@@ -1,4 +1,6 @@
-.DebouncedTextInput__container {
+@import '../styles/globals';
+
+.container {
   position: relative;
   height: 48px;
   width: 144px;
@@ -6,27 +8,27 @@
   vertical-align: top;
 }
 
-.DebouncedTextInput__label {
+.label {
   position: absolute;
   font-size: 12px;
 }
 
-.DebouncedTextInput__input {
+.input {
   position: absolute;
   top: 16px;
   font-size: 16px;
   width: 144px;
 }
 
-.DebouncedTextInput__input--computed {
+.computed {
   color: rgba(0, 0, 200, 0.87);
 }
 
-.DebouncedTextInput__input--disabled {
+.disabled {
   background-color: rgba(0, 0, 0, 0.12);
 }
 
-.DebouncedTextInput__clear {
+.clear {
   position: absolute;
   height: 24px;
   width: 24px;
@@ -46,7 +48,7 @@
   }
 }
 
-.DebouncedTextInput__error {
+.error {
   position: absolute;
   bottom: -4px;
   color: red;
