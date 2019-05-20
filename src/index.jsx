@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import app from './modules/app'
 import { init, pushStateToHistory } from './modules/query'
 import App from './containers/App'
-import '../styles/index.scss'
+import './styles/index.scss'
 
 const store = createStore(app)
 const rootEl = document.getElementById('root')
