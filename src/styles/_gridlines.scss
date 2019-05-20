@@ -1,74 +1,68 @@
-$divider: #4CAF50;
+$divider: #4caf50;
 $gridline: transparentize($divider, 0.88);
 
 @mixin top-rule {
-  background:
-    linear-gradient($divider, $divider)
-    0 48px / 100% 2px no-repeat;
+  background: linear-gradient($divider, $divider) 0 48px / 100% 2px no-repeat;
 }
 
 @mixin border-rules {
-  background:
+  background: linear-gradient($divider, $divider) 0 48px / 100% 2px no-repeat,
     // top rule
-    linear-gradient($divider, $divider)
-    0 48px / 100% 2px no-repeat,
+      linear-gradient($divider, $divider) 96px 0 / 2px 100% no-repeat,
     // left rule
-    linear-gradient($divider, $divider)
-    96px 0 / 2px 100% no-repeat,
+      linear-gradient($divider, $divider) top right 48px / 2px 100% no-repeat,
     // right rule
-    linear-gradient($divider, $divider)
-    top right 48px / 2px 100% no-repeat,
-    // 3-hole punch on the side
-    radial-gradient(circle, #eee 0, #ddd 12px, transparent 12px, transparent)
-    24px -104px / 24px 384px repeat-y;
+      radial-gradient(circle, #eee 0, #ddd 12px, transparent 12px, transparent)
+      24px -104px / 24px 384px repeat-y; // 3-hole punch on the side
 }
 
+// vertical and horizontal gridlines
 @mixin grid {
-  background:
-    // vertical gridlines
-    linear-gradient(0deg,
-      $gridline 0,
-      $gridline 2px,
-      transparent 2px,
-      transparent 20%,
-      $gridline 20%,
-      $gridline calc(20% + 1px),
-      transparent calc(20% + 1px),
-      transparent 40%,
-      $gridline 40%,
-      $gridline calc(40% + 1px),
-      transparent calc(40% + 1px),
-      transparent 60%,
-      $gridline 60%,
-      $gridline calc(60% + 1px),
-      transparent calc(60% + 1px),
-      transparent 80%,
-      $gridline 80%,
-      $gridline calc(80% + 1px),
-      transparent calc(80% + 1px),
-      transparent)
-    0 -2px / 100% 120px repeat-y,
-    // horizontal gridlines
-    linear-gradient(90deg,
-      $gridline 0,
-      $gridline 2px,
-      transparent 2px,
-      transparent 20%,
-      $gridline 20%,
-      $gridline calc(20% + 1px),
-      transparent calc(20% + 1px),
-      transparent 40%,
-      $gridline 40%,
-      $gridline calc(40% + 1px),
-      transparent calc(40% + 1px),
-      transparent 60%,
-      $gridline 60%,
-      $gridline calc(60% + 1px),
-      transparent calc(60% + 1px),
-      transparent 80%,
-      $gridline 80%,
-      $gridline calc(80% + 1px),
-      transparent calc(80% + 1px),
-      transparent)
-     -1px 0 / 120px 100% repeat-x;
+  background: linear-gradient(
+        0deg,
+        $gridline 0,
+        $gridline 2px,
+        transparent 2px,
+        transparent 20%,
+        $gridline 20%,
+        $gridline calc(20% + 1px),
+        transparent calc(20% + 1px),
+        transparent 40%,
+        $gridline 40%,
+        $gridline calc(40% + 1px),
+        transparent calc(40% + 1px),
+        transparent 60%,
+        $gridline 60%,
+        $gridline calc(60% + 1px),
+        transparent calc(60% + 1px),
+        transparent 80%,
+        $gridline 80%,
+        $gridline calc(80% + 1px),
+        transparent calc(80% + 1px),
+        transparent
+      )
+      0 -2px / 100% 120px repeat-y,
+    linear-gradient(
+        90deg,
+        $gridline 0,
+        $gridline 2px,
+        transparent 2px,
+        transparent 20%,
+        $gridline 20%,
+        $gridline calc(20% + 1px),
+        transparent calc(20% + 1px),
+        transparent 40%,
+        $gridline 40%,
+        $gridline calc(40% + 1px),
+        transparent calc(40% + 1px),
+        transparent 60%,
+        $gridline 60%,
+        $gridline calc(60% + 1px),
+        transparent calc(60% + 1px),
+        transparent 80%,
+        $gridline 80%,
+        $gridline calc(80% + 1px),
+        transparent calc(80% + 1px),
+        transparent
+      ) -1px 0 / 120px 100% repeat-x;
 }

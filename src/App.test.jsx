@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import PointInput from './PointInput';
+import App from './App';
 
-describe('<PointInput />', () => {
+describe('<App />', () => {
   it('Renders without error', () => {
-    shallow(<PointInput />);
+    shallow(<App />);
   });
 });

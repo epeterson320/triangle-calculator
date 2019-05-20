@@ -3,7 +3,7 @@
 $text: rgba(0, 0, 0, 0.87);
 $text2: rgba(0, 0, 0, 0.54);
 $shadow: rgba(0, 0, 0, 0.2);
-$fadedYellow: #FFFDE7;
+$fadedYellow: #fffde7;
 $cell: 24px;
 
 body {
@@ -19,7 +19,9 @@ input {
   border-bottom: 2px solid $text2;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin: 0;
   font-weight: 400;
 }

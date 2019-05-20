@@ -20,14 +20,15 @@ header {
   height: 48px;
   padding: 0 8px;
   @include for-tablet-landscape-up {
-    background:
-      linear-gradient(90deg,
+    background: linear-gradient(
+        90deg,
         $divider 0,
         $divider 2px,
         transparent 2px,
         transparent 100%,
-        $divider 100%)
-        0 0 / 33.4% 100% repeat-x;
+        $divider 100%
+      )
+      0 0 / 33.4% 100% repeat-x;
   }
 }
 
