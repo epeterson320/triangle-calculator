@@ -26,7 +26,7 @@ export default function reduce(state = init, action = {}) {
     case SET_ANGLE: {
       // Update measurement
       const { point, angle } = action;
-      const newState = Object.assign({}, state, { [point]: angle });
+      const newState = { ...state, [point]: angle };
 
       // Make sure it's possible. If not, return unchanged.
       const numSidesSet = !!newState.a + !!newState.b + !!newState.c;
@@ -40,7 +40,7 @@ export default function reduce(state = init, action = {}) {
     case SET_SIDE: {
       // Update measurement
       const { side, length } = action;
-      const newState = Object.assign({}, state, { [side]: length });
+      const newState = { ...state, [side]: length };
 
       // Make sure it's possible. If not, return unchanged.
       const numSidesSet = !!newState.a + !!newState.b + !!newState.c;
@@ -53,24 +53,26 @@ export default function reduce(state = init, action = {}) {
     case SET_ANGLE_UNIT: {
       if (action.unit === state.unit) return state;
       if (state.unit === DEG && action.unit === RAD) {
-        return Object.assign({}, state, {
+        return {
+          ...state,
           unit: RAD,
           A: state.A ? ((parseFloat(state.A) * PI) / 180).toFixed(5) : state.A,
           B: state.B ? ((parseFloat(state.B) * PI) / 180).toFixed(5) : state.B,
           C: state.C ? ((parseFloat(state.C) * PI) / 180).toFixed(5) : state.C,
-        });
+        };
       } else if (state.unit === RAD && action.unit === DEG) {
-        return Object.assign({}, state, {
+        return {
+          ...state,
           unit: DEG,
           A: state.A ? ((parseFloat(state.A) * 180) / PI).toFixed(3) : state.A,
           B: state.B ? ((parseFloat(state.B) * 180) / PI).toFixed(3) : state.B,
           C: state.C ? ((parseFloat(state.C) * 180) / PI).toFixed(3) : state.C,
-        });
+        };
       }
       return state; // invalid input
     }
     case 'init/INIT': {
-      return Object.assign({}, state, action.payload.input);
+      return { ...state, ...action.payload.input };
     }
     default: {
       return state;

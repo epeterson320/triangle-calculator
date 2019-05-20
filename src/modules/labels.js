@@ -16,10 +16,10 @@ export default function reduce(state = init, action = {}) {
   switch (action.type) {
     case RENAME_POINT: {
       const { point, name } = action;
-      return Object.assign({}, state, { [point]: name });
+      return { ...state, [point]: name };
     }
     case 'init/INIT': {
-      return Object.assign({}, state, action.payload.labels);
+      return { ...state, ...action.payload.labels };
     }
     default: {
       return state;

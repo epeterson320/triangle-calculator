@@ -10,8 +10,7 @@ function render(props) {
       { label: 'Option 3', value: 3 },
     ],
   };
-  const merged = Object.assign({}, defaults, props);
-  return shallow(<RadioList {...merged} />);
+  return shallow(<RadioList {...defaults} {...props} />);
 }
 
 describe('<RadioList />', () => {

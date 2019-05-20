@@ -2,9 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import CharInput from './CharInput';
 
-function render(_props) {
-  const props = Object.assign({}, { id: 'ID', char: 'A' }, _props);
-  return shallow(<CharInput {...props} />);
+function render(props) {
+  return shallow(<CharInput id="ID" char="A" {...props} />);
 }
 
 describe('<CharInput />', () => {

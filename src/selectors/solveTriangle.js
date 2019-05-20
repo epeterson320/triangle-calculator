@@ -12,7 +12,7 @@ export default function solve(inputs) {
   const { numericInputs, parseErrors } = parseInputs(inputs);
   const { validInputs, numericErrors } = validateInputs(numericInputs);
 
-  const errors = Object.assign({}, numericErrors, parseErrors);
+  const errors = { ...numericErrors, ...parseErrors };
 
   const { computed, alternate } =
     Object.keys(errors).length === 0

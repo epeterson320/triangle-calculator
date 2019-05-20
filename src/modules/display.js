@@ -1,18 +1,18 @@
 // Actions & Action Creators
 export const SHOW_CCENTER = 'display/SHOW_CCENTER';
-export const showCCenter = show => ({ type: SHOW_CCENTER, show });
+export const showCCenter = shouldShow => ({ type: SHOW_CCENTER, shouldShow });
 
 export const SHOW_ICENTER = 'display/SHOW_ICENTER';
-export const showICenter = show => ({ type: SHOW_ICENTER, show });
+export const showICenter = shouldShow => ({ type: SHOW_ICENTER, shouldShow });
 
 export const SHOW_OCENTER = 'display/SHOW_OCENTER';
-export const showOCenter = show => ({ type: SHOW_OCENTER, show });
+export const showOCenter = shouldShow => ({ type: SHOW_OCENTER, shouldShow });
 
 export const SHOW_CENTROID = 'display/SHOW_CENTROID';
-export const showCentroid = show => ({ type: SHOW_CENTROID, show });
+export const showCentroid = shouldShow => ({ type: SHOW_CENTROID, shouldShow });
 
 export const SHOW_EULER = 'display/SHOW_EULER';
-export const showEuler = show => ({ type: SHOW_EULER, show });
+export const showEuler = shouldShow => ({ type: SHOW_EULER, shouldShow });
 
 const init = {
   cCenter: false,
@@ -26,15 +26,15 @@ const init = {
 export default function reduce(state = init, action = {}) {
   switch (action.type) {
     case SHOW_CCENTER:
-      return Object.assign({}, state, { cCenter: action.show });
+      return { ...state, cCenter: action.shouldShow };
     case SHOW_ICENTER:
-      return Object.assign({}, state, { iCenter: action.show });
+      return { ...state, iCenter: action.shouldShow };
     case SHOW_OCENTER:
-      return Object.assign({}, state, { oCenter: action.show });
+      return { ...state, oCenter: action.shouldShow };
     case SHOW_CENTROID:
-      return Object.assign({}, state, { centroid: action.show });
+      return { ...state, centroid: action.shouldShow };
     case SHOW_EULER:
-      return Object.assign({}, state, { euler: action.show });
+      return { ...state, euler: action.shouldShow };
     default:
       return state;
   }

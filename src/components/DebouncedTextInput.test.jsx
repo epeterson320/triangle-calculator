@@ -13,7 +13,7 @@ function render(props) {
     disabled: false,
     error: '',
   };
-  return shallow(<TextInput {...Object.assign({}, defaults, props)} />);
+  return shallow(<TextInput {...defaults} {...props} />);
 }
 
 describe('<DebouncedTextInput>', () => {
