@@ -1,0 +1,124 @@
+:root {
+  --divider: #4caf50;
+  --gridline: #4caf5020;
+}
+
+.graph-paper {
+  max-width: 900px;
+  margin: 0 auto;
+  background: linear-gradient(var(--divider), var(--divider)) 0 48px / 100% 2px
+    no-repeat;
+  background-color: var(--fadedYellow);
+}
+
+@media (min-width: 900px) {
+  .graph-paper {
+    background: /* top rule */ linear-gradient(var(--divider), var(--divider)) 0
+        48px / 100% 2px no-repeat,
+      /* left rule */ linear-gradient(var(--divider), var(--divider)) 96px 0 /
+        2px 100% no-repeat,
+      /* right rule */ linear-gradient(var(--divider), var(--divider)) top right
+        48px / 2px 100% no-repeat,
+      /* 3-hole punch on the side */
+        radial-gradient(
+          circle,
+          #eee 0,
+          #ddd 12px,
+          transparent 12px,
+          transparent
+        )
+        24px -104px / 24px 384px repeat-y;
+    margin: 16px auto;
+    border-radius: 2px;
+    box-shadow: 0 4px 4px var(--shadow);
+    padding-left: 96px;
+    padding-right: 48px;
+    max-width: 756px;
+    background-color: var(--fadedYellow);
+  }
+}
+
+.graph-paper header {
+  height: 48px;
+  padding: 0 8px;
+}
+
+@media (min-width: 900px) {
+  .graph-paper header {
+    background: linear-gradient(
+        90deg,
+        var(--divider) 0,
+        var(--divider) 2px,
+        transparent 2px,
+        transparent 100%,
+        var(--divider) 100%
+      )
+      0 0 / 33.4% 100% repeat-x;
+  }
+}
+
+/* vertical and horizontal gridlines */
+.graph-paper main {
+  border-bottom: 2px solid var(--gridline);
+  min-height: calc(100vh - 96px);
+  padding: 24px;
+  background: linear-gradient(
+        0deg,
+        var(--gridline) 0,
+        var(--gridline) 2px,
+        transparent 2px,
+        transparent 20%,
+        var(--gridline) 20%,
+        var(--gridline) calc(20% + 1px),
+        transparent calc(20% + 1px),
+        transparent 40%,
+        var(--gridline) 40%,
+        var(--gridline) calc(40% + 1px),
+        transparent calc(40% + 1px),
+        transparent 60%,
+        var(--gridline) 60%,
+        var(--gridline) calc(60% + 1px),
+        transparent calc(60% + 1px),
+        transparent 80%,
+        var(--gridline) 80%,
+        var(--gridline) calc(80% + 1px),
+        transparent calc(80% + 1px),
+        transparent
+      )
+      0 -2px / 100% 120px repeat-y,
+    linear-gradient(
+        90deg,
+        var(--gridline) 0,
+        var(--gridline) 2px,
+        transparent 2px,
+        transparent 20%,
+        var(--gridline) 20%,
+        var(--gridline) calc(20% + 1px),
+        transparent calc(20% + 1px),
+        transparent 40%,
+        var(--gridline) 40%,
+        var(--gridline) calc(40% + 1px),
+        transparent calc(40% + 1px),
+        transparent 60%,
+        var(--gridline) 60%,
+        var(--gridline) calc(60% + 1px),
+        transparent calc(60% + 1px),
+        transparent 80%,
+        var(--gridline) 80%,
+        var(--gridline) calc(80% + 1px),
+        transparent calc(80% + 1px),
+        transparent
+      ) -1px 0 / 120px 100% repeat-x;
+}
+
+@media (min-width: 900px) {
+  .graph-paper main {
+    min-height: calc(100vh - 176px);
+  }
+}
+
+.graph-paper footer {
+  height: 32px;
+  padding: 8px;
+  font-size: 12px;
+}

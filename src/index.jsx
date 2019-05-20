@@ -6,7 +6,8 @@ import { Provider } from 'react-redux';
 import app from './modules/app';
 import { init, pushStateToHistory } from './modules/query';
 import App from './App';
-import './styles/index.scss';
+import './styles/baseline.css';
+import './styles/graph-paper.css';
 
 const store = createStore(app);
 store.dispatch(init(window.location));

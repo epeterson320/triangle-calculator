@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import LineSegment from '../geometry/LineSegment';
 import Triangle from '../geometry/Triangle';
 import solveTriangle from '../selectors/solveTriangle';
-import styles from './TriangleDrawing.module.scss';
+import styles from './TriangleDrawing.module.css';
 
 const { PI, abs, min } = Math;
 const rt = PI / 2;

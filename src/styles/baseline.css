@@ -1,22 +1,24 @@
-// This does not include layout and spacing stuff, just global colors and
-// resets to extend normalize in ways that make sense to this project.
-$text: rgba(0, 0, 0, 0.87);
-$text2: rgba(0, 0, 0, 0.54);
-$shadow: rgba(0, 0, 0, 0.2);
-$fadedYellow: #fffde7;
-$cell: 24px;
+@import-normalize;
+
+:root {
+  --text: rgba(0, 0, 0, 0.87);
+  --text2: rgba(0, 0, 0, 0.54);
+  --shadow: rgba(0, 0, 0, 0.2);
+  --fadedYellow: #fffde7;
+  --cell: 24px;
+}
 
 body {
   background-color: #eee;
   font-size: 14px;
-  color: $text;
+  color: var(--text);
   font-family: sans-serif;
 }
 
 input {
   border: 0;
   background-color: transparent;
-  border-bottom: 2px solid $text2;
+  border-bottom: 2px solid var(--text2);
 }
 
 h1,

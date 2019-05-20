@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
-import styles from './DebouncedTextInput.module.scss';
+import styles from './DebouncedTextInput.module.css';
 
 const DELAY = 600; // ms
 

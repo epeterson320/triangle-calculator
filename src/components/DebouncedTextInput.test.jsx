@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import TextInput from './DebouncedTextInput';
-import styles from './DebouncedTextInput.module.scss';
+import styles from './DebouncedTextInput.module.css';
 
 jest.useFakeTimers();
 
