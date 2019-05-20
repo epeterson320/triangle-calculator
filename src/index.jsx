@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { hydrate, render } from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
@@ -9,17 +9,26 @@ import App from './App';
 import './styles/index.scss';
 
 const store = createStore(app);
-const rootEl = document.getElementById('root');
-
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  rootEl,
-);
-
 store.dispatch(init(window.location));
 
 store.subscribe(() => {
   pushStateToHistory(window)(store.getState());
 });
+
+const rootEl = document.getElementById('root');
+
+if (rootEl.hasChildNodes()) {
+  hydrate(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    rootEl,
+  );
+} else {
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    rootEl,
+  );
+}
