@@ -1,21 +1,23 @@
 .container {
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
   position: relative;
-  width: 48px;
-  height: 48px;
-  display: inline-block;
+  justify-content: center;
+  align-items: flex-end;
+  margin-right: 1rem;
 }
 
 .label {
-  font-size: 12px;
+  font-size: 50%;
   position: absolute;
+  top: 100%;
 }
 
 .input {
-  position: absolute;
-  top: 16px;
-  font-size: 16px;
-  width: 16px;
+  width: 100%;
   text-align: center;
+  font-size: 1rem;
 }
 
 .cursor {

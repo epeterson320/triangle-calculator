@@ -1,0 +1,10 @@
+.container {
+}
+
+.header {
+  margin-top: 0.125rem;
+  height: 2rem;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: -0.125rem;
+}

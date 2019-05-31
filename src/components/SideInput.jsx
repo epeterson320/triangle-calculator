@@ -6,7 +6,6 @@ export default class SideInput extends PureComponent {
   render() {
     return (
       <div className={styles.container}>
-        <span className={styles.label}>Side</span>
         <span className={styles.side}>{this.props.label}</span>
         <DebouncedTextInput {...this.props} label="Length" />
       </div>

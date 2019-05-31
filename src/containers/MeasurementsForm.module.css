@@ -1,12 +1,17 @@
 .form {
   display: inline-block;
+  margin-bottom: 1.625rem;
+  margin-right: 1rem;
 }
 
 .header {
-  margin-top: 18px;
-  margin-bottom: 6px;
+  height: 2.2rem;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: -0.2rem;
+  font-size: 1rem;
 }
 
 .header:first-child {
-  margin-top: 6px;
+  margin-top: -1rem;
 }

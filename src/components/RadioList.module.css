@@ -1,9 +1,17 @@
 .container {
-  height: 24px;
+  height: 1.125rem;
+  display: flex;
+  align-items: flex-end;
+  margin-top: 0;
+  margin-bottom: -0.125rem;
 }
 
 .input,
 .label {
-  margin-top: 6px;
-  margin-right: 8px;
+  font-size: 0.625rem;
+  margin-right: 0.5rem;
+}
+
+.input {
+  margin-bottom: 0.25rem;
 }

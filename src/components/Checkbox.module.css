@@ -1,15 +1,19 @@
 .container {
-  height: 24px;
-  position: relative;
+  margin-top: 0.125rem;
+  margin-bottom: -0.125rem;
+  height: 1rem;
+  display: flex;
+  align-items: flex-end;
 }
+
 .input {
-  position: absolute;
-  height: 16px;
-  width: 16px;
-  bottom: -2px;
+  position: relative;
+  height: 0.75rem;
+  width: 0.75rem;
+  bottom: 0.125rem;
+  margin-right: 0.25rem;
 }
+
 .label {
-  position: absolute;
-  left: 24px;
-  bottom: -2px;
+  font-size: 0.75rem;
 }

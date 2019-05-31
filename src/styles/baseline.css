@@ -5,14 +5,28 @@
   --text2: rgba(0, 0, 0, 0.54);
   --shadow: rgba(0, 0, 0, 0.2);
   --fadedYellow: #fffde7;
-  --cell: 24px;
+}
+
+html {
+  background-color: #eee;
+  box-sizing: border-box;
+  color: var(--text);
+  font-family: sans-serif;
+  font-size: 24px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 body {
-  background-color: #eee;
-  font-size: 14px;
-  color: var(--text);
-  font-family: sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-height: 100vh;
 }
 
 input {
@@ -29,10 +43,15 @@ h3 {
 }
 
 h1 {
-  font-size: 28px;
-  height: 48px;
-  padding-top: 20px;
+  font-size: 1.125rem;
 }
+
+p {
+  line-height: 1rem;
+  font-size: 75%;
+  margin: 1rem 0;
+}
+
 button {
   border: 0;
   padding: 0;

@@ -41,10 +41,7 @@ export default class CharInput extends Component {
   render() {
     const { id, char } = this.props;
     return (
-      <div className={styles.container}>
-        <label className={styles.label} htmlFor={`c${id}`}>
-          Point
-        </label>
+      <label className={styles.container} htmlFor={`c${id}`}>
         <input
           id={`c${id}`}
           type="text"
@@ -60,7 +57,8 @@ export default class CharInput extends Component {
             [styles.cursor]: this.state.blinking,
           })}
         />
-      </div>
+        <span className={styles.label}>Point</span>
+      </label>
     );
   }
 }

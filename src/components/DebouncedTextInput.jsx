@@ -53,8 +53,14 @@ export default class TextInput extends PureComponent {
 
     return (
       <div className={styles.container}>
-        <label className={styles.label} htmlFor={id}>
-          {label}
+        <label
+          className={classNames({
+            [styles.label]: true,
+            [styles.error]: !!error,
+          })}
+          htmlFor={id}
+        >
+          {error || label}
         </label>
         <input
           id={id}
@@ -89,15 +95,6 @@ export default class TextInput extends PureComponent {
             <path d="M0 0h24v24H0z" fill="none" />
           </svg>
         </button>
-        <div
-          className={classNames({
-            [styles.error]: true,
-            hidden: !error,
-          })}
-          htmlFor={label}
-        >
-          {error}
-        </div>
       </div>
     );
   }

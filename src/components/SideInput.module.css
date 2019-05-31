@@ -1,23 +1,15 @@
 .container {
+  height: 2rem;
+  display: flex;
   position: relative;
-  height: 48px;
-  padding-left: 48px;
-}
-
-.container:first-child {
-  margin-top: 16px;
-}
-
-.label {
-  position: absolute;
-  left: 0;
-  font-size: 12px;
+  align-items: flex-end;
 }
 
 .side {
-  position: absolute;
-  bottom: 6px;
-  left: 0;
-  font-size: 16px;
+  font-size: 0.75rem;
+  width: 2rem;
   text-decoration: overline;
+  text-align: center;
+  position: relative;
+  top: 0.125rem;
 }

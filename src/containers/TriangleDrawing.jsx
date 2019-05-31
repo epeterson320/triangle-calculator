@@ -27,8 +27,8 @@ export class TriangleDrawing extends Component {
           <p>Not enough measurements to complete triangle.</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width={300}
-            height={300}
+            width={Math.min(24 * 12, window.innerWidth - 48)}
+            height={24 * 12}
             viewBox="0 0 100 100"
           />
         </div>

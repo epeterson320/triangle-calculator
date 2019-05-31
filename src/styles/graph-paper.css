@@ -4,46 +4,80 @@
 }
 
 .graph-paper {
-  max-width: 900px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 36rem;
   margin: 0 auto;
-  background: linear-gradient(var(--divider), var(--divider)) 0 48px / 100% 2px
+  background: linear-gradient(var(--divider), var(--divider)) 0 2rem / 100% 2px
     no-repeat;
   background-color: var(--fadedYellow);
 }
 
-@media (min-width: 900px) {
+/* Left rule appears */
+@media screen and (min-width: 600px) {
   .graph-paper {
     background: /* top rule */ linear-gradient(var(--divider), var(--divider)) 0
-        48px / 100% 2px no-repeat,
-      /* left rule */ linear-gradient(var(--divider), var(--divider)) 96px 0 /
+        2rem / 100% 2px no-repeat,
+      /* left rule */ linear-gradient(var(--divider), var(--divider)) 2rem 0 /
         2px 100% no-repeat,
-      /* right rule */ linear-gradient(var(--divider), var(--divider)) top right
-        48px / 2px 100% no-repeat,
       /* 3-hole punch on the side */
         radial-gradient(
           circle,
           #eee 0,
-          #ddd 12px,
-          transparent 12px,
+          #ddd 0.5rem,
+          transparent 0.5rem,
           transparent
         )
-        24px -104px / 24px 384px repeat-y;
-    margin: 16px auto;
+        0.5rem -4rem / 1rem 16rem repeat-y;
+    background-color: var(--fadedYellow);
+    padding-left: 2rem;
+  }
+}
+
+/* Right rule appears */
+@media screen and (min-width: 756px) {
+  .graph-paper {
+    background: /* top rule */ linear-gradient(var(--divider), var(--divider)) 0
+        2rem / 100% 2px no-repeat,
+      /* left rule */ linear-gradient(var(--divider), var(--divider)) 4rem 0 /
+        2px 100% no-repeat,
+      /* right rule */ linear-gradient(var(--divider), var(--divider)) top right
+        2rem / 2px 100% no-repeat,
+      /* 3-hole punch on the side */
+        radial-gradient(
+          circle,
+          #eee 0,
+          #ddd 0.5rem,
+          transparent 0.5rem,
+          transparent
+        )
+        1rem -4rem / 1rem 16rem repeat-y;
     border-radius: 2px;
     box-shadow: 0 4px 4px var(--shadow);
-    padding-left: 96px;
-    padding-right: 48px;
-    max-width: 756px;
+    padding-right: 2rem;
+    padding-left: 4rem;
     background-color: var(--fadedYellow);
   }
 }
 
-.graph-paper header {
-  height: 48px;
-  padding: 0 8px;
+/* Grey backdrop appears */
+@media screen and (min-width: 816px) {
+  .graph-paper {
+    margin: 1rem;
+  }
 }
 
-@media (min-width: 900px) {
+.graph-paper header {
+  height: 2.2rem;
+  padding: 0 0.5rem;
+  margin-bottom: -0.2rem;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Top trisector lines appear */
+@media screen and (min-width: 780px) {
   .graph-paper header {
     background: linear-gradient(
         90deg,
@@ -53,15 +87,18 @@
         transparent 100%,
         var(--divider) 100%
       )
-      0 0 / 33.4% 100% repeat-x;
+      0 0 / 33.4% 2rem repeat-x;
   }
 }
 
 /* vertical and horizontal gridlines */
 .graph-paper main {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: row wrap;
+  align-content: space-between;
   border-bottom: 2px solid var(--gridline);
-  min-height: calc(100vh - 96px);
-  padding: 24px;
+  padding: 1rem;
   background: linear-gradient(
         0deg,
         var(--gridline) 0,
@@ -85,7 +122,7 @@
         transparent calc(80% + 1px),
         transparent
       )
-      0 -2px / 100% 120px repeat-y,
+      0 0 / 100% 5rem repeat-y,
     linear-gradient(
         90deg,
         var(--gridline) 0,
@@ -108,17 +145,11 @@
         var(--gridline) calc(80% + 1px),
         transparent calc(80% + 1px),
         transparent
-      ) -1px 0 / 120px 100% repeat-x;
-}
-
-@media (min-width: 900px) {
-  .graph-paper main {
-    min-height: calc(100vh - 176px);
-  }
+      ) -0px 0 / 5rem 100% repeat-x;
 }
 
 .graph-paper footer {
-  height: 32px;
-  padding: 8px;
-  font-size: 12px;
+  height: 2rem;
+  padding: 0.5rem;
+  font-size: 0.5rem;
 }

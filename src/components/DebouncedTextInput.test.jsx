@@ -178,11 +178,7 @@ describe('<DebouncedTextInput>', () => {
     });
 
     it('Hides the error message when a falsy message is provided', () => {
-      expect(
-        render({ error: '' })
-          .find(`.${styles.error}`)
-          .hasClass('hidden'),
-      ).toBe(true);
+      expect(render({ error: '' }).find(`.${styles.error}`).length).toBe(0);
     });
   });
 });

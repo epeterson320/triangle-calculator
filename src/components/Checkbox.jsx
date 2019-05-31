@@ -15,14 +15,14 @@ export default class Checkbox extends Component {
 
   render() {
     return (
-      <div className={styles.container}>
-        <label className={styles.label}>{this.props.label}</label>
+      <label className={styles.container}>
         <input
           type="checkbox"
           className={styles.input}
           onChange={this.onChange}
         />
-      </div>
+        <span className={styles.label}>{this.props.label}</span>
+      </label>
     );
   }
 }

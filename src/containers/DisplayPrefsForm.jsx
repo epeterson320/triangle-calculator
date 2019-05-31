@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Checkbox from '../components/Checkbox';
 import * as action from '../modules/display';
+import styles from './DisplayPrefsForm.module.css';
 
 export class DisplayPrefsForm extends PureComponent {
   render() {
@@ -17,8 +18,8 @@ export class DisplayPrefsForm extends PureComponent {
     const actions = bindActionCreators(action, dispatch);
 
     return (
-      <form className="DisplayPrefsForm__container">
-        <h3 className="DisplayPrefsForm__header">Show Triangle Features</h3>
+      <form className={styles.container}>
+        <h3 className={styles.header}>Show Triangle Features</h3>
         <Checkbox
           label="Circumcenter"
           onChange={actions.showCCenter}

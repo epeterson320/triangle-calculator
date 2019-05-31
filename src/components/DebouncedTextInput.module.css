@@ -1,21 +1,24 @@
 .container {
+  width: 6rem;
+  height: 2rem;
+  display: inline-flex;
   position: relative;
-  height: 48px;
-  width: 144px;
-  display: inline-block;
-  vertical-align: top;
+  justify-content: flex-start;
+  align-items: flex-end;
 }
 
 .label {
   position: absolute;
-  font-size: 12px;
+  font-size: 50%;
+  top: 100%;
+  left: 0.25rem;
+  white-space: nowrap;
 }
 
 .input {
-  position: absolute;
-  top: 16px;
-  font-size: 16px;
-  width: 144px;
+  font-size: 1rem;
+  width: 100%;
+  padding-left: 0.25rem;
 }
 
 .computed {
@@ -28,12 +31,12 @@
 
 .clear {
   position: absolute;
-  height: 24px;
-  width: 24px;
-  right: 0;
-  top: 16px;
+  height: 1rem;
+  width: 1rem;
+  right: 0.25rem;
+  bottom: 0.25rem;
   background-color: transparent;
-  border-radius: 16px;
+  border-radius: 50%;
   outline: none;
 }
 
@@ -48,9 +51,5 @@
 }
 
 .error {
-  position: absolute;
-  bottom: -4px;
   color: red;
-  font-size: 12px;
-  white-space: nowrap;
 }
